@@ -1,6 +1,8 @@
 
 # dependencies
 /node_modules
+**/node_modules
+*/node_modules/ 
 
 # testing
 /coverage
@@ -8,6 +10,7 @@
 # production
 /build
 /dist
+*/dist/ 
 
 # misc
 .DS_Store
