@@ -23,6 +23,7 @@ React 目前的做法是使用链表, 每个 VirtualDOM 节点内部表示为一
 
 ```js
 type Fiber = {
+  tag:WorkTag
   //类型
   type: any,
   //父节点
