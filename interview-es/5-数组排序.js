@@ -10,6 +10,7 @@ function sort1(arr) {
         let temp = arr[j + 1];
         arr[j + 1] = arr[j];
         arr[j] = temp;
+        
       }
     }
   }
@@ -53,24 +54,6 @@ function sort3(arr) {
   }
   return sort3(left).concat([pivot], sort3(right));
 }
-const sort4 = (arr) => {
-  let len = arr.length;
-  if (len <= 1) {
-    return arr;
-  }
-  let pivotIndex = Math.floor(len / 2);
-  let pivot = arr.splice(pivotIndex, 1)[0];
-  let left = [];
-  let right = [];
-  for (let i = 0; i < len; i++) {
-    if (arr[i] < pivot) {
-      left.push(arr[i]);
-    } else {
-      right.push(arr[i]);
-    }
-  }
-  return sort4(left).concat([pivot], sort4(right));
-};
 /**
  * 方法说明：冒泡排序
  * @param {Array} arr

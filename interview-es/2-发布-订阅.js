@@ -13,8 +13,8 @@ class Event {
     this.cache[eventName] = this.cache[eventName] || [];
     this.cache[eventName].push(fn);
   }
-  emit(eventName) {
-    this.cache[eventName].forEach((fn) => fn());
+  emit(eventName, ...regs) {
+    this.cache[eventName].forEach((fn) => fn(...regs));
   }
   off(eventName, fn) {
     const index = indexOf(this.cache[eventName], fn); // 这里用 this.cache[eventName].indexOf(fn) 完全可以，封装成函数是为了向下兼容
@@ -41,7 +41,7 @@ class Event2 {
     return this;
   }
   // 触发
-  trigger(type, data) {
+  emit(type, data) {
     let fns = this._cache[type];
     if (Array.isArray(fns)) {
       fns.forEach((fn) => {
@@ -148,7 +148,7 @@ const event1 = new Event();
 event1.on("test", (a) => {
   console.log(a);
 });
-event1.trigger("test", "hello world");
+event1.emit("test", "hello world");
 
 event1.off("test");
-event1.trigger("test", "hello world");
+event1.emit("test", "hello world");

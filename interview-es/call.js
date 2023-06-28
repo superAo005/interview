@@ -1,4 +1,4 @@
-const iBind = function (thisArg, ...args) {
+const iBind = function (context, ...args) {
   const originFunc = this;
   const boundFunc = function (...args1) {
     // 解决 bind 之后对返回函数 new 的问题
@@ -12,7 +12,7 @@ const iBind = function (thisArg, ...args) {
         ? res
         : this;
     } else {
-      return originFunc.apply(thisArg, args.concat(args1));
+      return originFunc.apply(context, args.concat(args1));
     }
   };
   // 解决length 和 name 属性问题
@@ -28,13 +28,13 @@ const iBind = function (thisArg, ...args) {
   return boundFunc;
 };
 // 原理就是将函数作为传入的上下文参数（context）的属性执行，这里为了防止属性冲突使用了 ES6 的 Symbol 类型
-const iCall = function (thisArg, ...args) {
-  thisArg =
-    thisArg === undefined || thisArg === null ? window : Object(thisArg);
+const iCall = function (context, ...args) {
+  context =
+    context === undefined || context === null ? window : Object(context);
   let fn = Symbol("fn");
-  thisArg[fn] = this;
-  let res = thisArg[fn](...args);
-  delete thisArg[fn];
+  context[fn] = this;
+  let res = context[fn](...args);
+  delete context[fn];
   return res;
 };
 // 保持 call 的数据属性一致
@@ -62,11 +62,9 @@ Function.prototype.bind = function (context, ...args) {
     return res;
   };
 };
-Function.prototype.apply = function (context, args) {
+Function.prototype.apply = function (context = window, args = []) {
   // 不传默认是全局，window
-  context = context || window;
   // args不传时默认是空数组，防止下面用spread操作符时报错
-  args = args ? args : [];
   // 把this存到context.fn，这里的this是调用的函数
   context.fn = this;
   // 执行调用的函数，this指向context，参数用spread操作符扩展
@@ -76,8 +74,3 @@ Function.prototype.apply = function (context, args) {
   // 返回res
   return res;
 };
-~(function (prototype) {
-  function bind(context,...outerArgs){
-
-  }
-})(Function.prototype);

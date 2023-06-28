@@ -1,4 +1,5 @@
-# 2023面试总结
+# 2023 面试总结
+
 ## 1 数组转树结构 如果要在树中新增节点或者删除节点, 函数应该怎么扩展
 
 ```js
@@ -138,6 +139,35 @@ function findParentNode(tree, nodeId) {
 ```js
 // “ababac” —— “ababa”
 // “aaabbbcceeff” —— “aaabbb”
+function removeLeastFrequentCharacters(str) {
+  const charCount = {};
+  let minCount = Infinity;
+
+  // 统计字符出现次数
+  for (let char of str) {
+    charCount[char] = (charCount[char] || 0) + 1;
+    minCount = Math.min(minCount, charCount[char]);
+  }
+
+  // 构建结果字符串
+  let result = "";
+  for (let char of str) {
+    if (charCount[char] !== minCount) {
+      result += char;
+    }
+  }
+
+  return result;
+}
+
+// 示例用法
+const str1 = "ababac";
+const result1 = removeLeastFrequentCharacters(str1);
+console.log(result1); // 输出: "ababa"
+
+const str2 = "aaabbbcceeff";
+const result2 = removeLeastFrequentCharacters(str2);
+console.log(result2); // 输出: "aaabbb"
 ```
 
 ## 3 给一个字符串, 找到第一个不重复的字符
@@ -145,6 +175,32 @@ function findParentNode(tree, nodeId) {
 ```js
 // ababcbdsa
 // abcdefg
+function findFirstUniqueCharacter(str) {
+  const charCount = {};
+
+  // 统计字符出现次数
+  for (let char of str) {
+    charCount[char] = (charCount[char] || 0) + 1;
+  }
+
+  // 找到第一个不重复的字符
+  for (let char of str) {
+    if (charCount[char] === 1) {
+      return char;
+    }
+  }
+
+  return null; // 如果没有不重复的字符，则返回 null
+}
+
+// 示例用法
+const str3 = "ababcbdsa";
+const result3 = findFirstUniqueCharacter(str3);
+console.log(result3); // 输出: "c"
+
+const str4 = "abcdefg";
+const result4 = findFirstUniqueCharacter(str4);
+console.log(result4); // 输出: "a"
 ```
 
 ## 实现 compose 函数, 类似于 koa 的中间件洋葱模型

@@ -1,14 +1,3 @@
-const getDeepLen = (arr, deplen = 1) => {
-  let maxDepLen = deplen;
-  for (let index = 0; index < arr.length; index++) {
-    const element = arr[index];
-    if (Array.isArray(element)) {
-      deplen++;
-      getDeepLen(element, deplen);
-    }
-  }
-  return maxDepLen;
-};
 let arr = [12, 5, [10, 11, 14, [15, 17, 18, [19, 20, 30, 4]], 13], 6, 9];
 //调用flat方法，数组扁平化
 let newArr = arr.flat(Infinity);

@@ -26,3 +26,15 @@ console.log("柯里化：", curry(add)(1)(2)(3)(4));
 function sum(a, b, c, d) {
   return a + b + c + d;
 }
+// 函数柯里化
+
+let currying = (fn, ...args) =>
+  fn.length > args.length
+    ? (...args) => currying(fn, ...args, ...args)
+    : fn(...args);
+
+let addSum = (a, b, c) => a + b + c;
+let add = currying(addSum);
+console.log(add(1)(2)(3));
+console.log(add(1, 2)(3));
+console.log(add(1, 2, 3));
