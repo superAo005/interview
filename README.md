@@ -238,7 +238,22 @@ fn();
 */
 
 //实现compose函数
-function compose(middlewares) {}
+function compose(middleware) {
+  return function () {
+    dispatch(0);
+
+    function dispatch(i) {
+      if (i === middleware.length) {
+        return;
+      }
+
+      const fn = middleware[i];
+      fn(function next() {
+        dispatch(i + 1);
+      });
+    }
+  };
+}
 ```
 
 ## 遇到退格字符就删除前面的字符, 遇到两个退格就删除两个字符
@@ -249,7 +264,26 @@ function compose(middlewares) {}
 // 输入："<-<-ab<-", "<-<-<-<-a"，结果：true，解释：都为"a"
 // 输入："<-<ab<-c", "<<-<a<-<-c"，结果：false，解释："<ac" !== "c"
 
-function fn(str1, str2) {}
+function processString(str) {
+  const stack = [];
+
+  for (let char of str) {
+    if (char !== "<") {
+      stack.push(char);
+    } else {
+      stack.pop();
+    }
+  }
+
+  return stack.join("");
+}
+
+function fn(str1, str2) {
+  const processedStr1 = processString(str1);
+  const processedStr2 = processString(str2);
+
+  return processedStr1 === processedStr2;
+}
 ```
 
 ## 多叉树, 获取每一层的节点之和
@@ -267,6 +301,32 @@ const res = layerSum({
 });
 
 console.log(res);
+function layerSum(root) {
+  if (!root) {
+    return [];
+  }
+
+  const result = [];
+  const queue = [root];
+
+  while (queue.length > 0) {
+    const levelSize = queue.length;
+    let levelSum = 0;
+
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      levelSum += node.value;
+
+      if (node.children && node.children.length > 0) {
+        queue.push(...node.children);
+      }
+    }
+
+    result.push(levelSum);
+  }
+
+  return result;
+}
 ```
 
 ### 二叉树层序遍历, 每层的节点放到一个数组里
@@ -276,4 +336,34 @@ console.log(res);
 // 例如：
 // 给定的二叉树是{3,9,20,#,#,15,7},
 // 该二叉树层序遍历的结果是[[3],[9,20],[15,7]]
+function levelOrder(root) {
+  if (!root) {
+    return [];
+  }
+
+  const result = [];
+  const queue = [root];
+
+  while (queue.length > 0) {
+    const levelSize = queue.length;
+    const currentLevel = [];
+
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      currentLevel.push(node.val);
+
+      if (node.left) {
+        queue.push(node.left);
+      }
+
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+
+    result.push(currentLevel);
+  }
+
+  return result;
+}
 ```
