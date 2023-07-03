@@ -1,3 +1,8 @@
+/**
+ * 
+ * 用闭包把传入参数保存起来，当传入参数的数量足够执行函数时，就开始执行函数
+ * 
+ */
 const curry = function (targetFn) {
   return function fn(...rest) {
     if (targetFn.length === rest.length) {
@@ -18,16 +23,6 @@ const curring = (fn) => {
   };
   return innerFn();
 };
-// 用法
-function add(a, b, c, d) {
-  return a + b + c + d;
-}
-console.log("柯里化：", curry(add)(1)(2)(3)(4));
-function sum(a, b, c, d) {
-  return a + b + c + d;
-}
-// 函数柯里化
-
 let currying = (fn, ...args) =>
   fn.length > args.length
     ? (...args) => currying(fn, ...args, ...args)

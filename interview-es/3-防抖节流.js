@@ -19,7 +19,7 @@ const throttle = (fun, wait = 500) => {
     }, wait);
   };
 };
-const throttle3 = (fun, wait = 500) => {
+const throttle2 = (fun, wait = 500) => {
   let lastTime = 0;
   return (...args) => {
     let now = +new Date();
@@ -29,3 +29,29 @@ const throttle3 = (fun, wait = 500) => {
     }
   };
 };
+function throttle(fn, delay) {
+  let flag = true,
+    timer = null;
+  return function (...args) {
+    let context = this;
+    if (!flag) return;
+
+    flag = false;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      fn.apply(context, args);
+      flag = true;
+    }, delay);
+  };
+}
+
+function debounce2(fn, delay) {
+  let timer = null;
+  return function (...args) {
+    let context = this;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () {
+      fn.apply(context, args);
+    }, delay);
+  };
+}

@@ -36,3 +36,13 @@ const flatten4 = (arr) => {
   // return arr.toString().split(',').sort((a,b)=>a-b).map(Number)
   // return Array.from(new Set(arr.flat(Infinity))).sort((a, b) => a - b)
 };
+// 可以传递参数
+function flatDeep2(arr, d = Infinity) {
+  return d > 0
+    ? arr.reduce(
+        (acc, val) =>
+          acc.concat(Array.isArray(val) ? flatDeep2(val, d - 1) : val),
+        []
+      )
+    : arr.slice();
+}

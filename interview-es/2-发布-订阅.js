@@ -17,7 +17,7 @@ class Event {
     this.cache[eventName].forEach((fn) => fn(...regs));
   }
   off(eventName, fn) {
-    const index = indexOf(this.cache[eventName], fn); // 这里用 this.cache[eventName].indexOf(fn) 完全可以，封装成函数是为了向下兼容
+    const index = this.cache[eventName].indexOf(fn);
     if (index === -1) return;
     this.cache[eventName].splice(index, 1);
   }
@@ -38,7 +38,6 @@ class Event2 {
     if (fns.indexOf(callback) === -1) {
       fns.push(callback);
     }
-    return this;
   }
   // 触发
   emit(type, data) {
@@ -48,7 +47,6 @@ class Event2 {
         fn(data);
       });
     }
-    return this;
   }
   // 解绑
   off(type, callback) {

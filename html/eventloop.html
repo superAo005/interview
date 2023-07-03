@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/index.css" />
   </head>
   <body>
-    <button id="btn"></button>
+    <button id="btn" class="btn"></button>
     <script>
       document.body.style = "background:red";
       console.log(1);
@@ -16,6 +16,12 @@
         document.body.style = "background:yellow";
       });
       console.log(3);
+      setTimeout(() => {
+        document.body.style = "background:green";
+        setTimeout(() => {
+          document.body.style = "background:pink";
+        }, 100);
+      }, 100);
       let btn = document.getElementById("btn");
       btn.addEventListener("click", () => {
         Promise.resolve().then(() => {
@@ -23,14 +29,14 @@
         });
         console.log("l1");
       });
-      btn.addEventListener('click',()=>{
+      btn.addEventListener("click", () => {
         Promise.resolve().then(() => {
           console.log("m2");
         });
         console.log("l2");
-      })
+      });
       // 什么时候执行检查点 清空微任务 当前调用栈清空的时候
-      btn.click()
+      btn.click();
     </script>
   </body>
 </html>

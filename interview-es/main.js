@@ -1,69 +1,6 @@
-// 深拷贝
-
-function deepClone(obj, map = new WeakMap()) {
-  if (obj instanceof RegExp) return new RegExp(obj);
-  if (obj instanceof Date) return new Date(obj);
-
-  if (obj == null || typeof obj != "object") return obj;
-  if (map.has(obj)) {
-    return map.get(obj);
-  }
-  let t = new obj.constructor();
-  map.set(obj, t);
-  for (let key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      t[key] = deepClone(obj[key], map);
-    }
-  }
-  return t;
-}
-//测试用例
-let obj = {
-  a: 1,
-  b: {
-    c: 2,
-    d: 3,
-  },
-  d: new RegExp(/^\s+|\s$/g),
-};
-
-let clone_obj = deepClone(obj);
-obj.d = /^\s|[0-9]+$/g;
-console.log(clone_obj);
-console.log(obj);
-
-// 函数防抖节流
-
-function throttle(fn, delay) {
-  let flag = true,
-    timer = null;
-  return function (...args) {
-    let context = this;
-    if (!flag) return;
-
-    flag = false;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn.apply(context, args);
-      flag = true;
-    }, delay);
-  };
-}
-
-function debounce2(fn, delay) {
-  let timer = null;
-  return function (...args) {
-    let context = this;
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn.apply(context, args);
-    }, delay);
-  };
-}
-
 // 手写一个sleep
 function sleep(fn, time) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(fn);
     }, time);
@@ -170,28 +107,6 @@ let tmp = say.mybind(cc1, "happy", "you are kute");
 let tmp1 = say.bind(cc1, "happy", "you are kute");
 tmp();
 tmp1();
-
-// 数组扁平化 不传递参数
-let flatDeep1 = (arr) => {
-  return arr.reduce((res, cur) => {
-    if (Array.isArray(cur)) {
-      return [...res, ...flatDep(cur)];
-    } else {
-      return [...res, cur];
-    }
-  }, []);
-};
-
-// 可以传递参数
-function flatDeep2(arr, d = 1) {
-  return d > 0
-    ? arr.reduce(
-        (acc, val) =>
-          acc.concat(Array.isArray(val) ? flatDeep2(val, d - 1) : val),
-        []
-      )
-    : arr.slice();
-}
 
 // 数组去重的几种方式
 
@@ -330,47 +245,6 @@ class Square extends Rectangle {
 
 const square = new Square(20);
 console.log(square.area);
-// 数组扁平化
-let arr = [1, [2, 3, [4, 5, [6, 7]]]];
-let ary = arr.flat(Infinity);
-
-console.log([1, [2, 3, [4, 5, [6, 7]]]].flat(Infinity));
-// 2、普通递归
-let result = [];
-let flatten = function (arr) {
-  for (let i = 0; i < arr.length; i++) {
-    let item = arr[i];
-    if (Array.isArray(arr[i])) {
-      flatten(item);
-    } else {
-      result.push(item);
-    }
-  }
-  return result;
-};
-// 3、利用 reduce 函数迭代
-function flatten2(arr) {
-  return arr.reduce((pre, cur) => {
-    return pre.concat(Array.isArray(cur) ? flatten(cur) : cur);
-  }, []);
-}
-// 4、扩展运算符
-function flatten3(arr) {
-  while (arr.some((item) => Array.isArray(item))) {
-    arr = [].concat(...arr);
-  }
-  return arr;
-}
-// 防抖和节流
-const debounce = (func, wait = 500) => {
-  let timer = null;
-  return (...args) => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, wait);
-  };
-};
 // 正则把手机号中间四位变为星号*
 const replacePhoneToStar = (phone) => {
   if (phone) {
@@ -379,7 +253,6 @@ const replacePhoneToStar = (phone) => {
     const res2 = `${p1}****${p2}`;
     let res = phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
     console.log(res);
-
     return res;
   }
 };
