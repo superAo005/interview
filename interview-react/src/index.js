@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import useTimes from "./hooks/useInterval";
+import useInterval from "./hooks/useInterval2";
 /**
  * 因为实例是同一个，状态对象也是同一个，如果是类组件的话，this.state永远是最新的值
  */
@@ -51,23 +53,40 @@ class ClassComponent extends PureComponent{
 
 //如果是一个函数组件，如何跳过不必要的更新 React.memo
 function FunctionComponent(props) {
-  let [number, setNumber] = useState(0);
+  const [count, setCount] = useState(0);
+  let number = useTimes(60);
+  useInterval(() => {
+    setCount(count + 1);
+  }, 1000);
   console.log(number); //取的永远都 最新的值
-  return <div>{props.name}</div>;
+  return (
+    <>
+      <h2>{props.name}</h2>
+      <p>{count}</p>
+      <p>{number}</p>
+    </>
+  );
 }
 let MemoFunctionComponent = React.memo(FunctionComponent);
+function Counter(props) {
+  const { name } = props;
+  let [count, setCount] = useState(0);
+  console.log(name);
+  useEffect(() => {
+    let id = setInterval(() => {
+      setCount(count + 1);
+    }, 1000);
+    return () => clearInterval(id);
+  });
 
+  return <h1>{count}</h1>;
+}
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = { number: 0 };
-  }
   state = { number: 0 };
   handleClick = (event) => {
     this.setState({ number: this.state.number + 1 });
   };
   click() {
-    //1.bind
     console.log(this); //undefined
   }
   render() {
@@ -76,6 +95,7 @@ class App extends React.Component {
         <p>{this.state.number}</p>
         <button onClick={this.handleClick}>+</button>
         <MemoFunctionComponent name="superao" />
+        <Counter name="superao" />
       </div>
     );
   }

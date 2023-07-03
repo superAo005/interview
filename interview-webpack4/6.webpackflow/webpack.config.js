@@ -1,14 +1,15 @@
 const path = require("path");
 const RunPlugin = require("./plugins/RunPlugin");
 const DonePlugin = require("./plugins/DonePlugin");
+const ZipPlugin = require("./plugins/zip-plugin");
 module.exports = {
-  context: process.cwd(),//当前的根目录
-  mode: "development",//工作模 式 是开发模 式
-  devtool: false,//不生成sourcemap
-  entry: "./src/app.js",//入口文件
+  context: process.cwd(), //当前的根目录
+  mode: "development", //工作模 式 是开发模 式
+  devtool: false, //不生成sourcemap
+  entry: "./src/app.js", //入口文件
   output: {
-    path: path.resolve(__dirname, "dist"),//输出的路径
-    filename: "main.js",//文件名
+    path: path.resolve(__dirname, "dist"), //输出的路径
+    filename: "main.js", //文件名
   },
   module: {
     rules: [
@@ -25,6 +26,12 @@ module.exports = {
       },
     ],
   },
-  plugins: [new RunPlugin(),new DonePlugin()],
+  plugins: [
+    new RunPlugin(),
+    new DonePlugin(),
+    new ZipPlugin({
+      filename: "assets.zip",
+    }),
+  ],
   devServer: {},
 };

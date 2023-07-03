@@ -24,6 +24,10 @@ module.exports = {
       },
     ],
   },
-  plugins: [],
+  plugins: [
+    new zipPlugin({
+      filename: "assets.zip",
+    }),
+  ],
   devServer: {},
 };

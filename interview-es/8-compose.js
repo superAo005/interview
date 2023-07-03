@@ -16,15 +16,6 @@ const compose2 =
       .reduce((acc, cur) =>
         typeof acc === "function" ? cur(acc(...args)) : cur(acc)
       );
-
-const compose3 =
-  (...fns) =>
-  (...args) =>
-    fns
-      .reverse()
-      .reduce((acc, cur) =>
-        typeof acc === "function" ? cur(acc(...args)) : cur(acc)
-      );
 function compose4(...fns) {
   let len = fns.length;
   let res = null;

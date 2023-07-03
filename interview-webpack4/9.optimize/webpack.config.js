@@ -35,15 +35,15 @@ module.exports = {
     minimize: true,
     minimizer: [
       //压缩JS
-      /* new TerserPlugin({
+      new TerserPlugin({
         sourceMap: false,
         extractComments: false,
       }),
       //压缩CSS
-      new OptimizeCSSAssetsPlugin({}), */
+      new OptimizeCSSAssetsPlugin({}),
     ],
     //自动分割第三方模块和公共模块
-    /*  splitChunks: {
+    splitChunks: {
       chunks: "all", //默认作用于异步chunk，值为all/initial/async
       minSize: 0, //默认值是30kb,代码块的最小尺寸
       minChunks: 1, //被多少模块共享,在分割之前模块的被引用次数
@@ -65,7 +65,7 @@ module.exports = {
           priority: -20,
         },
       },
-    }, */
+    },
     //为了长期缓存保持运行时代码块是单独的文件
     /*  runtimeChunk: {
       name: (entrypoint) => `runtime-${entrypoint.name}`,
