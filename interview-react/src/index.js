@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import useTimes from "./hooks/useInterval";
 import useInterval from "./hooks/useInterval2";
@@ -82,9 +82,12 @@ function Counter(props) {
   return <h1>{count}</h1>;
 }
 class App extends React.Component {
-  state = { number: 0 };
+  state = { number: 0, list: new Array(10000).fill(0) };
   handleClick = (event) => {
-    this.setState({ number: this.state.number + 1 });
+    this.setState({
+      number: this.state.number + 1,
+      list: [...this.state.list, 1],
+    });
   };
   click() {
     console.log(this); //undefined
@@ -92,15 +95,20 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <p>{this.state.number}</p>
+        <input></input>
         <button onClick={this.handleClick}>+</button>
-        <MemoFunctionComponent name="superao" />
-        <Counter name="superao" />
+        <p>{this.state.number}</p>
+        {/* <MemoFunctionComponent name="superao" />
+        <Counter name="superao" /> */}
+        {this.state.list.map((item, i) => {
+          return <li key={i}>{item}</li>;
+        })}
       </div>
     );
   }
 }
-ReactDOM.render(<App />, document.getElementById("root"));
+// ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.unstable_createRoot(root).render(<App />);
 
 /**
  * 类组件复用逻辑一般用HOC 高阶组件

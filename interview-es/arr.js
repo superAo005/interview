@@ -75,14 +75,10 @@ function findMostFrequentElement(arr) {
 
   for (let i = 0; i < arr.length; i++) {
     const element = arr[i];
-    if (element === undefined || isNaN(element)) {
-      continue;
-    }
-
-    if (counter[element] === undefined) {
-      counter[element] = 1;
-    } else {
+    if (counter[element]) {
       counter[element]++;
+    } else {
+      counter[element] = 1;
     }
 
     if (counter[element] > maxCount) {

@@ -48,13 +48,11 @@ Promise.myrace = function (arr) {
 // hook和vue的computed有什么区别
 // 如何避免rerender
 
-
 // 加一个简单算法，实现 [1, 2, 3, 4, 5, 7, 8, 10, 12, 13, 14] => [ '1-5', '7-8', '10', '12-14' ]
 function formatArray(nums) {
   const result = [];
   let start = nums[0];
   let end = nums[0];
-
   for (let i = 1; i < nums.length; i++) {
     if (nums[i] === end + 1) {
       end = nums[i];

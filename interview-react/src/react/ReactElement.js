@@ -6,6 +6,16 @@ const RESERVED_PROPS = {
   __self: true,
   __source: true,
 };
+/**
+ * 处理了浏览器兼容性问题，避免用户操作真实 DOM，那么又麻烦又容易出错
+   内容经过了 XSS 处理，可以防范 XSS 攻击
+   容易实现跨平台开发 Android、iOS、VR 应用
+   更新的时候可以实现差异化更新，减少更新 DOM 的操作
+ * @param {*} type 
+ * @param {*} config 
+ * @param {*} children 
+ * @returns 
+ */
 export function createElement(type, config, children) {
   const props = {};
   let key = null;
@@ -27,7 +37,7 @@ export function createElement(type, config, children) {
     }
     props.children = childArray;
   }
-
+  // createElement函数所返回的就是一个虚拟 DOM 虚拟 DOM 就是一个描述真实 DOM 的纯 JS 对象
   const element = {
     $$typeof: REACT_ELEMENT_TYPE,
     type,

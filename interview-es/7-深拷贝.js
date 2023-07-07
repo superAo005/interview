@@ -99,7 +99,6 @@ function clone(target, map = new WeakMap()) {
   if (!isObject(target)) {
     return target;
   }
-
   // 初始化 根据不同类型进行操作
   const type = getType(target);
   let cloneTarget;
@@ -146,7 +145,6 @@ function clone(target, map = new WeakMap()) {
 export { clone };
 
 // 面试版 深拷贝
-
 function deepClone(obj, map = new WeakMap()) {
   if (obj instanceof RegExp) return new RegExp(obj);
   if (obj instanceof Date) return new Date(obj);
@@ -163,6 +161,29 @@ function deepClone(obj, map = new WeakMap()) {
   }
   return t;
 }
+function deepCopy(obj, cache = new WeakMap()) {
+  // 检查是否为基本数据类型，如果是，则直接返回
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  }
+  // 检查缓存，如果已经拷贝过该对象，则直接返回缓存的结果
+  if (cache.has(obj)) {
+    return cache.get(obj);
+  }
+  // 创建新的对象或数组
+  const copy = Array.isArray(obj) ? [] : {};
+  // 将新对象添加到缓存中
+  cache.set(obj, copy);
+  // 遍历原对象的属性
+  for (let key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      // 递归拷贝子属性
+      copy[key] = deepCopy(obj[key], cache);
+    }
+  }
+
+  return copy;
+}
 //测试用例
 let obj = {
   a: 1,
@@ -174,6 +195,7 @@ let obj = {
 };
 
 let clone_obj = deepClone(obj);
+let clone_obj2 = deepCopy(obj);
 obj.d = /^\s|[0-9]+$/g;
-console.log(clone_obj);
+console.log(clone_obj, clone_obj2);
 console.log(obj);
