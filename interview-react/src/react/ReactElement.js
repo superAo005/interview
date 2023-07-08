@@ -15,6 +15,7 @@ const RESERVED_PROPS = {
  * @param {*} config 
  * @param {*} children 
  * @returns 
+ * createElement函数所返回的就是一个虚拟 DOM 虚拟 DOM 就是一个描述真实 DOM 的纯 JS 对象
  */
 export function createElement(type, config, children) {
   const props = {};
@@ -37,7 +38,7 @@ export function createElement(type, config, children) {
     }
     props.children = childArray;
   }
-  // createElement函数所返回的就是一个虚拟 DOM 虚拟 DOM 就是一个描述真实 DOM 的纯 JS 对象
+  //
   const element = {
     $$typeof: REACT_ELEMENT_TYPE,
     type,
