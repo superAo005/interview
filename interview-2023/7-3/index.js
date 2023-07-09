@@ -1,3 +1,4 @@
+// xtransfer 面试
 export const useTimes = (times) => {
   const [count, setcount] = useState(times);
   const timer = useRef(null);
@@ -5,7 +6,6 @@ export const useTimes = (times) => {
     timer.current = setInterval(() => {
       setcount((count) => count - 1);
     }, 1000);
-
     return () => {
       clearInterval(time.current);
     };

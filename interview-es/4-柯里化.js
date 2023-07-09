@@ -14,7 +14,7 @@ const curry = function (targetFn) {
   };
 };
 let currying = (fn, ...args) =>
-  fn.length >= args.length
+  args.length < fn.length
     ? (...arg) => currying(fn, ...args, ...arg)
     : fn(...args);
 
