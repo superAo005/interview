@@ -1,7 +1,5 @@
 // 测试压缩函数
-const originalString = "aaaabbccc";
-const compressedString = compressString(originalString);
-console.log(compressedString); // 输出: "4a2b3c"
+
 function calculateExecutionTime(fn) {
   return function (...args) {
     console.time(fn.name); // 开始计时

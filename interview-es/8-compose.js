@@ -29,14 +29,6 @@ function compose4(...fns) {
     }
   };
 }
-const compose5 = (...fns) => {
-  return (...args) => {
-    for (let i = fns.length - 1; i >= 0; i--) {
-      args = fns[i](args);
-    }
-    return args;
-  };
-};
 const compose6 = (...fns) => {
   return fns.reduce(
     (a, b) =>

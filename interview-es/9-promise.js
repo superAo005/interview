@@ -1,3 +1,168 @@
+//定义三种状态常量
+const PROMISE_STATUS_PENDING = "pending";
+const PROMISE_STATUS_FULFILLED = "fulfilled";
+const PROMISE_STATUS_REJECTED = "rejected";
+
+class myPromise {
+  constructor(executor) {
+    this.status = PROMISE_STATUS_PENDING;
+    this.value = undefined;
+    this.error = undefined;
+    this.resfns = [];
+    this.errfns = [];
+
+    const resolve = (value) => {
+      if (this.status === PROMISE_STATUS_PENDING) {
+        queueMicrotask(() => {
+          if (this.status !== PROMISE_STATUS_PENDING) return; //避免 调用resolve 后又调用 reject 多次执行
+          this.status = PROMISE_STATUS_FULFILLED;
+          this.value = value;
+          this.resfns.forEach((fn) => {
+            fn(this.value);
+          });
+        });
+      }
+    };
+    const reject = (error) => {
+      if (this.status === PROMISE_STATUS_PENDING) {
+        queueMicrotask(() => {
+          if (this.status !== PROMISE_STATUS_PENDING) return;
+          this.status = PROMISE_STATUS_REJECTED;
+          this.error = error;
+          this.errfns.forEach((fn) => {
+            fn(this.error);
+          });
+        });
+      }
+    };
+    executor(resolve, reject);
+  }
+
+  then(resfn, errfn) {
+    // 1.利用抛错让下一个promise的catch帮忙处理  防止catch方法让链式调用断层
+    const defaultOnRejected = (err) => {
+      throw err;
+    };
+    errfn = errfn || defaultOnRejected;
+
+    const defaultOnFulfilled = (value) => {
+      return value;
+    };
+    resfn = resfn || defaultOnFulfilled;
+
+    return new myPromise((resolve, reject) => {
+      //1. 直接new 一个mypromise 作为then 方法的返回值 既可实现 .then.then.thne.then.....等等链式调用
+
+      if (this.status === PROMISE_STATUS_FULFILLED && resfn) {
+        try {
+          //2. 异常处理：若成功则继续执行then链式调用 的第一个回调，失败则执行then 的第二个回调
+          const value = resfn(this.value);
+          resolve(value);
+        } catch (err) {
+          reject(err);
+        }
+      }
+      if (this.status === PROMISE_STATUS_REJECTED && errfn) {
+        try {
+          const value = errfn(this.error);
+          resolve(value);
+        } catch (err) {
+          reject(err);
+        }
+      }
+      if (this.status === PROMISE_STATUS_PENDING) {
+        if (resfn) {
+          this.resfns.push(() => {
+            //push 回调函数
+            try {
+              const value = resfn(this.value);
+              resolve(value);
+            } catch (err) {
+              reject(err); //tips:****利用抛出的错误 使得下一个promise的catch帮忙处理
+            }
+          });
+        }
+        if (errfn) {
+          this.errfns.push(() => {
+            try {
+              const value = errfn(this.error);
+              resolve(value);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  catch(errfn) {
+    //2.catch 方法
+    return this.then(undefined, errfn);
+  }
+
+  finally(fn) {
+    setTimeout(() => {
+      fn();
+    }, 0);
+  }
+}
+// 三种状态
+const PENDING = "pending";
+const RESOLVED = "resolved";
+const REJECTED = "rejected";
+// promise 接收⼀个函数参数，该函数会⽴即执⾏
+class MyPromise {
+  constructor(fn) {
+    this.value;
+    this.status = PENDING; // 默认状态
+    // 解决问题：缓存回调，等待执行
+    this.onResolveCallBack = []; // 缓存 onResolve
+    this.onRejectCallBack = []; // 缓存 onReject
+    // 这里使用 try catch 捕获中可能发生的错误
+    try {
+      // 这里必须要绑定 this，否则在外部调用时 this 就不会执行当前实例
+      fn(this.resolve.bind(this), this.reject.bind(this));
+    } catch (error) {
+      this.reject.bind(this, error);
+    }
+  }
+  resolve(value) {
+    if (this.status === PENDING) {
+      this.value = value;
+      this.status = RESOLVED;
+      // 遍历调用 onResolveCallBack
+      this.onResolveCallBack.forEach((r) => r());
+    }
+  }
+  reject(reason) {
+    if (this.status === PENDING) {
+      this.value = reason;
+      this.status = REJECTED;
+      // 遍历调用 onRejectCallBack
+      this.onRejectCallBack.forEach((r) => r());
+    }
+  }
+}
+MyPromise.prototype.then = function (onResolve, onReject) {
+  // 当前 promise 实例调用了 resolve
+  if (this.status === RESOLVED) {
+    onResolve(this.value);
+  }
+  // 当前 promise 实例调用了 reject
+  if (this.status === REJECTED) {
+    onReject(this.value);
+  }
+  // 当前 promise 状态为 pending，把当前的 onResolve & onReject 缓存起来
+  if (this.status === PENDING) {
+    this.onResolveCallBack.push(() => {
+      onResolve(this.value);
+    });
+    this.onRejectCallBack.push(() => {
+      onReject(this.value);
+    });
+  }
+};
 // es5模拟Promise
 function Promise(fn) {
   fn(

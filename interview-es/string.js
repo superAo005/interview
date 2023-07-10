@@ -21,3 +21,6 @@ function compressString(str) {
 
   return compressed;
 }
+const originalString = "aaaabbccc";
+const compressedString = compressString(originalString);
+console.log(compressedString); // 输出: "4a2b3c"
