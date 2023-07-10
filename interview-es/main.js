@@ -14,44 +14,6 @@ async function autoPlay() {
 }
 autoPlay();
 
-// 实现reduce
-Array.prototype.myreduce = function (fn, initVal) {
-  let result = initVal,
-    i = 0;
-  if (typeof initVal === "undefined") {
-    result = this[i];
-    i++;
-  }
-  while (i < this.length) {
-    result = fn(result, this[i]);
-  }
-  return result;
-};
-
-//实现Object.create方法
-function create(proto) {
-  function Fn() {}
-  Fn.prototype = proto;
-  Fn.prototype.constructor = Fn;
-  return new Fn();
-}
-// let demo = {
-//   c : '123'
-// }
-// let cc = Object.create(demo)
-
-// 实现new操作
-
-function _new() {
-  let obj = {};
-  const [constructor, ...args] = [...arguments];
-  obj.__proto__ = constructor.prototype;
-  let result = constructor.apply(obj, args);
-  if ((result && typeof result === "function") || typeof result === "object") {
-    return result;
-  }
-  return obj;
-}
 
 // 实现call
 Function.prototype.mycall = function () {

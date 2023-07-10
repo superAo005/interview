@@ -1,72 +1,40 @@
-const arr = [
-  {
-    id: 2,
-    name: "部门B",
-    parentId: 0,
-  },
-  {
-    id: 3,
-    name: "部门C",
-    parentId: 1,
-  },
-  {
-    id: 1,
-    name: "部门A",
-    parentId: 2,
-  },
-  {
-    id: 4,
-    name: "部门D",
-    parentId: 1,
-  },
-  {
-    id: 5,
-    name: "部门E",
-    parentId: 2,
-  },
-  {
-    id: 6,
-    name: "部门F",
-    parentId: 3,
-  },
-  {
-    id: 7,
-    name: "部门G",
-    parentId: 2,
-  },
-  {
-    id: 8,
-    name: "部门H",
-    parentId: 4,
-  },
-];
-const arrayToTree = (arr) => {
-  let roots = [];
-  let map = {};
-  for (let i = 0; i < arr.length; i++) {
-    const ele = arr[i];
-    const node = {
-      id: ele.id,
-      name: ele.name,
-      children: [],
-    };
-    map[node.id] = node;
+function compressString(str) {
+  if (str.lenth <= 1) {
+    return str;
   }
-  for (let i = 0; i < arr.length; i++) {
-    const node = map[arr[i].id];
-    if (arr[i].parentId) {
-      const parent = map[arr[i].parentId];
-      parent.children.push(node);
+  let count = 1;
+  let res = "";
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === str[i + 1]) {
+      count++;
+    } else {
+      res += str[i] + (count > 1 ? count : "");
+      count = 1;
     }
-    roots.push(node);
   }
-  return roots;
-};
-// console.log(arrayToTree(arr));
-Array.prototype.forEach = function forEach(cb, context = window) {
-  let self = this;
-  let len = self.length;
-  for (let i = 0; i < len; i++) {
-    typeof cb === "function" ? cb.call(context, self[i], i) : null;
-  }
-};
+  return res;
+}
+const input = "aabcccccaaa";
+const compressedString = compressString(input);
+console.log(compressedString);
+
+// 实现injectFn
+function add(a, b, cb) {
+  let c = a + b;
+  setTimeout(() => {
+    cb(c);
+  }, 1000);
+}
+
+function injectFn(fn) {
+  return (...args) => {
+    return new Promise((resolve) => {
+      fn(...args, (result) => {
+        resolve(result);
+      });
+    });
+  };
+}
+let promise1 = injectFn(add);
+promise1(1, 2).then((res) => console.log(res)); // 输出 3
+promise1(3, 4).then((res) => console.log(res)); // 输出 7

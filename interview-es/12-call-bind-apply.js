@@ -1,32 +1,3 @@
-const iBind = function (context, ...args) {
-  const originFunc = this;
-  const boundFunc = function (...args1) {
-    // 解决 bind 之后对返回函数 new 的问题
-    if (new.target) {
-      if (originFunc.prototype) {
-        boundFunc.prototype = originFunc.prototype;
-      }
-      const res = originFunc.apply(this, args.concat(args1));
-      return res !== null &&
-        (typeof res === "object" || typeof res === "function")
-        ? res
-        : this;
-    } else {
-      return originFunc.apply(context, args.concat(args1));
-    }
-  };
-  // 解决length 和 name 属性问题
-  const desc = Object.getOwnPropertyDescriptors(originFunc);
-  Object.defineProperties(boundFunc, {
-    length: Object.assign(desc.length, {
-      value: desc.length < args.length ? 0 : desc.length - args.length,
-    }),
-    name: Object.assign(desc.name, {
-      value: `bound ${desc.name.value}`,
-    }),
-  });
-  return boundFunc;
-};
 // 原理就是将函数作为传入的上下文参数（context）的属性执行，这里为了防止属性冲突使用了 ES6 的 Symbol 类型
 const iCall = function (context, ...args) {
   context =

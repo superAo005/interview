@@ -176,7 +176,8 @@ function deepCopy(obj, cache = new WeakMap()) {
   cache.set(obj, copy);
   // 遍历原对象的属性
   for (let key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    // if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (obj.hasOwnProperty(key)) {
       // 递归拷贝子属性
       copy[key] = deepCopy(obj[key], cache);
     }
