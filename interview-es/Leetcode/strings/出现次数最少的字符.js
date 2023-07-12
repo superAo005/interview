@@ -1,5 +1,4 @@
 // 去除字符串中出现次数最少的字符，不改变原字符串的顺序
-
 // “ababac” —— “ababa”
 // “aaabbbcceeff” —— “aaabbb”
 function removeLeastFrequentCharacters(str) {
@@ -10,7 +9,6 @@ function removeLeastFrequentCharacters(str) {
     charCount[char] = (charCount[char] || 0) + 1;
     minCount = Math.min(minCount, charCount[char]);
   }
-
   // 构建结果字符串
   let result = "";
   for (let char of str) {

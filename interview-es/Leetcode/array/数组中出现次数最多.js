@@ -3,7 +3,6 @@ function findMostFrequentElement(arr) {
   const counter = {};
   let maxCount = 0;
   let mostFrequentElement;
-
   for (let i = 0; i < arr.length; i++) {
     const element = arr[i];
     if (counter[element]) {
