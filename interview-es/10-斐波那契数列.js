@@ -27,6 +27,14 @@ function fn2(n) {
   }
   return fn2(n - 1) + fn2(n - 2);
 }
+function fibonacci(n) {
+  if (n <= 1) return n;
+  let fib = [0, 1]; // 保存斐波那契数列的结果
+  for (let i = 2; i <= n; i++) {
+    fib[i] = fib[i - 1] + fib[i - 2]; // 计算第i个斐波那契数
+  }
+  return fib[n];
+}
 
 console.log(fn(20), count); // 6765 20
 console.log(fn2(20), count2); // 6765 13529
