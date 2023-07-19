@@ -20,6 +20,12 @@ const root = {
     },
   },
 };
+// 二叉树节点的构造函数
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
 
 // 1————先序遍历
 // 根结点 -> 左子树 -> 右子树
@@ -29,7 +35,6 @@ function preorder(root) {
   if (!root) {
     return;
   }
-
   // 输出当前遍历的结点值
   console.log("当前遍历的结点值是：", root.val);
   // 递归遍历左子树
@@ -37,34 +42,133 @@ function preorder(root) {
   // 递归遍历右子树
   preorder(root.right);
 }
-preorder(root);
-// 加一个简单算法，实现 [1, 2, 3, 4, 5, 7, 8, 10, 12, 13, 14] => [ '1-5', '7-8', '10', '12-14' ]
-function formatArray(nums) {
+// 递归
+function fn1(root) {
+  if (root == null) return [];
   const result = [];
-  let start = nums[0];
-  let end = nums[0];
-  for (let i = 1; i < nums.length; i++) {
-    if (nums[i] === end + 1) {
-      end = nums[i];
-    } else {
-      if (start === end) {
-        result.push(start.toString());
-      } else {
-        result.push(`${start}-${end}`);
-      }
-      start = nums[i];
-      end = nums[i];
-    }
+  function preorder(root) {
+    if (root == null) return;
+    result.push(root.val);
+    preorder(root.left, result);
+    preorder(root.right, result);
   }
-
-  if (start === end) {
-    result.push(start.toString());
-  } else {
-    result.push(`${start}-${end}`);
-  }
-
+  preorder(root);
   return result;
 }
-const nums = [1, 2, 3, 4, 5, 7, 8, 10, 12, 13, 14];
-const formattedArray = formatArray(nums);
-console.log(formattedArray);
+// 非递归
+function fn2(root) {
+  const res = [];
+  const stack = [];
+  if (root) stack.push(root);
+  while (stack.length) {
+    const n = stack.pop();
+    res.push(n.val);
+    if (n.right) stack.push(n.right);
+    if (n.left) stack.push(n.left);
+  }
+  return res;
+}
+/**
+ * 中序遍历（左根右）
+ */
+function fn3(root) {
+  const res = [];
+  function inorder(root) {
+    if (root == null) return;
+    inorder(root.left);
+    res.push(root.val);
+    inorder(root.right);
+  }
+  inorder(root);
+  return res;
+}
+function fn4(root) {
+  const stack = [];
+  const result = []; //最终的结果
+  while (root || stack.length > 0) {
+    // 先把当前节点的左节点入栈，及root.left，root.left.left，......
+    while (root) {
+      stack.push(root);
+      root = root.left;
+    }
+    root = stack.pop();
+    result.push(root.val);
+    root = root.right;
+  }
+  return res;
+}
+/**
+ * 后序遍历（左右根）
+ */
+function fn5(root) {
+  const res = [];
+  function postOrder(postOrder) {
+    if (root == null) return;
+    postOrder(root.left);
+    postOrder(root.right);
+    res.push(root.val);
+  }
+  postOrder(root);
+  return res;
+}
+function fn6(root) {
+  if (!root) return [];
+  const arr = [root];
+  const res = [];
+  while (arr.length) {
+    const n = arr.pop();
+    res.unshift(n.val);
+    n.left && arr.push(n.left);
+    n.right && arr.push(n.right);
+  }
+  return res;
+}
+/**
+ * 层序遍历
+ */
+function fn7(root) {
+  if (!root) return false;
+  let res = [];
+  let arr = [root];
+  while (arr.length) {
+    let p = arr.shift();
+    res.push(p.val);
+    if (p.left) arr.push(p.left);
+    if (p.right) arr.push(p.right);
+  }
+  return res;
+}
+function fn8(root) {
+  if (!root) return [];
+  let res = [];
+  let arr = [root];
+  while (arr.length) {
+    let len = arr.length;
+    let st = [];
+    while (len--) {
+      let p = arr.shift();
+      st.push(p.val);
+      if (p.left) arr.push(p.left);
+      if (p.right) arr.push(p.right);
+    }
+    res.push(st);
+  }
+  return res;
+}
+function fn9(root) {
+  if (!root) return [];
+  let res = [];
+  let arr = [root];
+  while (arr.length) {
+    let len = arr.length;
+    let st = [];
+    while (len--) {
+      let p = arr.shift();
+      st.push(p.val);
+      if (p.left) arr.push(p.left);
+      if (p.right) arr.push(p.right);
+    }
+    res.unshift(st);
+  }
+  return res;
+}

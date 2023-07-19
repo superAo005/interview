@@ -1,4 +1,7 @@
 /**
+ * 对于发布者订阅者模式，首先发布者与订阅者互相并不知道彼此的存在，他们是通过事件中心来进行调度的
+ * 发布者在事件中心发布一个对应的事件主题，订阅者在事件中心订阅一个事件主体
+ * 当订阅者去触发emit时就去执行发布者所发布的事件
  * 核心思路是：
 使用一个对象作为缓存
 on 负责把方法发布到缓存的 EventName 对应的数组
@@ -149,3 +152,54 @@ event1.emit("test", "hello world");
 
 event1.off("test");
 event1.emit("test", "hello world");
+/**
+ * 被观察的目标，即发布者：Dep
+ * 当对象之间存在一对多的依赖关系时，其中一个对象的状态发生改变，所有依赖它的对象都会收到通知，这就是观察者模式
+ * 当被观察者的数据发生变化时，调用被观察者的notify方法，去通知所有观察者执行update方法进行更新。
+ */
+class Dep {
+  constructor() {
+    // 记录所有的观察者，即订阅者
+    this.subs = [];
+  }
+  // 添加新的观察者
+  addSub(sub) {
+    // 该订阅者存在且有update方法,就将其添加到subs数组中
+    if (sub && sub.update) {
+      this.subs.push(sub);
+    }
+  }
+  // 移除观察者
+  removeSub(sub) {
+    if (this.subs.length) {
+      let index = this.subs.indexOf(sub);
+      if (index > -1) {
+        this.subs.splice(index, 1);
+      }
+    }
+  }
+  // 发布更新通知
+  notify() {
+    this.subs.forEach((item) => {
+      item.update();
+    });
+  }
+}
+
+// 观察者，即订阅者
+class Watcher {
+  update() {
+    console.log("****更新相关数据****");
+  }
+}
+
+let dep = new Dep();
+let watcher1 = new Watcher();
+let watcher2 = new Watcher();
+
+// 添加新的观察者
+dep.addSub(watcher1);
+dep.addSub(watcher2);
+dep.removeSub(watcher2);
+// 发布
+dep.notify();

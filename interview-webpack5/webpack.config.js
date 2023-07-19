@@ -69,6 +69,7 @@ module.exports = (env = {}) => {
       //只对loader有用
       modules: [loadersPath, "node_modules"],
     },
+    // 告诉webpack这些包不用打包，直接在HTML中引入
     externals: {
       jquery: "jQuery",
     },

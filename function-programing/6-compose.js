@@ -9,8 +9,8 @@ function add2(str) {
 function add3(str) {
   return str + 3;
 }
-//let r1 = add3(add2(add1(str)));
-//console.log(r1);//a123
+let r2 = add3(add2(add1(str)));
+console.log(r2); //a123
 
 //flow可以把三个函数组合成一个函数
 

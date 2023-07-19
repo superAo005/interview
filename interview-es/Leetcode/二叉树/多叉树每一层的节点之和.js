@@ -39,6 +39,8 @@ function layerSum(root) {
   return result;
 }
 
-
+let preorder = []// 前序结果
+let inorder = []// 中序结果
+let postorder = []// 后序结果
 
 
