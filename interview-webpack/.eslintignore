@@ -1,0 +1,8 @@
+*.html
+node_modules
+coverage
+dist
+env
+postcss.config.js
+config
+babel.config.js

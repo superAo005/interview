@@ -46,9 +46,8 @@ function create(proto) {
 // let cc = Object.create(demo)
 
 // 实现new操作
-function _new() {
+function _new(constructor, ...args) {
   let obj = {};
-  const [constructor, ...args] = [...arguments];
   obj.__proto__ = constructor.prototype;
   let result = constructor.apply(obj, args);
   if ((result && typeof result === "function") || typeof result === "object") {
