@@ -4,6 +4,10 @@ const iCall = function (context, ...args) {
     context === undefined || context === null ? window : Object(context);
   let fn = Symbol("fn");
   context[fn] = this;
+  Object.defineProperty(context, fn, {
+    enumerable: false,
+    value: this,
+  });
   let res = context[fn](...args);
   delete context[fn];
   return res;

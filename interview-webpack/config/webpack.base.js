@@ -18,68 +18,87 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/, //匹配所有的 less 文件
-        enforce: "pre",
-        include: [SRC_PATH],
-        use: [
-          IS_DEVELOPMENT ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
+        //oneOf只可能匹配数组中的某一个，找到一个之后就不再继续查找剩下的loader
+        // 提升构建速度，避免每个文件都被所有loader过一遍
+        oneOf: [
+          {
+            test: /\.css$/, //匹配所有的 less 文件
+            enforce: "pre",
+            include: [SRC_PATH],
+            use: [
+              IS_DEVELOPMENT ? "style-loader" : MiniCssExtractPlugin.loader,
+              "css-loader",
+              "postcss-loader",
+            ],
+          },
+          {
+            test: /\.less$/, //匹配所有的 less 文件
+            enforce: "pre",
+            include: [SRC_PATH],
+            use: [
+              IS_DEVELOPMENT ? "style-loader" : MiniCssExtractPlugin.loader,
+              "css-loader",
+              "postcss-loader",
+              "less-loader",
+            ],
+          },
+          {
+            test: /\.(ts|tsx|js|jsx)$/,
+            include: [SRC_PATH],
+            enforce: "pre",
+            // use: ["thread-loader", "babel-loader"],
+            use: [
+              //thread-loader开启线程池，开线程和线程通信都需要时间
+              {
+                loader: "thread-loader",
+                options: { workers: 3 },
+              },
+              {
+                loader: "babel-loader",
+                options: {
+                  cacheDirectory: true, //启动babel缓存
+                },
+              },
+            ],
+          },
+          {
+            test: /\.(png|jpg|jpeg|gif|svg)$/,
+            type: "asset",
+            parser: {
+              //转base64的条件
+              dataUrlCondition: {
+                maxSize: 10 * 1024, // 10kb
+              },
+            },
+            generator: {
+              filename: "static/images/[name].[contenthash:6][ext]",
+            },
+          },
+          {
+            test: /\.(woff2?|eot|ttf|otf)$/, // 匹配字体图标文件
+            type: "asset", // type选择asset
+            parser: {
+              dataUrlCondition: {
+                maxSize: 10 * 1024, // 小于10kb转base64位
+              },
+            },
+            generator: {
+              filename: "static/fonts/[name].[contenthash:6][ext]", // 文件输出目录和命名
+            },
+          },
+          {
+            test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/, // 匹配媒体文件
+            type: "asset", // type选择asset
+            parser: {
+              dataUrlCondition: {
+                maxSize: 10 * 1024, // 小于10kb转base64位
+              },
+            },
+            generator: {
+              filename: "static/media/[name].[contenthash:6][ext]", // 文件输出目录和命名
+            },
+          },
         ],
-      },
-      {
-        test: /\.less$/, //匹配所有的 less 文件
-        enforce: "pre",
-        include: [SRC_PATH],
-        use: [
-          IS_DEVELOPMENT ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "less-loader",
-        ],
-      },
-      {
-        test: /\.(ts|tsx)$/,
-        include: [SRC_PATH],
-        enforce: "pre",
-        use: ["thread-loader", "babel-loader"],
-      },
-      {
-        test: /\.(png|jpg|jpeg|gif|svg)$/,
-        type: "asset",
-        parser: {
-          //转base64的条件
-          dataUrlCondition: {
-            maxSize: 10 * 1024, // 10kb
-          },
-        },
-        generator: {
-          filename: "static/images/[name].[contenthash:6][ext]",
-        },
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)$/, // 匹配字体图标文件
-        type: "asset", // type选择asset
-        parser: {
-          dataUrlCondition: {
-            maxSize: 10 * 1024, // 小于10kb转base64位
-          },
-        },
-        generator: {
-          filename: "static/fonts/[name].[contenthash:6][ext]", // 文件输出目录和命名
-        },
-      },
-      {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/, // 匹配媒体文件
-        type: "asset", // type选择asset
-        parser: {
-          dataUrlCondition: {
-            maxSize: 10 * 1024, // 小于10kb转base64位
-          },
-        },
-        generator: {
-          filename: "static/media/[name].[contenthash:6][ext]", // 文件输出目录和命名
-        },
       },
     ],
   },
@@ -90,7 +109,7 @@ module.exports = {
     },
     modules: [path.resolve(__dirname, "../node_modules")],
   },
-  
+
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../public/index.html"),
