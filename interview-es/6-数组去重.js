@@ -69,3 +69,28 @@ function unique4(arr) {
   }
   return arrry;
 }
+let arr1 = [];
+// 创建百万条百以内的整数数组数据
+for (let i = 0; i < 1000000; i++) {
+  arr1.push(parseInt(Math.random() * 5000));
+}
+/**
+ * 利用for循环和对象的 key 唯一
+ * 时间复杂度是O(n)
+ * @param {*} arr 
+ * @returns 
+ */
+function distinct(arr) {
+  let result = [];
+  let obj = {};
+  for (let i of arr) {
+    if (!obj[i]) {
+      result.push(i);
+      obj[i] = 1;
+    }
+  }
+  return result;
+}
+console.time("运行时间");
+distinct(arr1);
+console.timeEnd("运行时间"); // 运行时间: 35.403076171875 ms
