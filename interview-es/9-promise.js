@@ -10,7 +10,6 @@ class myPromise {
     this.error = undefined;
     this.resfns = [];
     this.errfns = [];
-
     const resolve = (value) => {
       if (this.status === PROMISE_STATUS_PENDING) {
         queueMicrotask(() => {
@@ -120,49 +119,68 @@ class MyPromise {
     this.onResolveCallBack = []; // 缓存 onResolve
     this.onRejectCallBack = []; // 缓存 onReject
     // 这里使用 try catch 捕获中可能发生的错误
+    let resove = (value) => {
+      if (this.status === PENDING) {
+        this.value = value;
+        this.status = RESOLVED;
+        // 遍历调用 onResolveCallBack
+        this.onResolveCallBack.forEach((fn) => fn());
+      }
+    };
+    let reject = (reason) => {
+      if (this.status === PENDING) {
+        this.value = reason;
+        this.status = REJECTED;
+        // 遍历调用 onRejectCallBack
+        this.onRejectCallBack.forEach((fn) => fn());
+      }
+    };
     try {
       // 这里必须要绑定 this，否则在外部调用时 this 就不会执行当前实例
-      fn(this.resolve.bind(this), this.reject.bind(this));
+      // fn(this.resolve.bind(this), this.reject.bind(this));
+      fn(resove, reject);
     } catch (error) {
-      this.reject.bind(this, error);
+      // this.reject.bind(this, error);
+      reject(error);
     }
   }
-  resolve(value) {
-    if (this.status === PENDING) {
-      this.value = value;
-      this.status = RESOLVED;
-      // 遍历调用 onResolveCallBack
-      this.onResolveCallBack.forEach((r) => r());
+  // resolve(value) {
+  //   if (this.status === PENDING) {
+  //     this.value = value;
+  //     this.status = RESOLVED;
+  //     // 遍历调用 onResolveCallBack
+  //     this.onResolveCallBack.forEach((fn) => fn());
+  //   }
+  // }
+  // reject(reason) {
+  //   if (this.status === PENDING) {
+  //     this.value = reason;
+  //     this.status = REJECTED;
+  //     // 遍历调用 onRejectCallBack
+  //     this.onRejectCallBack.forEach((fn) => fn());
+  //   }
+  // }
+  then(onResolve, onReject) {
+    // 当前 promise 实例调用了 resolve
+    if (this.status === RESOLVED) {
+      onResolve(this.value);
     }
-  }
-  reject(reason) {
+    // 当前 promise 实例调用了 reject
+    if (this.status === REJECTED) {
+      onReject(this.value);
+    }
+    // 当前 promise 状态为 pending，把当前的 onResolve & onReject 缓存起来
     if (this.status === PENDING) {
-      this.value = reason;
-      this.status = REJECTED;
-      // 遍历调用 onRejectCallBack
-      this.onRejectCallBack.forEach((r) => r());
+      this.onResolveCallBack.push(() => {
+        onResolve(this.value);
+      });
+      this.onRejectCallBack.push(() => {
+        onReject(this.value);
+      });
     }
   }
 }
-MyPromise.prototype.then = function (onResolve, onReject) {
-  // 当前 promise 实例调用了 resolve
-  if (this.status === RESOLVED) {
-    onResolve(this.value);
-  }
-  // 当前 promise 实例调用了 reject
-  if (this.status === REJECTED) {
-    onReject(this.value);
-  }
-  // 当前 promise 状态为 pending，把当前的 onResolve & onReject 缓存起来
-  if (this.status === PENDING) {
-    this.onResolveCallBack.push(() => {
-      onResolve(this.value);
-    });
-    this.onRejectCallBack.push(() => {
-      onReject(this.value);
-    });
-  }
-};
+
 // es5模拟Promise
 function Promise(fn) {
   fn(

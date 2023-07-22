@@ -152,5 +152,5 @@ console.log(bubbleSort(arr1)); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47
 console.log(bubbleSort2(arr1)); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
 console.log(bubbleSort3(arr1)); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
 
-const arr2 = sort4(arr);
+const arr2 = sort3(arr);
 console.log(arr2);

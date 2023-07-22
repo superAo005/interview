@@ -8,6 +8,12 @@ const root = {
     val: "B",
     left: {
       val: "D",
+      left: {
+        val: "H",
+      },
+      right: {
+        val: "G",
+      },
     },
     right: {
       val: "E",

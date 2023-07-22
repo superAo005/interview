@@ -9,98 +9,28 @@ emit 负责遍历触发（订阅） EventName 下的方法数组
 off 找方法的索引，并删除
  */
 
-class Event {
-  cache = {};
-  on(eventName, fn) {
-    this.cache[eventName] = this.cache[eventName] || [];
-    this.cache[eventName].push(fn);
+class EventBus {
+  events = {}; // 存储事件及其对应的回调函数列表
+  // 订阅事件
+  subscribe(eventName, callback) {
+    this.events[eventName] = this.events[eventName] || []; // 如果事件不存在，创建一个空的回调函数列表
+    this.events[eventName].push(callback); // 将回调函数添加到事件的回调函数列表中
   }
-  emit(eventName, ...regs) {
-    this.cache[eventName].forEach((fn) => fn(...regs));
-  }
-  off(eventName, fn) {
-    const index = this.cache[eventName].indexOf(fn);
-    if (index === -1) return;
-    this.cache[eventName].splice(index, 1);
-  }
-}
-class Event2 {
-  constructor() {
-    // 存储事件的数据结构
-    // 为了查找迅速，使用了对象（字典）
-    this._cache = {};
-  }
-  // 绑定
-  on(type, callback) {
-    // 为了按类查找方便和节省空间，
-    // 将同一类型事件放到一个数组中
-    // 这里的数组是队列，遵循先进先出
-    // 即先绑定的事件先触发
-    let fns = (this._cache[type] = this._cache[type] || []);
-    if (fns.indexOf(callback) === -1) {
-      fns.push(callback);
-    }
-  }
-  // 触发
-  emit(type, data) {
-    let fns = this._cache[type];
-    if (Array.isArray(fns)) {
-      fns.forEach((fn) => {
-        fn(data);
+  // 发布事件
+  publish(eventName, data) {
+    if (this.events[eventName]) {
+      this.events[eventName].forEach((callback) => {
+        callback(data); // 执行回调函数，并传递数据作为参数
       });
     }
   }
-  // 解绑
-  off(type, callback) {
-    let fns = this._cache[type];
-    if (Array.isArray(fns)) {
-      if (callback) {
-        let index = fns.indexOf(callback);
-        if (index !== -1) {
-          fns.splice(index, 1);
-        }
-      } else {
-        //全部清空
-        fns.length = 0;
-      }
-    }
-    return this;
-  }
-}
-class Event3 {
-  constructor() {
-    // 包含所有监听器函数的容器对象
-    // 内部结构: {msg1: [listener1, listener2], msg2: [listener3]}
-    this.cache = {};
-  }
-  // 实现订阅
-  on(name, callback) {
-    if (this.cache[name]) {
-      this.cache[name].push(callback);
-    } else {
-      this.cache[name] = [callback];
-    }
-  }
-  // 删除订阅
-  off(name, callback) {
-    if (this.cache[name]) {
-      this.cache[name] = this.cache[name].filter((item) => item !== callback);
-    }
-    if (this.cache[name].length === 0) delete this.cache[name];
-  }
-  // 只执行一次订阅事件
-  once(name, callback) {
-    callback();
-    this.off(name, callback);
-  }
-  // 触发事件
-  emit(name, ...data) {
-    if (this.cache[name]) {
-      // 创建副本，如果回调函数内继续注册相同事件，会造成死循环
-      let tasks = this.cache[name].slice();
-      for (let fn of tasks) {
-        fn(...data);
-      }
+
+  // 取消订阅事件
+  unsubscribe(eventName, callback) {
+    if (this.events[eventName]) {
+      this.events[eventName] = this.events[eventName].filter(
+        (cb) => cb !== callback
+      ); // 过滤掉要取消的回调函数
     }
   }
 }
@@ -144,14 +74,25 @@ class EventEmitter {
 }
 
 // 测试用例
-const event1 = new Event();
-event1.on("test", (a) => {
-  console.log(a);
-});
-event1.emit("test", "hello world");
+// 创建全局事件总线对象
+const eventBus = new EventBus();
+const callback1 = (data) => {
+  console.log("Callback 1:", data);
+};
+const callback2 = (data) => {
+  console.log("Callback 2:", data);
+};
+// 订阅事件
+eventBus.subscribe("event1", callback1);
+eventBus.subscribe("event1", callback2);
+// 发布事件
+eventBus.publish("event1", "Hello, world!");
+// 取消订阅事件
+eventBus.unsubscribe("event1", callback1);
 
-event1.off("test");
-event1.emit("test", "hello world");
+// 发布事件
+eventBus.publish("event1", "Goodbye!");
+
 /**
  * 被观察的目标，即发布者：Dep
  * 当对象之间存在一对多的依赖关系时，其中一个对象的状态发生改变，所有依赖它的对象都会收到通知，这就是观察者模式
