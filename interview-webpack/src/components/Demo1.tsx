@@ -1,7 +1,7 @@
 import React from "react";
-
+import {Button} from 'antd'
 function Demo1() {
-  return <h3>我是Demo1组件</h3>
+  return <Button>我是Demo1组件</Button>
 }
 
 export default Demo1

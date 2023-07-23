@@ -15,7 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -23,5 +23,5 @@
       ]
     }
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "src/utils/request/index.js", "src/utils/request/index.js", "src/routes/index.js"]
 }
