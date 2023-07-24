@@ -178,3 +178,49 @@ function fn9(root) {
   }
   return res;
 }
+//二叉树的定义
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
+
+//二叉树的前序遍历 中左右
+let preorderTraversal = function (root) {
+  //传入根节点
+  let res = []; //返回遍历二叉树的数组
+  const dfs = function (root) {
+    if (root === null) return;
+    res.push(root.val); //中
+    dfs(root.left); //遍历左子树，直到叶子节点 逐层返回
+    dfs(root.right); //遍历右子树，直到叶子节点 逐层返回
+  };
+  dfs(root); //只使用一个参数，使用闭包进行储存结果
+  return res;
+};
+
+//二叉树的中序遍历 左中右 与前序遍历相同，位置换一下
+let inorderTraversal = function (root) {
+  let res = [];
+  const dfs = function (root) {
+    if (root === null) return;
+    dfs(root.left);
+    res.push(root.val);
+    dfs(root.right);
+  };
+  dfs(root);
+  return res;
+};
+
+//二叉树的后序遍历 左右中
+let postorderTraversal = function (root) {
+  let res = [];
+  const dfs = function (root) {
+    if (root === null) return;
+    dfs(root.left);
+    dfs(root.right);
+    res.push(root.val);
+  };
+  dfs(root);
+  return res;
+};

@@ -103,7 +103,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".js", ".tsx", ".ts"],
+    extensions: [".js", ".jsx", ".tsx", ".ts"],
     alias: {
       "@": SRC_PATH,
     },
