@@ -1,5 +1,6 @@
 // 求斐波那契数列（兔子数列） 1,1,2,3,5,8,13,21,34,55,89...中的第 n 项
 let count = 0;
+let count2 = 0;
 function fn(n) {
   let cache = {};
   function _fn(n) {
@@ -18,8 +19,6 @@ function fn(n) {
   }
   return _fn(n);
 }
-
-let count2 = 0;
 function fn2(n) {
   count2++;
   if (n == 1 || n == 2) {
