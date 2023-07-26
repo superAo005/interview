@@ -4,7 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 const { IS_DEVELOPMENT, SRC_PATH } = require("./utils/constants");
-
+const loadersPath = path.resolve(__dirname, "loaders");
+const importPlugin = path.join(__dirname, "plugins", "babel-plugin-import.js");
 module.exports = {
   // 入口文件
   entry: path.resolve(__dirname, "../src/index.tsx"),
@@ -45,6 +46,7 @@ module.exports = {
           {
             test: /\.(ts|tsx|js|jsx)$/,
             include: [SRC_PATH],
+            exclude: /node_modules/,
             enforce: "pre",
             // use: ["thread-loader", "babel-loader"],
             use: [
@@ -57,6 +59,7 @@ module.exports = {
                 loader: "babel-loader",
                 options: {
                   cacheDirectory: true, //启动babel缓存
+                  plugins: [[importPlugin, { libraryName: "lodash" }]],
                 },
               },
             ],
@@ -109,7 +112,10 @@ module.exports = {
     },
     modules: [path.resolve(__dirname, "../node_modules")],
   },
-
+  resolveLoader: {
+    //只对loader有用
+    modules: [loadersPath, "node_modules"],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../public/index.html"),

@@ -1,4 +1,4 @@
-import { setInitialProperties } from "../utils";
+import { setInitialProperties } from "../../utils";
 let style = { border: "1px solid red", color: "red", margin: "5px" };
 // 虚拟dom
 let A = {
@@ -18,7 +18,16 @@ const TAG_ROOT = "TAG_ROOT";
 const TAG_TEXT = "TAG_TEXT";
 const TAG_HOST = "TAG_HOST";
 const Placement = "Placement";
+// 创建根fiber节点
+let rootFiber = {
+  tag: TAG_ROOT,
+  key: "ROOT",
+  stateNode: document.getElementById("root"),
+  props: { children: [A] },
+};
 
+workInProgress = rootFiber;
+workLoop();
 function workLoop() {
   while (workInProgress) {
     workInProgress = performUnitOfWork(workInProgress);
@@ -42,20 +51,11 @@ function commitPlacement(currentFiber) {
   let parent = currentFiber.return.stateNode;
   parent.appendChild(currentFiber.stateNode);
 }
-// 创建根fiber节点
-let rootFiber = {
-  tag: TAG_ROOT,
-  key: "ROOT",
-  stateNode: document.getElementById("root"),
-  props: { children: [A] },
-};
 
-workInProgress = rootFiber;
-workLoop();
 /**
- * 
- * @param {*} fiber 
- * @returns 
+ *
+ * @param {*} fiber
+ * @returns
  */
 // 开始工作单元
 function performUnitOfWork(fiber) {
@@ -77,7 +77,7 @@ function performUnitOfWork(fiber) {
     // 如果没有父亲 全部结束了
   }
 }
-// fiber在结构的时候创建真实的dom 创建副作用域链 链表的合作过程 
+// fiber在结构的时候创建真实的dom 创建副作用域链 链表的合作过程
 // effect副作用表示对一个dom操作 dom更新插入 删除 没有变化的节点不会
 function completeUnitOfWork(workInProgress) {
   console.log("completeUnitOfWork", workInProgress.key);
