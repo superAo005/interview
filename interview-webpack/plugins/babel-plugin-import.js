@@ -21,5 +21,5 @@ const visitor = {
   },
 };
 module.exports = function (babel) {
-  return {visitor};
+  return { visitor };
 };

@@ -1,6 +1,7 @@
 /*
 1、babel编译
-当我们对代码进行编译的时候，babel会将我们在组件中编写的jsx代码转化为React.createElement的表达式，createElement方法有三个参数，分别为type(元素类型）、attributes(元素所有属性)、children(元素所有子节点)；
+当我们对代码进行编译的时候，babel会将我们在组件中编写的jsx代码转化为React.createElement的表达式，
+createElement方法有三个参数，分别为type(元素类型）、attributes(元素所有属性)、children(元素所有子节点)；
 2、生成element
 当render方法被触发以后，createElement方法会执行，返回一个element对象，这个对象描述了真实节点的信息，其实就是虚拟dom节点；
 3、生成真实节点(初次渲染)

@@ -5,6 +5,7 @@ const baseConfig = require("./webpack.base.js");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const { PUBLIC_PATH, DIST_PATH } = require("./utils/constants.js");
 
+
 // 合并公共配置，并添加开发环境配置
 module.exports = merge(baseConfig, {
   mode: "development", // 开发模式，不会压缩最终代码

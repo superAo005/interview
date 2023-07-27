@@ -16,7 +16,21 @@ const NODE_ENV = getEnv();
 const IS_PRODUCTION = NODE_ENV === "production";
 const IS_DEVELOPMENT = NODE_ENV === "development";
 //是否是开发环境
-
+// 修改之后
+const DEVTOOLS_MODES = [
+  "eval",
+  "source-map",
+  "eval-source-map",
+  "cheap-source-map",
+  "inline-source-map",
+  "eval-cheap-source-map",
+  "cheap-module-source-map",
+  "inline-cheap-source-map",
+  "eval-cheap-module-source-map",
+  "inline-cheap-module-source-map",
+  "hidden-source-map",
+  "nosources-source-map",
+];
 module.exports = {
   DIST_PATH,
   SRC_PATH,
@@ -24,4 +38,5 @@ module.exports = {
   ROOT_PATH,
   IS_PRODUCTION,
   IS_DEVELOPMENT,
+  DEVTOOLS_MODES,
 };
