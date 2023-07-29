@@ -13,6 +13,7 @@ const ZipPlugin = require("../plugins/zip-plugin.js");
 const { PUBLIC_PATH, DIST_PATH } = require("./utils/constants.js");
 const prodConfig = {
   mode: "production",
+  devtool: "cheap-module-source-map",
   // 告诉webpack这些包不用打包，直接在HTML中引入
   // externals: {
   //   jquery: "jQuery",

@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "@superao/server",
+  "version": "1.0.0",
+  "description": "upload-image server",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev nodemon bin/app.js",
+    "prd-dev": "cross-env NODE_ENV=prd_dev pm2 start bin/pm2.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/superAo005/upload-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.4",
+    "formidable": "^1.2.2",
+    "fs-extra": "^11.0.0",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
+    "koa2-cors": "^2.0.6",
+    "multiparty": "^4.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "pm2": "^5.3.0"
+  }
+}
