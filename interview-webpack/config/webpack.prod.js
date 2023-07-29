@@ -11,7 +11,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const globAll = require("glob-all");
 const ZipPlugin = require("../plugins/zip-plugin.js");
 const { PUBLIC_PATH, DIST_PATH } = require("./utils/constants.js");
-module.exports = merge(baseConfig, {
+const prodConfig = {
   mode: "production",
   // 告诉webpack这些包不用打包，直接在HTML中引入
   // externals: {
@@ -143,4 +143,5 @@ module.exports = merge(baseConfig, {
       },
     },
   },
-});
+};
+module.exports = merge(baseConfig, prodConfig);

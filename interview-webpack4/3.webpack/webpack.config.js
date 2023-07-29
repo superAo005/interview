@@ -1,5 +1,6 @@
 const path = require("path");
 const importPlugin = path.join(__dirname, "plugins", "babel-plugin-import.js");
+
 module.exports = {
   mode: "development", //开发模式
   devtool: false, //不生成 sourcemap
@@ -24,10 +25,6 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new zipPlugin({
-      filename: "assets.zip",
-    }),
-  ],
+  plugins: [],
   devServer: {},
 };

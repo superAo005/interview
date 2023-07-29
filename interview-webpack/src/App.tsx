@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import React,{ lazy, Suspense, useState } from "react";
 import { ConfigProvider } from "antd";
 // 引入语言包
 import zhCN from "antd/locale/zh_CN";

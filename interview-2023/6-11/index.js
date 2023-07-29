@@ -75,7 +75,6 @@ function formatArray(nums) {
 
   return result;
 }
-
 const nums = [1, 2, 3, 4, 5, 7, 8, 10, 12, 13, 14];
 const formattedArray = formatArray(nums);
 console.log(formattedArray);

@@ -2,10 +2,15 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// friendly-errors-webpack-plugin在webpack5版本的不兼容
+// const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+// 命令行提示优化插件
+const FriendlyErrorsWebpackPlugin = require("@soda/friendly-errors-webpack-plugin");
 const webpack = require("webpack");
 const { IS_DEVELOPMENT, SRC_PATH } = require("./utils/constants");
-const loadersPath = path.resolve(__dirname, "loaders");
-const importPlugin = path.join(__dirname, "plugins", "babel-plugin-import.js");
+const loadersPath = path.resolve(__dirname, "../loaders");
+
+// const importPlugin = path.join(__dirname, "../plugins", "babel-plugin-import.js");
 module.exports = {
   // 入口文件
   entry: path.resolve(__dirname, "../src/index.tsx"),
@@ -59,7 +64,17 @@ module.exports = {
                 loader: "babel-loader",
                 options: {
                   cacheDirectory: true, //启动babel缓存
-                  plugins: [[importPlugin, { libraryName: "lodash" }]],
+                  // plugins: [[importPlugin, { libraryName: "lodash" }]],
+                  presets: [
+                    [
+                      "@babel/preset-env",
+                      {
+                        useBuiltIns: "usage",
+                        corejs: { version: "3.29.0", proposals: true },
+                      },
+                    ],
+                    ["@babel/preset-react", { runtime: "automatic" }],
+                  ],
                 },
               },
             ],
@@ -121,9 +136,11 @@ module.exports = {
       template: path.resolve(__dirname, "../public/index.html"),
       inject: true,
     }),
+    // new webpack.IgnorePlugin(/^\.\/locale/, /moment$/),
     new webpack.DefinePlugin({
       "process.env.BASE_ENV": JSON.stringify(process.env.BASE_ENV),
     }),
+    new FriendlyErrorsWebpackPlugin(),
   ],
   // 开启webpack持久化存储缓存
   cache: {
