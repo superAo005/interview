@@ -67,5 +67,5 @@ export default thunk;
 
 ```
 
-jsx vdom 渲染 挂载 更新 调度
+jsx vdom 渲染 挂载 更新 调度 协调 渲染
 

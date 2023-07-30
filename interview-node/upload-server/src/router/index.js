@@ -4,8 +4,8 @@
  */
 
 const router = require('koa-router')()
-const saveFiles = require('./controller/save-file')
-const saveVideoFile = require('./controller/saveVideo-file')
+const saveFiles = require('../controller/save-file')
+const saveVideoFile = require('../controller/saveVideo-file')
 
 router.prefix('/api')
 
