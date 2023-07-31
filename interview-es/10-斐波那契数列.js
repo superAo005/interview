@@ -1,6 +1,7 @@
 // 求斐波那契数列（兔子数列） 1,1,2,3,5,8,13,21,34,55,89...中的第 n 项
 let count = 0;
 let count2 = 0;
+let count3 = 0;
 function fn(n) {
   let cache = {};
   function _fn(n) {
@@ -26,7 +27,7 @@ function fn2(n) {
   }
   return fn2(n - 1) + fn2(n - 2);
 }
-function fibonacci(n) {
+function fn3(n) {
   if (n <= 1) return n;
   let fib = [0, 1]; // 保存斐波那契数列的结果
   for (let i = 2; i <= n; i++) {
@@ -37,3 +38,4 @@ function fibonacci(n) {
 
 console.log(fn(20), count); // 6765 20
 console.log(fn2(20), count2); // 6765 13529
+console.log(fn3(20), count3);
