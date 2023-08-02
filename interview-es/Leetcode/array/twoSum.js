@@ -1,16 +1,17 @@
 let twoSum = (nums, targrt) => {
   const map = new Map();
+  let res = [];
   for (let i = 0; i < nums.length; i++) {
     const complement = targrt - nums[i];
     if (map.has(complement)) {
-      return [map.get(complement), i];
+      res.push([map.get(complement), i]);
     } else {
       map.set(nums[i], i);
     }
   }
-  return [];
+  return res;
 };
-
+console.log(twoSum([2, 7, 11, 15, 1, 8], 9));
 // 20 stack
 let isValid = (str) => {
   let map = new Map();
@@ -27,8 +28,8 @@ let isValid = (str) => {
       }
     }
   }
-  if(stack.length !== 0){
-      return false
+  if (stack.length !== 0) {
+    return false;
   }
-  return true
+  return true;
 };

@@ -148,7 +148,7 @@ export { clone };
 function deepClone(obj, map = new WeakMap()) {
   if (obj instanceof RegExp) return new RegExp(obj);
   if (obj instanceof Date) return new Date(obj);
-  if (obj == null || typeof obj != "object") return obj;
+  if (obj === null || typeof obj !== "object") return obj;
   if (map.has(obj)) {
     return map.get(obj);
   }
@@ -162,6 +162,8 @@ function deepClone(obj, map = new WeakMap()) {
   return t;
 }
 function deepCopy(obj, cache = new WeakMap()) {
+  if (obj instanceof RegExp) return new RegExp(obj);
+  if (obj instanceof Date) return new Date(obj);
   // 检查是否为基本数据类型，如果是，则直接返回
   if (obj === null || typeof obj !== "object") {
     return obj;

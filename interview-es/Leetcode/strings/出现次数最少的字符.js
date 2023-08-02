@@ -19,12 +19,23 @@ function removeLeastFrequentCharacters(str) {
 
   return result;
 }
-
+const removeLeastFrequentCharacters2 = (str) => {
+  let count = {};
+  let minCount = Infinity;
+  let result = "";
+  for (let char of str) {
+    count[char] = (count[char] || 0) + 1;
+    minCount = Math.min(minCount, count[char]);
+  }
+  
+  for (let char of str) {
+    if (count[char] !== minCount) {
+      result += char;
+    }
+  }
+  return result;
+};
 // 示例用法
-const str1 = "ababac";
-const result1 = removeLeastFrequentCharacters(str1);
-console.log(result1); // 输出: "ababa"
-
 const str2 = "aaabbbcceeff";
-const result2 = removeLeastFrequentCharacters(str2);
+const result2 = removeLeastFrequentCharacters2(str2);
 console.log(result2); // 输出: "aaabbb"

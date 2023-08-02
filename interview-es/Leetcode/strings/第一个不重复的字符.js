@@ -18,10 +18,6 @@ function findFirstUniqueCharacter(str) {
 }
 
 // 示例用法
-const str3 = "ababcbdsa";
-const result3 = findFirstUniqueCharacter(str3);
-console.log(result3); // 输出: "c"
-
 const str4 = "abcdefg";
 const result4 = findFirstUniqueCharacter(str4);
 console.log(result4); // 输出: "a"
