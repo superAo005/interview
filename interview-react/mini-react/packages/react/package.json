@@ -1,0 +1,32 @@
+{
+  "name": "react",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "superAo <810185149@qq.com>",
+  "homepage": "https://github.com/superAo005/interview-2023#readme",
+  "license": "ISC",
+  "main": "lib/react.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmmirror.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superAo005/interview-2023.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/react.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/superAo005/interview-2023/issues"
+  },
+  "dependencies": {
+    "object-assign": "^4.1.1"
+  }
+}

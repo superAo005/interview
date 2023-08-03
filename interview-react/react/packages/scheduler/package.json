@@ -1,29 +1,36 @@
 {
   "name": "scheduler",
-  "version": "0.0.0",
-  "description": "> TODO: description",
-  "author": "superAo <810185149@qq.com>",
-  "homepage": "https://github.com/superAo005/interview-2023#readme",
-  "license": "ISC",
-  "main": "lib/scheduler.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmmirror.com/"
-  },
+  "version": "0.23.0",
+  "description": "Cooperative scheduler for the browser environment.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/superAo005/interview-2023.git"
+    "url": "https://github.com/facebook/react.git",
+    "directory": "packages/scheduler"
   },
-  "scripts": {
-    "test": "node ./__tests__/scheduler.test.js"
-  },
+  "license": "MIT",
+  "keywords": [
+    "react"
+  ],
   "bugs": {
-    "url": "https://github.com/superAo005/interview-2023/issues"
+    "url": "https://github.com/facebook/react/issues"
+  },
+  "homepage": "https://reactjs.org/",
+  "dependencies": {
+    "loose-envify": "^1.1.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "index.native.js",
+    "unstable_mock.js",
+    "unstable_post_task.js",
+    "cjs/",
+    "umd/"
+  ],
+  "browserify": {
+    "transform": [
+      "loose-envify"
+    ]
   }
 }

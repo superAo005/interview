@@ -1,32 +1,48 @@
 {
   "name": "react",
-  "version": "0.0.0",
-  "description": "> TODO: description",
-  "author": "superAo <810185149@qq.com>",
-  "homepage": "https://github.com/superAo005/interview-2023#readme",
-  "license": "ISC",
-  "main": "lib/react.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
+  "description": "React is a JavaScript library for building user interfaces.",
+  "keywords": [
+    "react"
   ],
-  "publishConfig": {
-    "registry": "https://registry.npmmirror.com/"
+  "version": "18.2.0",
+  "homepage": "https://reactjs.org/",
+  "bugs": "https://github.com/facebook/react/issues",
+  "license": "MIT",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "cjs/",
+    "umd/",
+    "jsx-runtime.js",
+    "jsx-dev-runtime.js",
+    "react.shared-subset.js"
+  ],
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "react-server": "./react.shared-subset.js",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json",
+    "./jsx-runtime": "./jsx-runtime.js",
+    "./jsx-dev-runtime": "./jsx-dev-runtime.js",
+    "./src/*": "./src/*"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/superAo005/interview-2023.git"
+    "url": "https://github.com/facebook/react.git",
+    "directory": "packages/react"
   },
-  "scripts": {
-    "test": "node ./__tests__/react.test.js"
-  },
-  "bugs": {
-    "url": "https://github.com/superAo005/interview-2023/issues"
+  "engines": {
+    "node": ">=0.10.0"
   },
   "dependencies": {
-    "object-assign": "^4.1.1"
+    "loose-envify": "^1.1.0"
+  },
+  "browserify": {
+    "transform": [
+      "loose-envify"
+    ]
   }
 }
