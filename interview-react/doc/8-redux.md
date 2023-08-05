@@ -2,19 +2,23 @@
 
 store + action + reducer
 store 派发的 action 和 reducer 函数联系在一起的对象
-action 本质上就是一个简单的js对象，内部必须要有一个type的属性，用来表示将要执行的动作
+action 本质上就是一个简单的 js 对象，内部必须要有一个 type 的属性，用来表示将要执行的动作
 reducer reducer 是一个纯函数，它接受先前的 state，action，并且返回一个新的 state
-redux中的combineReducers redux给我们提供的一个函数，可以方便的让我们对多个reducer进行合并
+redux 中的 combineReducers redux 给我们提供的一个函数，可以方便的让我们对多个 reducer 进行合并
+
 ```js
 const store = createStore(reducer); // createStore方法是redux提供的
 store.getState(); //获取reducer中返回的state数据；
 store.subscribe(); //用来注册监听state是否改变；
 store.dispatch(); //用于发送action，来修改reducer中的state数据；
 ```
+
 ### react-redux
-配合react的绑定库，它有两个很重要的成员：Provider、connect 原理是react的Context
-Provider 为后代组件提供store
+
+配合 react 的绑定库，它有两个很重要的成员：Provider、connect 原理是 react 的 Context
+Provider 为后代组件提供 store
 connect 为组件提供数据和变更方法
+
 ### redux 中间件
 
 ```js

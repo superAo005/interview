@@ -20,19 +20,6 @@ Function.prototype.reduce = function reduce(arr, cb, initialValue) {
   }
   return num;
 };
-// 实现reduce
-Array.prototype.myreduce = function (fn, initVal) {
-  let result = initVal,
-    i = 0;
-  if (typeof initVal === "undefined") {
-    result = this[i];
-    i++;
-  }
-  while (i < this.length) {
-    result = fn(result, this[i]);
-  }
-  return result;
-};
 //实现Object.create方法
 function create(proto) {
   function Fn() {}

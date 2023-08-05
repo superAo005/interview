@@ -1,7 +1,10 @@
+/**
+ * webpack5 开箱即用的持久缓存是比 dll 更优的解决方案 
+ * 不用再配置 dll 了，开启webpack持久化存储缓存
+ */
 const path = require("path");
 const DllPlugin = require("webpack/lib/DllPlugin");
-// webpack5 开箱即用的持久缓存是比 dll 更优的解决方案
-// 不用再配置 dll 了，开启webpack持久化存储缓存
+
 module.exports = {
   mode: "development",
   entry: {
