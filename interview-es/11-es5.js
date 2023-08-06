@@ -42,3 +42,16 @@ function _new(constructor, ...args) {
   }
   return obj;
 }
+// 手写 instanceof
+function myInstanceOf(object, constructor) {
+  // Object.prototype.__proto__属性来访问一个对象的原型
+  let prototype = Object.getPrototypeOf(object);
+  while (prototype !== null) {
+    if (prototype === constructor.prototype) {
+      return true;
+    }
+    prototype = Object.getPrototypeOf(prototype);
+  }
+  return false;
+}
+
