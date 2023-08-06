@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="main" id="container"></div>
+    <script>
+      let total = 1000;
+      // let time = Date.now()
+      let index = 0;
+      let id = 0;
+      let container = document.getElementById("container");
+      function load() {
+        index += 20;
+        if (index < total) {
+          let fragement = document.createDocumentFragment();
+          requestAnimationFrame(() => {
+            for (let i = 0; i < 20; i++) {
+              let li = document.createElement("li");
+              li.innerHTML = id++;
+              fragement.appendChild(li);
+            }
+            container.appendChild(fragement);
+            load();
+          });
+          // setTimeout(() => {
+          //   for (let i = 0; i < 20; i++) {
+          //     let li = document.createElement('li')
+          //     li.innerHTML = i
+          //     container.appendChild(li)
+          //   }
+          //   load()
+          // }, 0);
+        }
+      }
+      load();
+    </script>
+  </body>
+</html>

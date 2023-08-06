@@ -9,7 +9,9 @@ const TerserPlugin = require("terser-webpack-plugin");
 const PurgeCSSPlugin = require("purgecss-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const globAll = require("glob-all");
-const ZipPlugin = require("../plugins/zip-plugin.js");
+const ZipPlugin = require("../plugins/zip-plugin");
+const WebpackArchivePlugin = require("../plugins/webpack-archive-plugin");
+const AutoExternalPlugin = require("../plugins/AutoExternalPlugin");
 const { PUBLIC_PATH, DIST_PATH } = require("./utils/constants.js");
 const prodConfig = {
   mode: "production",
@@ -24,6 +26,18 @@ const prodConfig = {
   //   axios: "axios",
   // },
   plugins: [
+    new AutoExternalPlugin({
+      jquery: {
+        //自动把jquery模块变成一个外部依赖模块
+        variable: "jQuery", //不再打包，而是从window.jQuery变量上获取jquery对象
+        url: "https://cdn.bootcss.com/jquery/3.1.0/jquery.js", //CDN脚本
+      },
+      lodash: {
+        //自动把jquery模块变成一个外部依赖模块
+        variable: "_", //不再打包，而是从window.jQuery变量上获取jquery对象
+        url: "https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js", //CDN脚本
+      },
+    }),
     // 复制文件插件
     new CopyPlugin({
       patterns: [
@@ -58,8 +72,11 @@ const prodConfig = {
       threshold: 10240, // 只有大小大于该值的资源会被处理。默认值是 10k
       minRatio: 0.8, // 压缩率,默认值是 0.8
     }),
-    new ZipPlugin({
-      filename: "assets.zip",
+    // new ZipPlugin({
+    //   filename: "assets.zip",
+    // }),
+    new WebpackArchivePlugin({
+      filename: "[timestamp].zip",
     }),
   ],
   // 优化配置

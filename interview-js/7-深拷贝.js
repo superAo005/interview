@@ -145,22 +145,6 @@ function clone(target, map = new WeakMap()) {
 export { clone };
 
 // 面试版 深拷贝
-function deepClone(obj, map = new WeakMap()) {
-  if (obj instanceof RegExp) return new RegExp(obj);
-  if (obj instanceof Date) return new Date(obj);
-  if (obj === null || typeof obj !== "object") return obj;
-  if (map.has(obj)) {
-    return map.get(obj);
-  }
-  let t = new obj.constructor();
-  map.set(obj, t);
-  for (let key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      t[key] = deepClone(obj[key], map);
-    }
-  }
-  return t;
-}
 function deepCopy(obj, cache = new WeakMap()) {
   if (obj instanceof RegExp) return new RegExp(obj);
   if (obj instanceof Date) return new Date(obj);
@@ -174,6 +158,7 @@ function deepCopy(obj, cache = new WeakMap()) {
   }
   // 创建新的对象或数组
   const copy = Array.isArray(obj) ? [] : {};
+  // let t = new obj.constructor();
   // 将新对象添加到缓存中
   cache.set(obj, copy);
   // 遍历原对象的属性

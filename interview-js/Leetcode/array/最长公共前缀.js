@@ -14,11 +14,31 @@ function getCommonPrefix(arr) {
 
   return prefix;
 }
+function longestCommonPrefix(strs) {
+  if (strs.length === 0) {
+    return "";
+  }
+  // 先赋初始值，后续不断缩小
+  let prefix = strs[0];
+  for (let i = 0; i < strs.length; i++) {
+    // 对于单层的字符串，不断缩小公共前缀
+    // 注意此时要求的.indexOf()不为0，意思就是直到匹配到
+    while (strs[i].indexOf(prefix) !== 0) {
+      // 缩短字符串,不断缩短
+      prefix = prefix.slice(0, prefix.length - 1);
+      if (prefix === "") {
+        return "";
+      }
+    }
+  }
+  return prefix;
+}
+
 /**
  * @param {string[]} strs
  * @return {string}
  */
-let longestCommonPrefix = function (strs) {
+let longestCommonPrefix2 = function (strs) {
   if (strs.length === 0) return "";
   let curr = strs[0];
   for (let str of strs) {
@@ -42,7 +62,7 @@ let longestCommonPrefix = function (strs) {
  * @param {string[]} strs
  * @return {string}
  */
-let longestCommonPrefix2 = function (strs) {
+let longestCommonPrefix3 = function (strs) {
   if (strs.length === 0) return "";
   let res = strs.reduce((x, y) => {
     let temp = "";
@@ -61,7 +81,7 @@ let longestCommonPrefix2 = function (strs) {
   });
   return res;
 };
-let longestCommonPrefix3 = function (arr) {
+let longestCommonPrefix4 = function (arr) {
   if (arr.length) {
     //判断数组是否为空
     let res = ""; //记录公共前缀

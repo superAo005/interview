@@ -1,3 +1,8 @@
+/**
+ * boolean、string、number、bigint、undefined、symbol、null
+ * typeof能识别所有的值类型，识别函数，能区分是否是引用类型。
+ */
+
 Function.prototype.forEach = function forEach(cb, context = window) {
   let self = this;
   let len = self.length;
@@ -43,6 +48,7 @@ function _new(constructor, ...args) {
   return obj;
 }
 // 手写 instanceof
+//instanceof用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上。
 function myInstanceOf(object, constructor) {
   // Object.prototype.__proto__属性来访问一个对象的原型
   let prototype = Object.getPrototypeOf(object);
