@@ -3,6 +3,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 /**
  * 1.需要向输出html文件中添加CDN脚本引用
  * 2.在打包生产模块的时候，截断正常的打包逻辑，变成外部依赖模块
+ * 实现思路
+ * 找到项目中所有依赖模块 看看那些在AutoExternalPlugin配置
+ * 如果用到了才需要处理为外部依赖 如果没有用过就不需要任何处理
+ * import 'loadsh' import 'jquery'
+ * 所以要找的项目的import和require语句 或者节点
+ * compiler->normalModuleFactory->parse->import/require
  */
 class AutoExternalPlugin {
   constructor(options) {

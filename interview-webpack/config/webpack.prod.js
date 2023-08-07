@@ -160,6 +160,12 @@ const prodConfig = {
         },
       },
     },
+    runtimeChunk: {
+      //运行时代码要单独分割
+      name: (entrypoint) => `runtime-${entrypoint.name}`,
+    },
+    // moduleIds: isEnvProduction ? "deterministic" : "named",
+    // chunkIds: isEnvProduction ? "deterministic" : "named",
   },
 };
 module.exports = merge(baseConfig, prodConfig);
