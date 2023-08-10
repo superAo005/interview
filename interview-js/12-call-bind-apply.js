@@ -49,3 +49,56 @@ Function.prototype.apply = function (context = window, args = []) {
   // 返回res
   return res;
 };
+// 实现call
+Function.prototype.mycall = function () {
+  let [thisArg, ...args] = [...arguments];
+  thisArg = Object(thisArg) || window;
+  let fn = Symbol();
+  thisArg[fn] = this;
+  let result = thisArg[fn](...args);
+  delete thisArg[fn];
+  return result;
+};
+// 实现apply
+Function.prototype.myapply = function () {
+  let [thisArg, args] = [...arguments];
+  thisArg = Object(thisArg);
+  let fn = Symbol();
+  thisArg[fn] = this;
+  let result = thisArg[fn](...args);
+  delete thisArg.fn;
+  return result;
+};
+
+////测试用例
+let cc = {
+  a: 1,
+};
+
+function demo(x1, x2) {
+  console.log(typeof this, this.a, this);
+  console.log(x1, x2);
+}
+demo.apply(cc, [2, 3]);
+demo.myapply(cc, [2, 3]);
+demo.call(cc, 33, 44);
+demo.mycall(cc, 33, 44);
+// 实现bind
+Function.prototype.mybind = function (context, ...args) {
+  return (...newArgs) => {
+    return this.call(context, ...args, ...newArgs);
+  };
+};
+
+// 测试用例
+let cc1 = {
+  name: "TianTian",
+};
+function say(something, other) {
+  console.log(`I want to tell ${this.name} ${something}`);
+  console.log("This is some" + other);
+}
+let tmp = say.mybind(cc1, "happy", "you are kute");
+let tmp1 = say.bind(cc1, "happy", "you are kute");
+tmp();
+tmp1();

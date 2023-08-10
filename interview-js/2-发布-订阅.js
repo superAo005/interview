@@ -36,42 +36,99 @@ class EventBus {
 }
 class EventEmitter {
   constructor() {
-    this.events = {}; // 用于存储事件及其对应的回调函数列表
+    // 存储事件及其对应的回调函数
+    this.events = new Map();
   }
 
-  // 订阅事件
-  on(eventName, callback) {
-    this.events[eventName] = this.events[eventName] || []; // 如果事件不存在，创建一个空的回调函数列表
-    this.events[eventName].push(callback); // 将回调函数添加到事件的回调函数列表中
-  }
+  // 绑定事件和回调函数
+  on(event, callback) {
+    // 获取事件的回调函数列表
+    let callbacks = this.events.get(event);
 
-  // 发布事件
-  emit(eventName, data) {
-    if (this.events[eventName]) {
-      this.events[eventName].forEach((callback) => {
-        callback(data); // 执行回调函数，并传递数据作为参数
-      });
+    // 如果回调函数列表不存在，则创建一个新的回调函数列表
+    if (!callbacks) {
+      callbacks = [];
+      this.events.set(event, callbacks);
     }
+
+    // 将回调函数添加到回调函数列表中
+    callbacks.push(callback);
   }
 
-  // 取消订阅事件
-  off(eventName, callback) {
-    if (this.events[eventName]) {
-      this.events[eventName] = this.events[eventName].filter(
-        (cb) => cb !== callback
-      ); // 过滤掉要取消的回调函数
+  // 触发事件，执行回调函数
+  emit(event, ...args) {
+    // 获取事件的回调函数列表
+    const callbacks = this.events.get(event);
+
+    // 如果回调函数列表不存在，则不执行任何操作
+    if (!callbacks) {
+      return;
     }
+
+    // 执行回调函数列表中的所有回调函数，并传入参数
+    callbacks.forEach((callback) => {
+      callback.apply(this, args);
+    });
   }
 
-  // 添加一次性的事件监听器
-  once(eventName, callback) {
-    const onceCallback = (data) => {
-      callback(data); // 执行回调函数
-      this.off(eventName, onceCallback); // 在执行后取消订阅该事件
+  // 绑定事件和回调函数，只执行一次
+  once(event, callback) {
+    // 定义一个新的回调函数，它会在执行一次后被自动移除
+    const wrapper = (...args) => {
+      callback.apply(this, args);
+      this.off(event, wrapper);
     };
-    this.on(eventName, onceCallback);
+
+    // 将新的回调函数添加到回调函数列表中，并且确保不会重复执行
+    this.on(event, wrapper);
+  }
+
+  // 移除事件的所有回调函数，或指定的回调函数
+  off(event, callback) {
+    // 获取事件的回调函数列表
+    const callbacks = this.events.get(event);
+
+    // 如果回调函数列表不存在，则不执行任何操作
+    if (!callbacks) {
+      return;
+    }
+
+    // 如果没有指定回调函数，则移除事件的所有回调函数
+    if (!callback) {
+      this.events.delete(event);
+      return;
+    }
+
+    // 移除指定的回调函数
+    const index = callbacks.indexOf(callback);
+    if (index !== -1) {
+      callbacks.splice(index, 1);
+    }
   }
 }
+
+// 使用如下
+const event = new EventEmitter();
+
+const handle = (...rest) => {
+  console.log(rest);
+};
+
+event.on("click", handle);
+
+event.emit("click", 1, 2, 3, 4);
+
+event.off("click", handle);
+
+event.emit("click", 1, 2);
+
+event.once("dbClick", () => {
+  console.log(123456);
+});
+event.emit("dbClick");
+event.emit("dbClick");
+
+
 
 // 测试用例
 // 创建全局事件总线对象

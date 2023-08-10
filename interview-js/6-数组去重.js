@@ -94,3 +94,38 @@ function distinct(arr) {
 console.time("运行时间");
 distinct(arr1);
 console.timeEnd("运行时间"); // 运行时间: 35.403076171875 ms
+// 使用Set
+let unique_1 = (arr) => [...new Set(arr)];
+
+// 使用filter
+function unique_2(array) {
+  let res = array.filter(function (item, index, array) {
+    return array.indexOf(item) === index;
+  });
+  return res;
+}
+
+//Object 键值对
+
+function unique_3(array) {
+  let obj = {};
+  return array.filter(function (item, index, array) {
+    return obj.hasOwnProperty(typeof item + item)
+      ? false
+      : (obj[typeof item + item] = true);
+  });
+}
+
+// 使用Map
+
+function unique_4(arr) {
+  const tmp = new Map();
+  return arr.filter((item) => {
+    return !tmp.has(item) && tmp.set(item, 1);
+  });
+}
+
+// 使用reduce
+
+let unique_5 = (arr) =>
+  arr.reduce((pre, cur) => (pre.includes(cur) ? pre : [...pre, cur]), []);
