@@ -1,3 +1,16 @@
+/**
+ * 用interface描述**数据结构**，用type描述**类型关系**
+ * 相同点
+ * 1.都可以描述一个对象或者函数
+ * 2. 都允许拓展（extends）但是两者语法不同
+ * 不同点
+ * type 可以而 interface 不行
+ * 1.type 可以声明基本类型别名，联合类型，元组等类型
+ * 2. type 语句中还可以使用 typeof 获取实例的 类型进行赋值
+ * interface 可以而 type 不行
+ * 1 interface 能够声明合并
+ * 2 interface 可以被 implements
+ */
 interface Ischool {
   readonly name: String;
   age: Number;

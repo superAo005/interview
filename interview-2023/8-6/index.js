@@ -91,7 +91,7 @@ function factorial(n) {
   return n * factorial(n - 1);
 }
 
-factorial(5) // O(n)
+factorial(5); // O(n)
 
 // 尾递归优化
 function factorial(n, total) {
@@ -99,26 +99,27 @@ function factorial(n, total) {
   return factorial(n - 1, n * total);
 }
 
-factorial(5, 1) // O(1)
+factorial(5, 1); // O(1)
 
 // 斐波那契数列
 // 递归
-function fn(n){
-  if(n <= 1) return n;
+function fn(n) {
+  if (n <= 1) return n;
   return fn(n - 1) + fn(n - 2);
 }
 // 尾递归优化
 function fn(n, start = 1, total = 1) {
-  if(n <= 2) return total;
+  if (n <= 2) return total;
   return fn(n - 1, total, total + start);
 }
 // 迭代
-function fn(n){
-  if(n === 0) return 0;
-  if(n === 1) return 1;
+function fn(n) {
+  if (n === 0) return 0;
+  if (n === 1) return 1;
 
-  let prev = 0,curr = 0;
-  for(let i = 2; i < n; i++){
+  let prev = 0,
+    curr = 0;
+  for (let i = 2; i < n; i++) {
     let next = prev + curr;
     prev = curr;
     curr = next;
@@ -127,27 +128,26 @@ function fn(n){
 }
 // 数组扁平化,尾递归优化
 function flatten(arr = [], res = []) {
-  arr.forEach((v)=>{
-    if(Array.isArray(v)){
+  arr.forEach((v) => {
+    if (Array.isArray(v)) {
       res = [...res, ...flatten(v, [])];
-    }else{
-      res.push(v)
+    } else {
+      res.push(v);
     }
-  })
+  });
   return res;
 }
 // 将一个对象的所有属性改为小写
-function converKeysToLowerCase(obj){
+function converKeysToLowerCase(obj) {
   // 创建新对象来存放
   const newObj = {};
   // Object.keys(obj)拿到的是属性组成的数组，便于遍历
-  Object.keys(obj).forEach((key)=>{
+  Object.keys(obj).forEach((key) => {
     const value = obj[key];
     const newKey = key.toLowerCase();
-    const newValue = typeof value === 'object' ? converKeysToLowerCase(value) : value;
+    const newValue =
+      typeof value === "object" ? converKeysToLowerCase(value) : value;
     newObj[newKey] = newValue;
-  })
+  });
   return newObj;
 }
-
-
