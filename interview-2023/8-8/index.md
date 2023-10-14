@@ -24,6 +24,14 @@ serviceworker
 - 白屏 首屏 MutationObserver
   - body
   - 稳定 层级稳定
+## babel
+ - AST
+ - type
+
+## 自定义错误监控
+ - 采集
+   - onerror
+   - 框架自带错误回调
 # 哈啰
 两个大整数相加
 sleep函数

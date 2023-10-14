@@ -6,3 +6,5 @@
 ⾮对称加密使⽤两个密钥：公钥和私钥，公钥可以任意分发⽽私钥保密，解决了密钥交换问题但速度慢
 
 参考链接：[https](https://blog.csdn.net/weixin_60297362/article/details/122980906)
+
+## http2
