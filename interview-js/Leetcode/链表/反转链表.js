@@ -29,7 +29,7 @@ function printListFromTailToHead(head) {
   }
   return arr.reverse();
 }
-let reverseList = (head) => {
+const reverseList = (head) => {
   let prev = null,
     curr = head;
   while (curr) {
@@ -62,6 +62,5 @@ const reverseList3 = (head) => {
   head.next.next = head;
   head.next = null;
   return reverseHead;
-}
+};
 console.log(reverseList(head));
-

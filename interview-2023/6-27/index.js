@@ -84,6 +84,7 @@ Promise.myAll([p3, p1, 3, 4]).then(
     console.log(err);
   }
 );
+// promise
 async function async1() {
   console.log("async1 start"); //2
   await async2();
