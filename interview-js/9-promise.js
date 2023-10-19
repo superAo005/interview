@@ -273,6 +273,37 @@ Promise.myrace = function (arr) {
     }
   });
 };
+// Promise allSetted
+Promise.mySettled = function (arr) {
+  return new Promise((resolve, reject) => {
+    let res = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] instanceof Promise) {
+        arr[i].then(
+          (data) => {
+            res[i] = {
+              status: "fulfiled",
+              value: data,
+            };
+          },
+          (err) => {
+            res[i] = {
+              status: "rejected",
+              reason: err,
+            };
+          }
+        );
+      } else {
+        res[i] = {
+          status: "fulfiled",
+          value: arr[i],
+        };
+      }
+    }
+    resolve(res);
+  });
+};
+
 
 // 测试用例
 let p1 = new Promise((resolve, reject) => {
@@ -308,34 +339,21 @@ Promise.myrace([p1, p2, p3]).then(
     console.log("失败跑的最快");
   }
 );
+const pro = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject(3);
+  }, 1000);
+});
 
-// Promise allSetted
-Promise.mySettled = function (arr) {
-  return new Promise((resolve, reject) => {
-    let res = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] instanceof Promise) {
-        arr[i].then(
-          (data) => {
-            res[i] = {
-              status: "fulfiled",
-              value: data,
-            };
-          },
-          (err) => {
-            res[i] = {
-              status: "rejected",
-              reason: err,
-            };
-          }
-        );
-      } else {
-        res[i] = {
-          status: "fulfiled",
-          value: arr[i],
-        };
-      }
-    }
-    resolve(res);
-  });
-};
+Promise.allSettled([pro, Promise.resolve(1), Promise.reject(2)]).then(
+  (data) => {
+    console.log(data);
+  }
+);
+
+Promise.myAllSettled([pro, Promise.resolve(1), Promise.reject(2)]).then(
+  (data) => {
+    console.log(data);
+  }
+);
+

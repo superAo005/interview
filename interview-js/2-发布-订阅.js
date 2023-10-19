@@ -44,7 +44,6 @@ class EventEmitter {
   on(event, callback) {
     // 获取事件的回调函数列表
     let callbacks = this.events.get(event);
-
     // 如果回调函数列表不存在，则创建一个新的回调函数列表
     if (!callbacks) {
       callbacks = [];
@@ -59,12 +58,10 @@ class EventEmitter {
   emit(event, ...args) {
     // 获取事件的回调函数列表
     const callbacks = this.events.get(event);
-
     // 如果回调函数列表不存在，则不执行任何操作
     if (!callbacks) {
       return;
     }
-
     // 执行回调函数列表中的所有回调函数，并传入参数
     callbacks.forEach((callback) => {
       callback.apply(this, args);
@@ -78,7 +75,6 @@ class EventEmitter {
       callback.apply(this, args);
       this.off(event, wrapper);
     };
-
     // 将新的回调函数添加到回调函数列表中，并且确保不会重复执行
     this.on(event, wrapper);
   }
@@ -108,25 +104,25 @@ class EventEmitter {
 }
 
 // 使用如下
-const event = new EventEmitter();
+const events = new EventEmitter();
 
 const handle = (...rest) => {
   console.log(rest);
 };
 
-event.on("click", handle);
+events.on("click", handle);
 
-event.emit("click", 1, 2, 3, 4);
+events.emit("click", 1, 2, 3, 4);
 
-event.off("click", handle);
+events.off("click", handle);
 
-event.emit("click", 1, 2);
+events.emit("click", 1, 2);
 
-event.once("dbClick", () => {
+events.once("dbClick", () => {
   console.log(123456);
 });
-event.emit("dbClick");
-event.emit("dbClick");
+events.emit("dbClick");
+events.emit("dbClick");
 
 
 
