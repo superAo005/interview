@@ -1,5 +1,6 @@
 // 1数组扁平化
 let arr = [[1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10];
+
 //  let arr2 = arr.flat(Infinity);
 // arr
 //   .toString()
@@ -9,6 +10,7 @@ let arr = [[1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14]]]], 10];
 // while (arr.some((item) => Array.isArray(item))) {
 //   arr = [].concat(...arr);
 // }
+
 const flat = (arr) => {
   return arr.reduce((pre, cur) => {
     return pre.concat(Array.isArray(cur) ? flat(cur) : cur);

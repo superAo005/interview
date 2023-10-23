@@ -17,16 +17,17 @@ function _runTask(task, cb) {
  */
 function runTask(task) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      task();
-      resolve();
-    }, 0);
+    //   setTimeout(() => {
+    //     task();
+    //     resolve();
+    //   }, 0);
+    _runTask(task, resolve);
   });
 }
-for (;;) {
+// for (;;) {
   // 取出宏任务
   // 执行宏任务
   // if(渲染时机是否达到){
   //  渲染
   // }
-}
+// }
