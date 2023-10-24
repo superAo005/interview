@@ -1,32 +1,16 @@
-function _runTask(task, cb) {
-  requestIdleCallback((idle) => {
-    if (idle.timeRemaining() > 0) {
-      task();
-      cb();
+function run(str) {
+  let count = 0;
+  let res = "";
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === str[i + 1]) {
+      count++;
     } else {
-      _runTask(task, cb);
+      res += str[i] + (count > 1 ? count : "");
+      count = 1;
     }
-  });
+  }
+  return res;
 }
-/**
- * 运行一个耗时任务
- * 如果要异步执行任务 返回promise
- * 尽快完成任务 同时ui页面不卡顿
- * @param {*} task
- * @returns
- */
-function runTask(task) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      task();
-      resolve();
-    }, 0);
-  });
-}
-for (;;) {
-  // 取出宏任务
-  // 执行宏任务
-  // if(渲染时机是否达到){
-  //  渲染
-  // }
-}
+const input = "aabcccccaaad";
+const compressedString = run(input);
+console.log(compressedString);

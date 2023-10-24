@@ -75,8 +75,6 @@ const obj = {
   },
 };
 obj.getName();
-let obj1 = obj.getName
-obj1();
 function sync() {
   console.log("sync end"); // 2
 }
