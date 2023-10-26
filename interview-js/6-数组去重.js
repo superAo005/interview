@@ -42,10 +42,6 @@ function unique2(arr) {
 }
 // 利用indexOf去重
 function unique3(arr) {
-  if (!Array.isArray(arr)) {
-    console.log("type error!");
-    return;
-  }
   let array = [];
   for (let i = 0; i < arr.length; i++) {
     if (array.indexOf(arr[i]) === -1) {
@@ -56,10 +52,6 @@ function unique3(arr) {
 }
 // 利用sort()排序方法，然后根据排序后的结果进行遍历及相邻元素比对。
 function unique4(arr) {
-  if (!Array.isArray(arr)) {
-    console.log("type error!");
-    return;
-  }
   arr = arr.sort();
   let arrry = [arr[0]];
   for (let i = 1; i < arr.length; i++) {
@@ -77,8 +69,8 @@ for (let i = 0; i < 1000000; i++) {
 /**
  * 利用for循环和对象的 key 唯一
  * 时间复杂度是O(n)
- * @param {*} arr 
- * @returns 
+ * @param {*} arr
+ * @returns
  */
 function distinct(arr) {
   let result = [];
@@ -106,7 +98,6 @@ function unique_2(array) {
 }
 
 //Object 键值对
-
 function unique_3(array) {
   let obj = {};
   return array.filter(function (item, index, array) {
@@ -117,7 +108,6 @@ function unique_3(array) {
 }
 
 // 使用Map
-
 function unique_4(arr) {
   const tmp = new Map();
   return arr.filter((item) => {

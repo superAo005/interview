@@ -7,9 +7,14 @@
 3. 使用 Promise.allSettled 无论成功还是失败，都会执行
 
 ## vue nextTick
-
-1.nextTick 是异步的，在下次 DOM 更新循环结束之后执行延迟回调 2.在修改数据之后立即使用这个方法，获取更新后的 DOM
-
+nextTick 可以让我们在下次 DOM 更新循环结束之后执行延迟回调，用于获得更新后的 DOM
+1.nextTick 是异步的，在下次 DOM 更新循环结束之后执行延迟回调 
+2.在修改数据之后立即使用这个方法，获取更新后的 DOM
+nextTick主要使用了宏任务和微任务。根据执行环境分别尝试采用
+Promise
+MutationObserver
+setImmediate
+如果以上都不行则采用setTimeout
 ## 如何实现判断一个元素是否在可视区中
 
 1.window.innerHeight 是浏览器可视区的高度；

@@ -3,16 +3,20 @@ const path = require("path");
 const { merge } = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const CopyPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const PurgeCSSPlugin = require("purgecss-webpack-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //抽离css插件
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin"); //压缩css
+const TerserPlugin = require("terser-webpack-plugin"); //压缩js
+const PurgeCSSPlugin = require("purgecss-webpack-plugin"); //去除没用到的css插件
+const CompressionPlugin = require("compression-webpack-plugin"); //打包生成gzip插件
 const globAll = require("glob-all");
+//自定义插件
 const ZipPlugin = require("../plugins/zip-plugin");
 const WebpackArchivePlugin = require("../plugins/webpack-archive-plugin");
 const AutoExternalPlugin = require("../plugins/AutoExternalPlugin");
+//自定义插件 --end
 const { PUBLIC_PATH, DIST_PATH } = require("./utils/constants.js");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin"); //速度分析插件
+const smp = new SpeedMeasurePlugin();
 const prodConfig = {
   mode: "production",
   devtool: "cheap-module-source-map",
@@ -168,4 +172,5 @@ const prodConfig = {
     // chunkIds: isEnvProduction ? "deterministic" : "named",
   },
 };
+// module.exports = smp.wrap(merge(baseConfig, prodConfig));
 module.exports = merge(baseConfig, prodConfig);

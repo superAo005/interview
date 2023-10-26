@@ -34,6 +34,25 @@ class EventBus {
     }
   }
 }
+// 测试用例
+// 创建全局事件总线对象
+const eventBus = new EventBus();
+const callback1 = (data) => {
+  console.log("Callback 1:", data);
+};
+const callback2 = (data) => {
+  console.log("Callback 2:", data);
+};
+// 订阅事件
+eventBus.subscribe("event1", callback1);
+eventBus.subscribe("event1", callback2);
+// 发布事件
+eventBus.publish("event1", "Hello, world!");
+// 取消订阅事件
+eventBus.unsubscribe("event1", callback1);
+// 发布事件
+eventBus.publish("event1", "Goodbye!");
+
 class EventEmitter {
   constructor() {
     // 存储事件及其对应的回调函数
@@ -123,28 +142,6 @@ events.once("dbClick", () => {
 });
 events.emit("dbClick");
 events.emit("dbClick");
-
-
-
-// 测试用例
-// 创建全局事件总线对象
-const eventBus = new EventBus();
-const callback1 = (data) => {
-  console.log("Callback 1:", data);
-};
-const callback2 = (data) => {
-  console.log("Callback 2:", data);
-};
-// 订阅事件
-eventBus.subscribe("event1", callback1);
-eventBus.subscribe("event1", callback2);
-// 发布事件
-eventBus.publish("event1", "Hello, world!");
-// 取消订阅事件
-eventBus.unsubscribe("event1", callback1);
-
-// 发布事件
-eventBus.publish("event1", "Goodbye!");
 
 /**
  * 被观察的目标，即发布者：Dep
