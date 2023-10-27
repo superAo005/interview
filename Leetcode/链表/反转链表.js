@@ -30,17 +30,6 @@ function printListFromTailToHead(head) {
   return arr.reverse();
 }
 const reverseList = (head) => {
-  let prev = null,
-    curr = head;
-  while (curr) {
-    const next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-  }
-  return prev;
-};
-const reverseList2 = (head) => {
   let cur = head; // 正向链表的头指针
   let pre = null; // 反向链表的头指针
   while (cur) {
@@ -50,17 +39,5 @@ const reverseList2 = (head) => {
     cur = temp; // 将正向链表头指针替换为暂存的节点，正向链表处理完成，开始下一轮处理
   }
   return pre;
-};
-const reverseList3 = (head) => {
-  // 判断当前节点是否还需要处理
-  if (head == null || head.next == null) {
-    return head;
-  }
-  // 递归处理后续节点
-  const reverseHead = reverseList(head.next);
-  // 局部反转节点
-  head.next.next = head;
-  head.next = null;
-  return reverseHead;
 };
 console.log(reverseList(head));
