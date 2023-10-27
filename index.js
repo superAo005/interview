@@ -67,21 +67,3 @@ const filteredTreeData = filterTree(
   treeData,
   (node) => node.id === "1" || node.id === "5" || node.id === "55"
 );
-
-// 辅助函数：查找父节点
-function findParentNode(tree, nodeId) {
-  for (let i = 0; i < tree.length; i++) {
-    const children = tree[i]?.children || [];
-    for (let j = 0; j < children.length; j++) {
-      if (children[j].id === nodeId) {
-        return tree[i];
-      }
-      const found = findParentNode(children[j].children, nodeId);
-      if (found) {
-        return found;
-      }
-    }
-  }
-  return null;
-}
-console.log(findParentNode(treeData, "55"));
