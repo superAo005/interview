@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>documentFragment</title>
+  </head>
+  <body>
+    <script>
+      // documentFragment (文档碎片)是什么？用它跟直接操作 DOM 的区别是什么
+      // 当我们把一个 DocumentFragment 节点插入文档树时，插入的不是 DocumentFragment 自身，而是它的所有子孙节点。
+      // 在频繁的DOM操作时，我们就可以将DOM元素插入DocumentFragment，之后一次性的将所有的子孙节点插入文档中。
+      // DocumentFragment不是真实 DOM 树的一部分，它的变化不会触发 DOM 树的重新渲染，这样就大大提高了页面的性能。
+
+      console.time("耗时");
+      for (let i = 1; i <= 1000; i++) {
+        document.body.innerHTML = document.body.innerHTML + `<div>${i}</div>`;
+      }
+      console.timeEnd("耗时"); // 1586.053955078125 ms */
+
+      console.time("耗时");
+      let str = "";
+      for (let i = 1; i <= 1000; i++) {
+        str += `<div>${i}</div>`;
+      }
+      document.body.innerHTML = str;
+      console.timeEnd("耗时"); // 2.5810546875 ms */
+
+      console.time("耗时");
+      const arr = [];
+      for (let i = 1; i <= 1000; i++) {
+        arr.push(`<div>${i}</div>`);
+      }
+      document.body.innerHTML = arr.join("");
+      console.timeEnd("耗时"); // 2.883056640625 ms */
+
+      console.time("耗时");
+      for (let i = 1; i <= 1000; i++) {
+        const oDiv = document.createElement("div");
+        // 更灵活
+        oDiv.innerHTML = i;
+        oDiv.onclick = function () {};
+        oDiv.style.backgroundColor = "red";
+        document.body.appendChild(oDiv);
+      }
+      console.timeEnd("耗时"); // 7.409912109375 ms */
+
+      console.time("耗时");
+      // 篮子，“文档碎片”
+      const oFrag = document.createDocumentFragment();
+      for (let i = 1; i <= 1000; i++) {
+        const oDiv = document.createElement("div");
+        oDiv.innerHTML = i;
+        oFrag.appendChild(oDiv);
+      }
+      document.body.appendChild(oFrag);
+      console.timeEnd("耗时"); // 13.442138671875 ms
+    </script>
+  </body>
+</html>

@@ -1,19 +1,4 @@
-function getCommonPrefix(arr) {
-  if (arr.length === 0) {
-    return "";
-  }
-  let prefix = arr[0];
-  for (let i = 1; i < arr.length; i++) {
-    while (arr[i].indexOf(prefix) !== 0) {
-      prefix = prefix.substring(0, prefix.length - 1);
-      if (prefix === "") {
-        return "";
-      }
-    }
-  }
 
-  return prefix;
-}
 function longestCommonPrefix(strs) {
   if (strs.length === 0) {
     return "";
@@ -26,6 +11,7 @@ function longestCommonPrefix(strs) {
     while (strs[i].indexOf(prefix) !== 0) {
       // 缩短字符串,不断缩短
       prefix = prefix.slice(0, prefix.length - 1);
+      // prefix = prefix.substring(0, prefix.length - 1);
       if (prefix === "") {
         return "";
       }
@@ -33,12 +19,11 @@ function longestCommonPrefix(strs) {
   }
   return prefix;
 }
-
 /**
  * @param {string[]} strs
  * @return {string}
  */
-let longestCommonPrefix2 = function (strs) {
+let longestCommonPrefix2 =  (strs)=> {
   if (strs.length === 0) return "";
   let curr = strs[0];
   for (let str of strs) {
@@ -62,7 +47,7 @@ let longestCommonPrefix2 = function (strs) {
  * @param {string[]} strs
  * @return {string}
  */
-let longestCommonPrefix3 = function (strs) {
+let longestCommonPrefix3 = (strs)=> {
   if (strs.length === 0) return "";
   let res = strs.reduce((x, y) => {
     let temp = "";
@@ -81,7 +66,7 @@ let longestCommonPrefix3 = function (strs) {
   });
   return res;
 };
-let longestCommonPrefix4 = function (arr) {
+let longestCommonPrefix4 = (arr)=> {
   if (arr.length) {
     //判断数组是否为空
     let res = ""; //记录公共前缀

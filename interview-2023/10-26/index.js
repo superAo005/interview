@@ -38,6 +38,34 @@ const treeData = [
     ],
   },
 ];
+const res = [
+  {
+    name: "1",
+    id: "1",
+    children: [{ name: "5", id: "5", children: [{ name: "55", id: "55" }] }],
+  },
+];
+function filterTree(tree, filterFn) {
+  return tree
+    .map((node) => {
+      const children = node.children
+        ? filterTree(node.children, filterFn)
+        : undefined;
+      return {
+        name: node.name,
+        id: node.id,
+        children: children,
+      };
+    })
+    .filter(
+      (node) => filterFn(node) || (node.children && node.children.length > 0)
+    );
+}
+
+const filteredTreeData = filterTree(
+  treeData,
+  (node) => node.id === "1" || node.id === "5" || node.id === "55"
+);
 const searchFromTree = (list, searchKey, hitFn) => {
   const filterFn = (list, searchKeyStr) => {
     const filterResList = list.filter((child) => {

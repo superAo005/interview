@@ -1,10 +1,11 @@
-import React,{ lazy, Suspense, useState } from "react";
-import { ConfigProvider } from "antd";
+import { lazy, Suspense, useState } from "react";
+import { ConfigProvider,Button } from "antd";
 // 引入语言包
 import zhCN from "antd/locale/zh_CN";
 import smallImg from "./assets/imgs/5kb.png";
 import bigImg from "./assets/imgs/22kb.png";
 import Class from "./components/Class";
+import CreatePortal from "./components/CreatePortal";
 import "./app.less";
 // prefetch
 const PreFetchDemo = lazy(
@@ -42,7 +43,8 @@ function App() {
         // 传入语言包
         locale={zhCN}
       >
-        <h2 onClick={onClick}>展示</h2>
+        <Button onClick={onClick}>展示</Button>
+        <CreatePortal></CreatePortal>
         <Class />
         {/* show为true时加载组件 */}
         {show && (
