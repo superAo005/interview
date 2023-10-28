@@ -224,3 +224,4 @@ let postorderTraversal = function (root) {
   dfs(root);
   return res;
 };
+console.log(fn2(root));
