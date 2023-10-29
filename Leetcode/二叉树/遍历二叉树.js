@@ -108,7 +108,7 @@ function fn4(root) {
  */
 function fn5(root) {
   const res = [];
-  function postOrder(postOrder) {
+  function postOrder(root) {
     if (root == null) return;
     postOrder(root.left);
     postOrder(root.right);
@@ -224,4 +224,5 @@ let postorderTraversal = function (root) {
   dfs(root);
   return res;
 };
-console.log(fn2(root));
+console.log("递归-----" + fn3(root));
+console.log("非递归---" + fn4(root));

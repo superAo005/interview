@@ -76,12 +76,12 @@ const prodConfig = {
       threshold: 10240, // 只有大小大于该值的资源会被处理。默认值是 10k
       minRatio: 0.8, // 压缩率,默认值是 0.8
     }),
-    // new ZipPlugin({
-    //   filename: "assets.zip",
-    // }),
-    new WebpackArchivePlugin({
-      filename: "[timestamp].zip",
+    new ZipPlugin({
+      filename: "assets.zip",
     }),
+    // new WebpackArchivePlugin({
+    //   filename: "[timestamp].zip",
+    // }),
   ],
   // 优化配置
   optimization: {
@@ -170,6 +170,16 @@ const prodConfig = {
     },
     // moduleIds: isEnvProduction ? "deterministic" : "named",
     // chunkIds: isEnvProduction ? "deterministic" : "named",
+  },
+  performance: {
+    // hints: "warning",
+    hints: false, //关闭 webpack 的性能提示
+    maxEntrypointSize: 40000000,
+    //生成文件的最大体积
+    maxAssetSize: 20000000,
+    assetFilter: function (assetFilename) {
+      return assetFilename.endsWith(".js");
+    },
   },
 };
 // module.exports = smp.wrap(merge(baseConfig, prodConfig));
