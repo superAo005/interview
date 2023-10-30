@@ -1,9 +1,17 @@
 // 链表定义函数
-function ListNode(val, next) {
-  this.val = val === undefined ? 0 : val;
-  this.next = next === undefined ? null : next;
+class ListNode {
+  constructor(val, next = null) {
+    this.val = val === undefined ? 0 : val;
+    this.next = next;
+  }
 }
-
+const head = new ListNode(1);
+let current = head;
+for (let i = 2; i <= 5; i++) {
+  current.next = new ListNode(i);
+  current = current.next;
+}
+console.log("head-----" + head);
 const mergeTwoLists = (l1, l2) => {
   const dummpy = (node = new ListNode());
   while (l1 && l2) {
@@ -20,4 +28,4 @@ const mergeTwoLists = (l1, l2) => {
   node.next = l1 || l2;
   return dummpy.next;
 };
-console.log(mergeTwoLists());
+console.log(mergeTwoLists([], []));

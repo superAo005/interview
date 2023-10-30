@@ -1,5 +1,9 @@
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
 
-function longestCommonPrefix(strs) {
+const longestCommonPrefix = (strs) => {
   if (strs.length === 0) {
     return "";
   }
@@ -18,12 +22,8 @@ function longestCommonPrefix(strs) {
     }
   }
   return prefix;
-}
-/**
- * @param {string[]} strs
- * @return {string}
- */
-let longestCommonPrefix2 =  (strs)=> {
+};
+let longestCommonPrefix2 = (strs) => {
   if (strs.length === 0) return "";
   let curr = strs[0];
   for (let str of strs) {
@@ -43,11 +43,7 @@ let longestCommonPrefix2 =  (strs)=> {
   }
   return curr;
 };
-/**
- * @param {string[]} strs
- * @return {string}
- */
-let longestCommonPrefix3 = (strs)=> {
+let longestCommonPrefix3 = (strs) => {
   if (strs.length === 0) return "";
   let res = strs.reduce((x, y) => {
     let temp = "";
@@ -66,7 +62,7 @@ let longestCommonPrefix3 = (strs)=> {
   });
   return res;
 };
-let longestCommonPrefix4 = (arr)=> {
+let longestCommonPrefix4 = (arr) => {
   if (arr.length) {
     //判断数组是否为空
     let res = ""; //记录公共前缀
@@ -85,6 +81,27 @@ let longestCommonPrefix4 = (arr)=> {
   }
   return ""; //说明是空数组
 };
+/**
+ * 先拿前两个比较，求出他们两个的最长公共前缀
+ * 然后上面求出的结果去跟第三个元素求最长公共前缀
+ * n个元素就一直这么reduce下去
+ */
+let longestCommonPrefix5 = (strs) => {
+  if (strs.length === 0) return "";
+  if (strs.length === 1) return strs[0];
+  function getSameStr(curr, str) {
+    let res = "";
+    for (let i = 0; i < curr.length; i++) {
+      if (curr[i] === str[i]) {
+        res += curr[i];
+      } else {
+        return res;
+      }
+    }
+    return res;
+  }
+  return strs.reduce(getSameStr, strs[0]);
+};
 const strings = ["fluat", "flaat", "fleet"];
-const commonPrefix = getCommonPrefix(strings);
+const commonPrefix = longestCommonPrefix4(strings);
 console.log(commonPrefix); // Output: "fl"

@@ -15,7 +15,7 @@ for (let i = 2; i <= 5; i++) {
   current.next = new ListNode(i);
   current = current.next;
 }
-console.log(head);
+console.log("head-----" + head);
 /**
  * @param {ListNode} head
  * @return {ListNode}
