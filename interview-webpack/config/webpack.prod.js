@@ -21,14 +21,14 @@ const prodConfig = {
   mode: "production",
   devtool: "cheap-module-source-map",
   // 告诉webpack这些包不用打包，直接在HTML中引入
-  // externals: {
-  //   jquery: "jQuery",
-  //   react: "react",
-  //   redux: "redux",
-  //   "react-dom": "ReactDOM",
-  //   "react-router-dom": "ReactRouterDOM",
-  //   axios: "axios",
-  // },
+  externals: {
+    jquery: "jQuery",
+    // react: "react",
+    // redux: "redux",
+    // "react-dom": "ReactDOM",
+    // "react-router-dom": "ReactRouterDOM",
+    axios: "axios",
+  },
   plugins: [
     new AutoExternalPlugin({
       jquery: {
@@ -36,10 +36,10 @@ const prodConfig = {
         variable: "jQuery", //不再打包，而是从window.jQuery变量上获取jquery对象
         url: "https://cdn.bootcss.com/jquery/3.1.0/jquery.js", //CDN脚本
       },
-      lodash: {
+      axios: {
         //自动把jquery模块变成一个外部依赖模块
-        variable: "_", //不再打包，而是从window.jQuery变量上获取jquery对象
-        url: "https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js", //CDN脚本
+        variable: "axios", //不再打包，而是从window.axios变量上获取axios对象
+        url: "https://cdn.bootcss.com/axios/0.18.0/axios.min.js", //CDN脚本
       },
     }),
     // 复制文件插件

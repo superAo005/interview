@@ -9,12 +9,12 @@ const debounce = (fun, wait = 500) => {
   let timer;
   // 将 debounce 处理结果当作函数返回
   // 触发事件回调时执行这个返回函数
-  return (...args) => {
+  return function (...args) {
     // 如果已经设定过定时器就清空上一次的定时器
     timer && clearTimeout(timer);
     // 开始设定一个新的定时器，定时器结束后执行传入的函数 fn
     timer = setTimeout(() => {
-      fun(...args);
+      fun.apply(this, args);
     }, wait);
   };
 };
