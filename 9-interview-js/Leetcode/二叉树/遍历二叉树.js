@@ -36,18 +36,6 @@ function TreeNode(val, left, right) {
 // 1————先序遍历
 // 根结点 -> 左子树 -> 右子树
 // 所有遍历函数的入参都是树的根结点对象
-function preorder(root) {
-  // 递归边界，root 为空
-  if (!root) {
-    return;
-  }
-  // 输出当前遍历的结点值
-  console.log("当前遍历的结点值是：", root.val);
-  // 递归遍历左子树
-  preorder(root.left);
-  // 递归遍历右子树
-  preorder(root.right);
-}
 // 递归
 function fn1(root) {
   if (root == null) return [];
@@ -178,13 +166,6 @@ function fn9(root) {
   }
   return res;
 }
-//二叉树的定义
-function TreeNode(val, left, right) {
-  this.val = val === undefined ? 0 : val;
-  this.left = left === undefined ? null : left;
-  this.right = right === undefined ? null : right;
-}
-
 //二叉树的前序遍历 中左右
 let preorderTraversal = function (root) {
   //传入根节点
