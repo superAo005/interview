@@ -117,55 +117,7 @@ function fn6(root) {
   }
   return res;
 }
-/**
- * 层序遍历
- */
-function fn7(root) {
-  if (!root) return false;
-  let res = [];
-  let arr = [root];
-  while (arr.length) {
-    let p = arr.shift();
-    res.push(p.val);
-    if (p.left) arr.push(p.left);
-    if (p.right) arr.push(p.right);
-  }
-  return res;
-}
-function fn8(root) {
-  if (!root) return [];
-  let res = [];
-  let arr = [root];
-  while (arr.length) {
-    let len = arr.length;
-    let st = [];
-    while (len--) {
-      let p = arr.shift();
-      st.push(p.val);
-      if (p.left) arr.push(p.left);
-      if (p.right) arr.push(p.right);
-    }
-    res.push(st);
-  }
-  return res;
-}
-function fn9(root) {
-  if (!root) return [];
-  let res = [];
-  let arr = [root];
-  while (arr.length) {
-    let len = arr.length;
-    let st = [];
-    while (len--) {
-      let p = arr.shift();
-      st.push(p.val);
-      if (p.left) arr.push(p.left);
-      if (p.right) arr.push(p.right);
-    }
-    res.unshift(st);
-  }
-  return res;
-}
+
 //二叉树的前序遍历 中左右
 let preorderTraversal = function (root) {
   //传入根节点

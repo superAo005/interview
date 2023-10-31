@@ -7,30 +7,72 @@ function levelOrder(root) {
   if (!root) {
     return [];
   }
-
   const result = [];
   const queue = [root];
-
   while (queue.length > 0) {
     const levelSize = queue.length;
     const currentLevel = [];
-
     for (let i = 0; i < levelSize; i++) {
       const node = queue.shift();
       currentLevel.push(node.val);
-
       if (node.left) {
         queue.push(node.left);
       }
-
       if (node.right) {
         queue.push(node.right);
       }
     }
-
     result.push(currentLevel);
   }
-
   return result;
 }
-levelOrder();
+levelOrder(root);
+/**
+ * 层序遍历
+ */
+function fn7(root) {
+  if (!root) return false;
+  let res = [];
+  let arr = [root];
+  while (arr.length) {
+    let p = arr.shift();
+    res.push(p.val);
+    if (p.left) arr.push(p.left);
+    if (p.right) arr.push(p.right);
+  }
+  return res;
+}
+function fn8(root) {
+  if (!root) return [];
+  let res = [];
+  let arr = [root];
+  while (arr.length) {
+    let len = arr.length;
+    let st = [];
+    while (len--) {
+      let p = arr.shift();
+      st.push(p.val);
+      if (p.left) arr.push(p.left);
+      if (p.right) arr.push(p.right);
+    }
+    res.push(st);
+  }
+  return res;
+}
+function fn9(root) {
+  if (!root) return [];
+  let res = [];
+  let arr = [root];
+  while (arr.length) {
+    let len = arr.length;
+    let st = [];
+    while (len--) {
+      let p = arr.shift();
+      st.push(p.val);
+      if (p.left) arr.push(p.left);
+      if (p.right) arr.push(p.right);
+    }
+    res.unshift(st);
+  }
+  return res;
+}

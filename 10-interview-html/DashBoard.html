@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@material-ui/core@latest/umd/material-ui.production.min.js"></script>
+  <script src="https://static.runoob.com/assets/react/browser.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+<script>
+  const defaultOptions = {
+    start: 0,
+    end: 100,
+    offsetY: 60,
+    preDial: 2,
+    preDialWidth: 7,
+    preDialHeight: 26,
+    openAngle: 140,
+    r: 170,
+    totalStep: 60,
+    colors: [
+      {
+        count: 60,
+        start: {
+          r: 255,
+          g: 64,
+          b: 51
+        },
+        end: {
+          r: 255,
+          g: 117,
+          b: 78
+        }
+      }, {
+        count: 80,
+        start: {
+          r: 255,
+          g: 125,
+          b: 0
+        },
+        end: {
+          r: 255,
+          g: 160,
+          b: 0
+        }
+      }, {
+        count: 100,
+        start: {
+          r: 0,
+          g: 177,
+          b: 133
+        },
+        end: {
+          r: 0,
+          g: 238,
+          b: 118
+        }
+      }
+    ],
+    countFamily: 'Helvetica,"Hiragino Sans GB","Microsoft Yahei",Arial',
+    titleFamily: 'Helvetica,"Hiragino Sans GB","Microsoft Yahei",Arial',
+    subtitleFamily: 'Helvetica,"Hiragino Sans GB","Microsoft Yahei",Arial',
+  }
+  function Board(canvas, target, options = {}) {
+    this.canvas = canvas // 画布
+    this.scale = canvas.width / 750 // 按750去画的
+    this.ctx = canvas.getContext('2d')
+    this.colors = options.colors || defaultOptions.colors // 渐变色组
+    this.start = options.start || defaultOptions.start // 起始分值
+    this.end = options.end || defaultOptions.end // 最大分值
+    this.offsetY = options.offsetY || defaultOptions.offsetY // 距离画布中心点Y方向偏移
+    this.preDial = options.preDial || defaultOptions.preDial // 每个刻度代表多少数值
+    this.preDialWidth = options.preDialWidth || defaultOptions.preDialWidth // 刻度宽度
+    this.preDialHeight = options.preDialHeight || defaultOptions.preDialHeight // 刻度长度
+    this.dialCount = (this.end - this.start) / this.preDial // 总刻度数
+    this.openAngle = options.openAngle || defaultOptions.openAngle // 下方开口角度
+    this.r = options.r || defaultOptions.r // 刻度内圈半径
+    this.title = options.title
+    this.subtitle = options.subtitle // 最下方提示文字
+    this.afterDrawBg = options.afterDrawBg // 函数：背景画完后自定义要画的内容
+    this.customArrow = options.customArrow // 函数：自定义箭头
+    this.totalStep = options.step || defaultOptions.totalStep // 总帧数，数值越大动效持续越久
+    this.currentStep = 0 // 当前帧数
+    this.current = this.start // 当前分值
+    this.mainColor = this.getGradientColor(this.current) // 当前使用的色组
+    this.target = target || 0 // 目标分值
+    this.target < this.start && (this.target = this.start) // 不能小于起始分值
+    this.target > this.end && (this.target = this.end) // 不能大于最大分值
+    this.countFamily = options.countFamily || defaultOptions.countFamily // 分值用字体，多个用,分割，不能带空格
+    this.titleFamily = options.titleFamily || defaultOptions.titleFamily // 标题用字体
+    this.subtitleFamily = options.subtitleFamily || defaultOptions.subtitleFamily // 提示用字体
+    this.pale = options.pale // 不渲染背景
+  }
+  Board.prototype.getGradientColor = function (count) {
+    if (this.mainColor && this.mainColor.count > count) return this.mainColor
+    let colors = { count: Infinity }
+    this.colors.forEach(item => {
+      if (count < item.count && colors.count > item.count) {
+        colors = item
+      }
+    })
+    if (!colors.start) {
+      colors = this.colors[this.colors.length - 1]
+    }
+    return colors
+  }
+  Board.prototype.drawBg = function () {
+    const {ctx, canvas, mainColor, pale} = this
+    const color1 = mainColor.start
+    const color2 = mainColor.end
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    if (pale) return
+    ctx.save()
+    const grd = ctx.createLinearGradient(0, 0, 0, canvas.height)
+    grd.addColorStop(0, `rgba(${color1.r}, ${color1.g}, ${color1.b}, 0.4)`)
+    grd.addColorStop(1, `rgba(${color2.r}, ${color2.g}, ${color2.b}, 0.1)`)
+    ctx.fillStyle = grd
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.restore()
+  }
+  Board.prototype.drawDialBg = function () {
+    const {ctx, canvas, mainColor, preDialWidth, preDialHeight, dialCount, openAngle, r, scale, offsetY} = this
+    const color = mainColor.start
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    ctx.translate(0, offsetY)
+    ctx.rotate((openAngle / 2 + 90) * Math.PI / 180)
+    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 0.12)`
+    for (let i = 0; i <= dialCount; i++) {
+      ctx.fillRect(r, -preDialWidth / 2, preDialHeight, preDialWidth)
+      ctx.rotate((360 - openAngle) / dialCount * Math.PI / 180)
+    }
+    ctx.restore()
+  }
+  Board.prototype.drawDial = function () {
+    const {ctx, canvas, mainColor, start, preDial, preDialWidth, preDialHeight, dialCount, openAngle, r, current, scale, offsetY} = this
+    const color1 = mainColor.start
+    const color2 = mainColor.end
+    const diffR = (color2.r - color1.r) / dialCount
+    const diffG = (color2.g - color1.g) / dialCount
+    const diffB= (color2.b - color1.b) / dialCount
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    ctx.translate(0, offsetY)
+    ctx.rotate((openAngle / 2 + 90) * Math.PI / 180)
+    const scopeCount = (current - start) / preDial | 0
+    for (let i = 0; i <= scopeCount; i++) {
+      ctx.fillStyle = `rgb(${color1.r + diffR * i | 0}, ${color1.g + diffG * i | 0}, ${color1.b + diffB * i | 0})`
+      ctx.fillRect(r, -preDialWidth / 2, preDialHeight, preDialWidth)
+      ctx.rotate((360 - openAngle) / dialCount * Math.PI / 180)
+    }
+    ctx.restore()
+  }
+  Board.prototype.drawArrow = function () {
+    const {ctx, canvas, target, mainColor, start, end, preDial, preDialWidth, preDialHeight, dialCount, openAngle, r, totalStep, currentStep, scale, offsetY} = this
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    ctx.translate(0, offsetY)
+    ctx.rotate((openAngle / 2 + 90) * Math.PI / 180)
+    if (this.customArrow) { // 自定义箭头
+      this.customArrow(this)
+    } else {
+      const color = mainColor.start
+      const w = preDialHeight / 3.8
+      const targetAngle = (target - start) / (end - start) * (360 - openAngle)
+      const scopeCount = (target - start) / preDial | 0
+      const maxAngle = scopeCount * (360 - openAngle) / dialCount
+      const currentAngle = targetAngle * currentStep / totalStep
+      ctx.rotate(Math.min(maxAngle, currentAngle) * Math.PI / 180)
+      ctx.beginPath()
+      ctx.moveTo(r + preDialHeight / 2, 0)
+      ctx.lineTo(r + preDialHeight / 2 + w, preDialWidth / 1.1)
+      ctx.lineTo(r + preDialHeight * 1.4, preDialWidth / 1.1)
+      ctx.lineTo(r + preDialHeight * 1.4, -preDialWidth / 1.1)
+      ctx.lineTo(r + preDialHeight / 2 + w, -preDialWidth / 1.1)
+      ctx.closePath()
+      ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`
+      ctx.fill()
+    }
+    ctx.restore()
+  }
+  Board.prototype.drawTitle = function () {
+    const {ctx, canvas, mainColor, title, scale, titleFamily, offsetY} = this
+    const color = mainColor.start
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    ctx.translate(0, offsetY + 50)
+    ctx.font = `34px ${titleFamily} bolder`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+    ctx.fillText(title, 0, 0)
+    ctx.restore()
+  }
+  Board.prototype.drawSubtitle = function () {
+    const {ctx, canvas, mainColor, subtitle, scale, subtitleFamily, offsetY} = this
+    const color = mainColor.start
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    ctx.translate(0, offsetY + 125)
+    ctx.font = `26px ${subtitleFamily} normal`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`
+    ctx.fillText(subtitle, 0, 0)
+    ctx.restore()
+  }
+  Board.prototype.drawCount = function () {
+    const {ctx, canvas, mainColor, current, scale, countFamily, offsetY} = this
+    const color = mainColor.start
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    ctx.translate(0, offsetY - 30)
+    ctx.font = `120px ${countFamily} bolder`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, 1)`
+    ctx.fillText(current, 0, 0)
+    ctx.restore()
+  }
+  Board.prototype.draw = function () {
+    this.drawBg()
+    this.afterDrawBg && this.afterDrawBg(this)
+    this.drawDialBg()
+    this.drawDial()
+    this.drawArrow()
+    this.title && this.drawTitle()
+    this.subtitle && this.drawSubtitle()
+    this.drawCount()
+  }
+  Board.prototype._run = function () {
+    const {target, totalStep, start, finish} = this
+    const diff = target - start
+    const preTarget = diff / totalStep
+    if (finish) return
+    this.draw()
+    this.currentStep++
+    this.current = this.currentStep * preTarget | 0
+    this.mainColor = this.getGradientColor(this.current)
+    if (this.currentStep > totalStep) {
+      this.finish = true
+      return
+    }
+    requestAnimationFrame(this._run.bind(this))
+  }
+  Board.prototype.run = function () {
+    this.finish = false
+    this.draw()
+    window.requestAnimationFrame(this._run.bind(this))
+  }
+  Board.prototype.destroy = function () {
+    this.finish = true
+  }
+</script>
+
+
+<script type="text/babel">
+  const {useState, useRef, useEffect} = React
+
+  // 自定义背景图案
+  function afterDrawBg({ctx, canvas, mainColor, scale, current}) {
+    const color = mainColor.start
+    ctx.save()
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.scale(scale, scale)
+    if (current < 90) { // 警告
+      const halfWidth = 150
+      const r1 = halfWidth / 8
+      const r2 = halfWidth / 30
+      ctx.translate(-285, 225)
+      ctx.beginPath()
+      ctx.moveTo(-halfWidth, 0)
+      ctx.lineTo(-r1, (r1 - halfWidth) * Math.sqrt(3))
+      ctx.arcTo(0, -halfWidth * Math.sqrt(3), r1, (r1 - halfWidth) * Math.sqrt(3), r1)
+      ctx.lineTo(halfWidth, 0)
+      ctx.closePath()
+      ctx.moveTo(r1 - r2, -r1 * 2)
+      ctx.arcTo(r1, -r1 * 2, r1, -r1 * 2 - r2, r2)
+      ctx.lineTo(r1, -r1 * 2 - halfWidth / 1.3 + r2)
+      ctx.arcTo(r1, -r1 * 2 - halfWidth / 1.3, r1 - r2, -r1 * 2 - halfWidth / 1.3, r2)
+      ctx.lineTo(r2 - r1, -r1 * 2 - halfWidth / 1.3)
+      ctx.arcTo(-r1, -r1 * 2 - halfWidth / 1.3, -r1, -r1 * 2 - halfWidth / 1.3 + r2, r2)
+      ctx.lineTo(-r1, -r1 * 2 - r2)
+      ctx.arcTo(-r1, -r1 * 2, r2 - r1, -r1 * 2, r2)
+      ctx.closePath()
+      const grd = ctx.createLinearGradient(0, 0, 0, -halfWidth * Math.sqrt(3))
+      grd.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.05)`)
+      grd.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0.15)`)
+      ctx.fillStyle = grd
+      ctx.fill()
+    } else { // 点赞
+      ctx.translate(-400, 260)
+      ctx.beginPath()
+      ctx.moveTo(280, 0)
+      ctx.quadraticCurveTo(290, 0, 300, -20)
+      ctx.lineTo(310, -110)
+      ctx.quadraticCurveTo(320, -165, 260, -160)
+      ctx.lineTo(170, -160)
+      ctx.quadraticCurveTo(190, -280, 140, -270)
+      ctx.bezierCurveTo(110, -260, 130, -230, 60, -160)
+      ctx.lineTo(0, -160)
+      ctx.lineTo(0, 0)
+      ctx.closePath()
+      const grd = ctx.createLinearGradient(0, 0, 0, -280)
+      grd.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.01)`)
+      grd.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0.15)`)
+      ctx.fillStyle = grd
+      ctx.fill()
+    }
+    ctx.restore()
+  }
+
+  function DashBoard({count, width, height, ...options}) {
+    const canvasDom = useRef()
+
+    useEffect(() => {
+      const board = new Board(canvasDom.current, count, {
+        ...options,
+      })
+      board.run()
+      return () => {
+        board.destroy()
+      }
+    }, [count])
+
+    return (
+      <canvas ref={canvasDom} width={width} height={height || width * 0.6} />
+    )
+  }
+
+  const {Button, TextField, Box} = MaterialUI
+  function App () {
+    const [count, setCount] = useState(0)
+    const inputRef = useRef()
+
+    useEffect(() => {
+      // 模拟异步请求
+      setTimeout(() => {
+        setCount(90)
+      }, 1000)
+    }, [])
+
+    function handleClick() {
+      setCount(inputRef.current.value | 0)
+    }
+
+    return (
+      <React.Fragment>
+        <DashBoard count={count} width={window.innerWidth} title="当前服务分" subtitle="更新于：2020-02-02 20:00:02" step={100} afterDrawBg={afterDrawBg} />
+
+        <Box display="flex" justifyContent="center" alignItems="flex-end" mt={5}>
+          <TextField inputRef={inputRef} label="count" type="number" />
+          <Button variant='contained' color='primary' onClick={handleClick}>run</Button>
+        </Box>
+      </React.Fragment>
+    )
+  }
+
+  ReactDOM.render(<App />, document.getElementById('root'))
+</script>
+</html>

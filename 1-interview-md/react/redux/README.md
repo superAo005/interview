@@ -18,13 +18,26 @@ store.dispatch(); //用于发送action，来修改reducer中的state数据；
 配合 react 的绑定库，它有两个很重要的成员：Provider、connect 原理是 react 的 Context
 Provider 为后代组件提供 store
 connect 为组件提供数据和变更方法
-
+通过 redux 和 react context 配合使用，并借助高阶函数，实现了 react-redux
 ### redux 中间件
+
+当我们需要修改 store 中值的时候，我们是通过 dispatch(action)将要修改的值传到 reducer 中的，这个过程是同步的，
+如果我们要进行异步操作的时候，就需要用到中间件；
+中间件其实是提供了一个分类处理 action 的机会，
+在 middleware 中，我们可以检阅每一个流过的 action，并挑选出特定类型的 action 进行相应操作，以此来改变 action；
+
+### redux-thunk
+
+redux-thunk 中间件的作用就是让我们可以异步执行 redux，
+首先检查参数 action 的类型，如果是函数的话，就执行这个 action 这个函数，并把 dispatch, getState, extraArgument 作为参数传递进去，否则就调用 next 让下一个中间件继续处理 action。
 
 ```js
 /**
  * redux中间件接受一个对象作为参数，对象的参数上有两个字段 dispatch 和 getState，分别代表着 Redux Store 上的两个同名函数。
  * 柯里化函数两端一个是 middewares，一个是store.dispatch
+ * applyMiddleware 是个三级柯里化的函数。
+ * 它将陆续的获得三个参数：第一个是 middlewares 数组，第二个是 Redux 原生的 createStore，最后一个是 reducer；
+ * 然后applyMiddleware会将不同的中间件一层一层包裹到原生的 dispatch 之上；
  */
 export default function applyMiddleware(...middlewares) {
   return (createStore) =>
@@ -50,12 +63,11 @@ export default function applyMiddleware(...middlewares) {
 }
 ```
 
-### react-redux
 
-Provider、connect
-通过 redux 和 react context 配合使用，并借助高阶函数，实现了 react-redux
 
-### redux-thunk
+
+
+### redux-thunk使用
 
 主要作用就是可以使 action 可以变成函数形式，接收两个参数 dispatch、getState
 
