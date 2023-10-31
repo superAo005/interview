@@ -1,0 +1,7 @@
+## VUE3中ref、reactive、toRef、toRefs
+toRefs和toRef没啥区别，就是批量和单个的区别。也是相互响应
+ref、reactive数据更新后立马会更新HTML视图。
+toRef、toRefs更新会后会等下次更新视图的时候更新视图
+如果利用toRef、toRefs将某一个对象中的属性变成了响应式的数据(reactive、ref包裹的数据)
+我们修改响应式的数据是会影响原始数据的
+如果数据是通过toRef创建的，修改值后，数据不会触发视图，会等下次更新视图的时候一起更新
