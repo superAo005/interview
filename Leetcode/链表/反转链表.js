@@ -15,7 +15,7 @@ for (let i = 2; i <= 5; i++) {
   current.next = new ListNode(i);
   current = current.next;
 }
-console.log("head-----" + head);
+console.log(head);
 /**
  * @param {ListNode} head
  * @return {ListNode}
@@ -40,4 +40,5 @@ const reverseList = (head) => {
   }
   return pre;
 };
+
 console.log(reverseList(head));

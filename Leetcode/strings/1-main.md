@@ -12,5 +12,14 @@
 11. split() 把一个字符串分割成字符串数组
 12. substring() 提取字符串中介于两个指定下标之间的字符
 13. toLowerCase()和toUpperCase() 大小写
+14. padStart()用于头部补全，
+15. padEnd()用于尾部补全。
+
+
 ```js
+'1'.padStart(10, '0') // "0000000001"
+'12'.padStart(10, '0') // "0000000012"
+'123456'.padStart(10, '0') // "0000123456"
+'12'.padStart(10, 'YYYY-MM-DD') // "YYYY-MM-12"
+'09-12'.padStart(10, 'YYYY-MM-DD') // "YYYY-09-12"
 ```
