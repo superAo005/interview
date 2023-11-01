@@ -1,11 +1,14 @@
-## HTTPS握手过程x
+## HTTPS握手过程
+
 首先是tcp的三次握手建立连接
 client发送client-random+支持的「加密算法集合」
 server收到信息，返回「选择一个」加密算法+server-random+ 证书
 client验证证书有效性，并用client-random+server-random生成pre-master通过服务器「公钥加密」 发送给server
 server收到premaster，根据「约定的加密算法」对client-random+server-random+pre-master（解密）生成master-secret，然后发送预定成功
 client收到生成同样的master-secert，对称加密秘钥传输完毕
+
 ## HTTP 2.0
+
 HTTP 2.0 是 2015 年开发出来的标准
 HTTP2.0，传输的不再是文本，而是二进制流。文本的好处是人可以阅读，二进制流的好处是减少了文本带来的二义性对于机器可以阅读。
 在HTTP1中，HTTP请求只能一条完整发送过去后才能发送另外一条，所以优化手段就是用多个线程。而HTTP2.0使用虚拟流，就可以使用IO多路复用的方式来高效通信。这是HTTP2.0为了优化效率比较根本性的变化。
@@ -20,5 +23,5 @@ HTTP2.0，传输的不再是文本，而是二进制流。文本的好处是人�
 
 ## HTTP 3.0
   HTTP/3 选择了一个折衷的方法——UDP 协议，基于 UDP 实现了类似于 「TCP 的多路数据流」、「传输可靠性」等功能，我们把这套功能称为 「QUIC 协议」。
-  ![Alt text](image.png)
+
   

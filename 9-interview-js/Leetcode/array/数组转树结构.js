@@ -44,7 +44,6 @@ const arr = [
 function arrayToTree(arr) {
   const map = {};
   const roots = [];
-
   // 构建节点映射表
   for (let i = 0; i < arr.length; i++) {
     const node = {
@@ -54,7 +53,6 @@ function arrayToTree(arr) {
     };
     map[node.id] = node;
   }
-
   // 构建树结构
   for (let i = 0; i < arr.length; i++) {
     const node = map[arr[i].id];
@@ -65,7 +63,6 @@ function arrayToTree(arr) {
       roots.push(node);
     }
   }
-
   return roots;
 }
 
@@ -76,7 +73,6 @@ function addNode(tree, parentId, newNode) {
     name: newNode.name,
     children: [],
   };
-
   if (parentId === null) {
     tree.push(node);
   } else {

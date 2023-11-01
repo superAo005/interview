@@ -20,7 +20,7 @@ function sort1(arr) {
 // 在时间复杂度上表现最稳定的排序算法之一，因为无论什么数据进去都是O(n²)的时间复杂度。。。所以用到它的时候，数据规模越小越好。唯一的好处可能就是不占用额外的内存空间了吧。
 function sort2(arr) {
   let len = arr.length;
-  let minIndex, temp;
+  let minIndex = 0;
   for (let i = 0; i < len - 1; i++) {
     minIndex = i;
     for (let j = i + 1; j < len; j++) {

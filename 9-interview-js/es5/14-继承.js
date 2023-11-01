@@ -68,18 +68,15 @@ class Rectangle {
     this.height = height;
     this.width = width;
   }
-
   // Getter
   get area() {
     return this.calcArea();
   }
-
   // Method
   calcArea() {
     return this.height * this.width;
   }
 }
-
 const rectangle = new Rectangle(40, 20);
 console.log(rectangle.area);
 // 输出 800
@@ -98,6 +95,5 @@ class Square extends Rectangle {
     return this.height * this.width;
   }
 }
-
 const square = new Square(20);
 console.log(square.area);
