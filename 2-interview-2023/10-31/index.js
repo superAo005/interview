@@ -56,4 +56,4 @@ function dfs(tree) {
   return res;
 }
 console.log(dfs(tree));
-console.log(bfs2(tree));
+console.log(bfs(tree));

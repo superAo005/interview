@@ -29,9 +29,7 @@ function sort2(arr) {
         minIndex = j; //将最小数的索引保存
       }
     }
-    temp = arr[i];
-    arr[i] = arr[minIndex];
-    arr[minIndex] = temp;
+    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
   }
   return arr;
 }
@@ -77,7 +75,6 @@ function bubbleSort(arr) {
 }
 //1.改进冒泡排序
 function bubbleSort2(arr) {
-  console.time("1.改进后冒泡排序耗时");
   let i = arr.length - 1; //初始时,最后位置保持不变
   while (i > 0) {
     let pos = 0; //每趟开始时,无记录交换
@@ -91,7 +88,6 @@ function bubbleSort2(arr) {
       }
     i = pos; //为下一趟排序作准备
   }
-  console.timeEnd("1.改进后冒泡排序耗时");
   return arr;
 }
 //2.改进冒泡排序
@@ -99,7 +95,6 @@ function bubbleSort3(arr) {
   let low = 0;
   let high = arr.length - 1; //设置变量的初始值
   let tmp, j;
-  console.time("2.改进后冒泡排序耗时");
   while (low < high) {
     for (
       j = low;
@@ -107,9 +102,6 @@ function bubbleSort3(arr) {
       ++j //正向冒泡,找到最大者
     )
       if (arr[j] > arr[j + 1]) {
-        // tmp = arr[j];
-        // arr[j] = arr[j + 1];
-        // arr[j + 1] = tmp;
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // ES6 的解构来进行元素交换
       }
     --high; //修改high值, 前移一位
@@ -119,14 +111,10 @@ function bubbleSort3(arr) {
       --j //反向冒泡,找到最小者
     )
       if (arr[j] < arr[j - 1]) {
-        // tmp = arr[j];
-        // arr[j] = arr[j - 1];
-        // arr[j - 1] = tmp;
         [arr[j], arr[j - 1]] = [arr[j - 1], arr[j]]; // ES6 的解构来进行元素交换
       }
     ++low; //修改low值,后移一位
   }
-  console.timeEnd("2.改进后冒泡排序耗时");
   return arr;
 }
 // 冒泡排序
@@ -136,9 +124,7 @@ function bubbleSort(arr) {
     let maxIndex = 0;
     for (let j = 0; j < i; j++) {
       if (arr[j] > arr[j + 1]) {
-        let temp = arr[j + 1];
-        arr[j + 1] = arr[j];
-        arr[j] = temp;
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // ES6 的解构来进行元素交换
         maxIndex = j;
       }
     }
@@ -146,10 +132,5 @@ function bubbleSort(arr) {
   }
   return arr;
 }
-let arr1 = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48];
-console.log(bubbleSort(arr1)); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
-console.log(bubbleSort2(arr1)); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
-console.log(bubbleSort3(arr1)); //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
-
-const arr2 = sort3(arr);
-console.log(arr2);
+console.log(sort2(arr));
+console.log(sort3(arr));

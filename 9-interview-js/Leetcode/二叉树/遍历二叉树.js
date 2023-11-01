@@ -157,5 +157,5 @@ let postorderTraversal = function (root) {
   dfs(root);
   return res;
 };
-console.log("递归-----" + fn3(root));
-console.log("非递归---" + fn4(root));
+console.log("递归-----" + fn1(root));
+console.log("非递归---" + fn2(root));

@@ -5,13 +5,6 @@ class ListNode {
     this.next = next;
   }
 }
-const head = new ListNode(1);
-let current = head;
-for (let i = 2; i <= 5; i++) {
-  current.next = new ListNode(i);
-  current = current.next;
-}
-console.log("head-----" + head);
 const mergeTwoLists = (l1, l2) => {
   const dummpy = (node = new ListNode());
   while (l1 && l2) {

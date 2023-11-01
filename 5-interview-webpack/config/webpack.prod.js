@@ -15,8 +15,6 @@ const WebpackArchivePlugin = require("../plugins/webpack-archive-plugin");
 const AutoExternalPlugin = require("../plugins/AutoExternalPlugin");
 //自定义插件 --end
 const { PUBLIC_PATH, DIST_PATH } = require("./utils/constants.js");
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin"); //速度分析插件
-const smp = new SpeedMeasurePlugin();
 const prodConfig = {
   mode: "production",
   devtool: "cheap-module-source-map",
@@ -182,5 +180,4 @@ const prodConfig = {
     },
   },
 };
-// module.exports = smp.wrap(merge(baseConfig, prodConfig));
 module.exports = merge(baseConfig, prodConfig);
