@@ -43,8 +43,8 @@ function fn1(root) {
   function preorder(root) {
     if (root == null) return;
     result.push(root.val);
-    preorder(root.left, result);
-    preorder(root.right, result);
+    preorder(root.left);
+    preorder(root.right);
   }
   preorder(root);
   return result;
@@ -78,7 +78,7 @@ function fn3(root) {
 }
 function fn4(root) {
   const stack = [];
-  const result = []; //最终的结果
+  const result = [];
   while (root || stack.length > 0) {
     // 先把当前节点的左节点入栈，及root.left，root.left.left，......
     while (root) {
@@ -89,7 +89,7 @@ function fn4(root) {
     result.push(root.val);
     root = root.right;
   }
-  return res;
+  return result;
 }
 /**
  * 后序遍历（左右根）
@@ -157,5 +157,5 @@ let postorderTraversal = function (root) {
   dfs(root);
   return res;
 };
-console.log("递归-----" + fn1(root));
-console.log("非递归---" + fn2(root));
+console.log("递归-----" + fn5(root));
+console.log("非递归---" + fn6(root));
