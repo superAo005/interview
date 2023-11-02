@@ -1,3 +1,5 @@
+
+// 快手面试
 Promise.myAllSettled = (proms) => {
   return new Promise((resolve, reject) => {
     let resolvedCount = 0;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import useTimes from "./hooks/useInterval";
-import useInterval from "./hooks/useInterval2";
+import useTimes from "./components/hooks/useInterval";
+import useInterval from "./components/hooks/useInterval2";
 /**
  * 因为实例是同一个，状态对象也是同一个，如果是类组件的话，this.state永远是最新的值
  */
