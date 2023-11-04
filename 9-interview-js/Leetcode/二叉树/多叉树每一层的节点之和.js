@@ -1,7 +1,5 @@
 // 多叉树, 获取每一层的节点之和
 
-function layerSum(root) {}
-
 const res = layerSum({
   value: 2,
   children: [
