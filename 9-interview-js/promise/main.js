@@ -203,7 +203,7 @@ class MyPromise {
     });
   }
 }
-const p1 = new Promise((resolve, reject) => {
+const p1 = new MyPromise((resolve, reject) => {
   resolve("success");
 }).then(
   (res) => {
@@ -214,7 +214,7 @@ const p1 = new Promise((resolve, reject) => {
     // ....
   }
 );
-const p2 = new Promise((resolve, reject) => {
+const p2 = new MyPromise((resolve, reject) => {
   reject("error");
 }).then(
   () => {
@@ -225,7 +225,7 @@ const p2 = new Promise((resolve, reject) => {
     return "error---2";
   }
 );
-const p3 = new Promise((resolve, reject) => {
+const p3 = new MyPromise((resolve, reject) => {
   setTimeout(() => {
     resolve("success");
   }, 2000);
@@ -238,7 +238,7 @@ const p3 = new Promise((resolve, reject) => {
     // ...
   }
 );
-const p4 = new Promise((resolve, reject) => {
+const p4 = new MyPromise((resolve, reject) => {
   reject("error");
 }).then(
   () => {
