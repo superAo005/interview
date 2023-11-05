@@ -1,15 +1,14 @@
 Promise.resolve()
   .then(() => {
-    console.log(0);
-    return Promise.resolve(4);// 返回一个promise
+    console.log(1);
+    // return Promise.resolve('hello');
+    return Promise.resolve(Promise.resolve("hello"));
   })
   .then((res) => {
     console.log(res);
   });
+
 Promise.resolve()
-  .then(() => {
-    console.log(1);
-  })
   .then(() => {
     console.log(2);
   })
@@ -17,8 +16,14 @@ Promise.resolve()
     console.log(3);
   })
   .then(() => {
+    console.log(4);
+  })
+  .then(() => {
     console.log(5);
   })
   .then(() => {
     console.log(6);
   });
+  /**
+   * 1-2-3-4-hello-5-6
+   */
