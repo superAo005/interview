@@ -1,12 +1,15 @@
 Promise.resolve().then(() => {
-  console.log("Promise1");
+  console.log("1-Promise1");
   setTimeout(() => {
-    console.log("setTimeout2");
+    console.log("2-setTimeout2");
   }, 0);
 });
 setTimeout(() => {
-  console.log("setTimeout1");
+  console.log("3-setTimeout1");
   Promise.resolve().then(() => {
-    console.log("Promise2");
+    console.log("4-Promise2");
   });
 }, 0);
+/**
+ * 1-3-4-2
+ */

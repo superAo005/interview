@@ -1,35 +1,34 @@
 // 快手面试
 function sync() {
-  console.log("sync end"); 
+  console.log("1");
 }
 async function execAsync() {
   await sync();
-  console.log("async end"); // 5
+  console.log("2");
 }
 async function errorFunc() {
   try {
-    await Promise.reject("error!!!");
+    await Promise.reject("3");
   } catch (e) {
-    console.log("error1"); // 6
+    console.log("4");
   }
-  return Promise.resolve("errorFunc end"); // 8
+  
+  return Promise.reject("5");
 }
 
-console.log("script start"); 
+console.log("6");
 setTimeout(() => {
-  console.log("setTimeout 1"); 
+  console.log("7");
 }, 0);
 Promise.resolve()
   .then(function () {
-    console.log("promise1"); 
+    console.log("8");
   })
   .then(function () {
-    console.log("promise2");
+    console.log("9");
   });
 execAsync();
-errorFunc().then((res) => console.log(res));
-console.log("script end"); 
-
+errorFunc().then((res) => console.log(res)).catch((err) => console.log(err));
 /**
- *
+ 6-1-8-2-4-9-5-7
  */

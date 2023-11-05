@@ -1,7 +1,7 @@
 Promise.resolve()
   .then(() => {
     console.log(0);
-    return Promise.resolve(4);
+    return Promise.resolve(4);// 返回一个promise
   })
   .then((res) => {
     console.log(res);

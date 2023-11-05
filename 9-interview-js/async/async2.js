@@ -1,5 +1,5 @@
 async function async1() {
-  console.log("1-async1 start");
+  console.log("1");
   await async2();
   console.log("2-async1 end");
 }
@@ -31,3 +31,6 @@ async function testAsync() {
   console.log('11');
 }
 testAsync();
+/**
+ * 4-1-3-6-8-2-7-5-9-11
+ */

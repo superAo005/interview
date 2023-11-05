@@ -1,29 +1,29 @@
 async function a() {
-  console.log("1");
+  console.log("4");
   await b();
-  console.log("2");
+  console.log("10");
 }
 async function b() {
-  console.log("3");
+  console.log("5");
   await new Promise((resove, reject) => {
-    console.log("4");
+    console.log("6");
     resove();
   }).then(() => {
-    console.log("5");
+    console.log("8");
   });
   setTimeout(() => {
-    console.log("6");
+    console.log("13");
   });
-  console.log("7");
+  console.log("9");
 }
 new Promise((resove, reject) => {
-  console.log("8");
+  console.log("1");
   resove();
-  console.log("9");
+  console.log("2");
   reject();
 })
   .then(() => {
-    console.log("10");
+    console.log("7");
     setTimeout(() => {
       console.log("11");
       new Promise((resove, reject) => {
@@ -36,8 +36,6 @@ new Promise((resove, reject) => {
   .catch(() => {
     console.log("13");
   });
-console.log("14");
+console.log("3");
 a();
-/**
- * 8-9-14-1-3-4-10-5-7-2-11-12-6
- */
+
