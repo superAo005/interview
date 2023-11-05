@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .btn {
+      width: 50px;
+      height: 50px;
+      background-color: black;
+      cursor: pointer;
+    }
+  </style>
+  <body>
+    <a id="link" href="http://www.baidu.com">link</a>
+    <script>
+      let link = document.getElementById("link");
+      const nextTick = new Promise((resolve) => {
+        link.addEventListener("click", resolve, { once: true });
+      });
+      nextTick.then((event) => {
+        event.preventDefault();
+        console.log("event.preventDefault()");
+      });
+      //link.click();
+      // 微任务会先于渲染执行
+      document.body.style = "background:red";
+      console.log(1);
+      Promise.resolve().then(() => {
+        console.log(2);
+        document.body.style = "background:yellow";
+      });
+      console.log(3);
+      // 宏任务结束之后会先执行微任务
+      setTimeout(() => {
+        console.log(1);
+        Promise.resolve(3).then((data) => console.log(data));
+      }, 0);
+
+      setTimeout(() => {
+        console.log(2);
+      }, 0);
+      button.addEventListener("click", () => {
+        Promise.resolve().then(() => console.log("Micro task 1"));
+        console.log("Listener 1"); //此时堆栈清空
+      });
+      button.addEventListener("click", () => {
+        Promise.resolve().then(() => console.log("Micro task 2"));
+        console.log("Listener 2");
+      });
+      // Listener1 Micro task 1 Listener 2 Micro task 2
+      //button.click();堆栈在执行完Listener1后没有清空。还在Script中
+    </script>
+  </body>
+</html>

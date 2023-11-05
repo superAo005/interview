@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MutationObserver</title>
+  </head>
+  <body>
+    <div id="tree"></div>
+    <button onclick="start()">开始监听</button>
+    <button onclick="changeAttribute()">修改属性</button>
+    <button onclick="addChild()">添加子节点 3秒后删除</button>
+    <script>
+      /**
+       * MutationObserver创建并返回一个新的 MutationObserver 它会在指定的DOM发生变化时被调用
+       * MutationObserver采用了异步 + 微任务的方案
+       * 异步是为了提升同步操作带来的性能问题
+       * 微任务是为了解决实时响应的问题
+       * */
+      let targetNode = document.getElementById("tree");
+      let config = { attributes: true, childList: true, subtree: true };
+      let callback = function (mutationsList) {
+        for (let mutation of mutationsList) {
+          if (mutation.type == "childList") {
+            console.log("一个子节点被添加或者删除了");
+          } else if (mutation.type == "attributes") {
+            console.log("属性 " + mutation.attributeName + " 被改变了.");
+          }
+        }
+      };
+
+      let observer = new MutationObserver(callback);
+      function start() {
+        observer.observe(targetNode, config);
+      }
+      function changeAttribute() {
+        targetNode.setAttribute("data-name", "树");
+      }
+      function addChild() {
+        let child = document.createElement("div");
+        child.innerHTML = "子节点";
+        targetNode.appendChild(child);
+        setTimeout(() => {
+          targetNode.removeChild(child);
+        });
+      }
+    </script>
+  </body>
+</html>
