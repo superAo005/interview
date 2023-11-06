@@ -34,6 +34,7 @@
         if (item.isIntersecting) {
           // 进入到视口
           // ...
+          console.dir(item);
           observer.unobserve(item.target);
         }
       });
