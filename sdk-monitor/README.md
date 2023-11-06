@@ -1,4 +1,4 @@
-# monitor
+# [monitor](https://juejin.cn/post/7017974567943536671)
 
 一个简易的前端监控 SDK DEMO，仅供学习，请勿在生产环境中使用。
 

@@ -31,3 +31,18 @@
 ## 浏览器缓存 cookie
 
 1 了解 cookie 怎么操作 ccokie
+
+## 基础：
+前端三大件：HTML、CSS、JS
+主流框架：Vue2/Vue3、React
+状态管理：Vuex、redux、mobox
+构建工具：webpack、、Vite
+前端安全：xss、csrf、cors 常见问题和防御措施
+## 进阶
+JS运行机制、事件轮询机制、浏览器运行原理
+前端性能监控、前端异常监控如何做？
+前端工程化体系包含哪些
+前端性能优化手段：页面性能、构建性能、代码性能
+Vue、React核心原理
+基础算法数据结构
+http
