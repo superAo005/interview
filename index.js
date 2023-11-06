@@ -7,14 +7,13 @@ class Person {
       console.log(this.text);
     };
   }
-
   toString() {
     console.log(`${this.x}, ${this.y}`);
   }
 }
 
-const test1 = new Person("x", "y"),
-  test2 = new Person("x2", "y2");
+const test1 = new Person("x", "y");
+const test2 = new Person("x2", "y2");
 
 console.log(test1.getText()); // Number {1}
 console.log(test2.getText()); // Number {1}
