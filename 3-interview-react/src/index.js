@@ -5,51 +5,58 @@ import useInterval from "./components/hooks/useInterval2";
 /**
  * 因为实例是同一个，状态对象也是同一个，如果是类组件的话，this.state永远是最新的值
  */
-/* 
-class PureComponent extends React.Component{
-  shouldComponentUpdate(newProps,newState){
+
+class PureComponent extends React.Component {
+  shouldComponentUpdate(newProps, newState) {
     //如果新旧属性对象浅比较后不相等或者说如果新旧状态对象浅比较后不相等，那就返回true
-    return !shallowEqual(this.props,newProps) || !shallowEqual(this.state,newState) 
+    return (
+      !shallowEqual(this.props, newProps) || !shallowEqual(this.state, newState)
+    );
   }
 }
-let obj1 = {name:{id:1}};
-let obj2 = {name:{id:2}}
-深比较的话性能比较差了
-又想实现深比较的效果，又想性能好，就得靠 immutablejs immer
-function shallowEqual(obj1,obj2){
-   if(obj1 === obj2){
+let obj1 = { name: { id: 1 } };
+let obj2 = { name: { id: 2 } };
+// 深比较的话性能比较差了
+// 又想实现深比较的效果，又想性能好，就得靠 immutablejs immer
+function shallowEqual(obj1, obj2) {
+  if (obj1 === obj2) {
     return true;
-   }
-   if(typeof obj1 != 'object' || obj1 === null ||typeof obj1 != 'object' || obj1 === null){
-    return false;
-   }
-   let keys1 = Object.keys(obj1);
-   let keys2 = Object.keys(obj2);
-   if(keys1.length != keys2.length){
-    return false;
-   }
-   for(let key of keys1){
-     if(!obj2.hasOwnProperty(key) || obj1[key]!== obj2[key]){
-      return false;
-     }
-   }
-   return true;
-}
-class ClassComponent extends PureComponent{
-  state = {number:0}
-  handleClick = (event)=>{
-    this.setState({number:this.state.number+1});
   }
-  
-  render(){
+  if (
+    typeof obj1 != "object" ||
+    obj1 === null ||
+    typeof obj1 != "object" ||
+    obj1 === null
+  ) {
+    return false;
+  }
+  let keys1 = Object.keys(obj1);
+  let keys2 = Object.keys(obj2);
+  if (keys1.length != keys2.length) {
+    return false;
+  }
+  for (let key of keys1) {
+    if (!obj2.hasOwnProperty(key) || obj1[key] !== obj2[key]) {
+      return false;
+    }
+  }
+  return true;
+}
+class ClassComponent extends PureComponent {
+  state = { number: 0 };
+  handleClick = (event) => {
+    this.setState({ number: this.state.number + 1 });
+  };
+
+  render() {
     return (
       <div>
         <p>{this.state.number}</p>
         <button onClick={this.handleClick}>+</button>
       </div>
-    )
+    );
   }
-} */
+}
 
 //如果是一个函数组件，如何跳过不必要的更新 React.memo
 function FunctionComponent(props) {
@@ -68,19 +75,6 @@ function FunctionComponent(props) {
   );
 }
 let MemoFunctionComponent = React.memo(FunctionComponent);
-function Counter(props) {
-  const { name } = props;
-  let [count, setCount] = useState(0);
-  console.log(name);
-  useEffect(() => {
-    let id = setInterval(() => {
-      setCount(count + 1);
-    }, 1000);
-    return () => clearInterval(id);
-  });
-
-  return <h1>{count}</h1>;
-}
 class App extends React.Component {
   state = { number: 0, list: new Array(10000).fill(0) };
   handleClick = (event) => {
@@ -98,8 +92,7 @@ class App extends React.Component {
         <input></input>
         <button onClick={this.handleClick}>+</button>
         <p>{this.state.number}</p>
-        {/* <MemoFunctionComponent name="superao" />
-        <Counter name="superao" /> */}
+        <MemoFunctionComponent name="superao" />
         {this.state.list.map((item, i) => {
           return <li key={i}>{item}</li>;
         })}
@@ -107,8 +100,8 @@ class App extends React.Component {
     );
   }
 }
-// ReactDOM.render(<App />, document.getElementById("root"));
-ReactDOM.unstable_createRoot(root).render(<App />);
+ReactDOM.render(<App />, document.getElementById("root"));
+// ReactDOM.unstable_createRoot(root).render(<App />);
 
 /**
  * 类组件复用逻辑一般用HOC 高阶组件
