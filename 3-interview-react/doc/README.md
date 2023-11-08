@@ -1,4 +1,4 @@
-# 我对 React 实现原理的理解
+# [我对 React 实现原理的理解](https://zhuanlan.zhihu.com/p/538096803)
 
 React 是前端开发每天都用的前端框架，自然要深入掌握它的原理。我用 React 也挺久了，这篇文章就来总结一下我对 react 原理的理解
 react 和 vue 都是基于 vdom 的前端框架，我们先聊下 vdom

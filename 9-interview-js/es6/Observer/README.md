@@ -1,0 +1,1 @@
+## [浏览器的 5 种 Observer](https://zhuanlan.zhihu.com/p/467452575)
