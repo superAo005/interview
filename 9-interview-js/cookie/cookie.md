@@ -16,3 +16,5 @@ Secure 也需要特别提一下，它是用来指定 Cookie 是否只能通过 H
 客户端在后续请求中，都需要将 Token 发送给服务器验证。一般将 Token 放在 HTTP 请求头的 Authorization 字段中，发送给服务器。Bearer [Token]
 服务端在接收到请求后，会从 Authorization 字段中获取 Token，并验证 token 是否有效，签名是否正确，是否过期等。通过后，再进行响应。
 
+## [前端鉴权登录](https://juejin.cn/post/7214759986802114620)
+
