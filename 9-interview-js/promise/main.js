@@ -191,14 +191,19 @@ class MyPromise {
   static race(promises) {
     return new Promise((resolve, reject) => {
       for (let i = 0; i < promises.length; i++) {
-        promises[i].then(
-          (res) => {
-            resolve(res);
-          },
-          (reason) => {
-            reject(reason);
-          }
-        );
+        // promises[i].then(
+        //   (res) => {
+        //     resolve(res);
+        //   },
+        //   (reason) => {
+        //     reject(reason);
+        //   }
+        // );
+        if (promises[i] instanceof Promise) {
+          promises[i].then(resolve, reject);
+        } else {
+          Promise.resolve(promises[i]).then(resolve, reject);
+        }
       }
     });
   }
