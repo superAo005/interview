@@ -1,3 +1,8 @@
+/**
+ * 通过Object.defineProperty使普通对象变为响应式对象，核心原理就是在getter中收集依赖，在sette中触发事件。
+ * 但是，该方法有个缺点：在进行劫持之前必须知道所要拦截的属性key是什么，因此，它不无法拦截对象的属性的增加和删除
+ * Vue2为了解决这个问题提供了set和delete 实例方法
+ */
 class Observer {
   constructor(data) {
     // 遍历参数 data 的属性，给添加到 this 上
