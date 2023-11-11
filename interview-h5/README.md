@@ -1,0 +1,6 @@
+##  [charles](https://zhuanlan.zhihu.com/p/573185187) 
+## [实践踩坑总结](https://juejin.cn/post/6934508023385849864)
+## [H5如何唤起微信支付](https://juejin.cn/post/7288963211070718010)
+## [H5秒开优化实战](https://juejin.cn/post/7086284339364757517)
+## [H5如何实现秒开](https://juejin.cn/post/7236281103221096505)
+## [H5与原生Native的交互](https://juejin.cn/post/7275943600780967977)
