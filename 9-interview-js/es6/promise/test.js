@@ -3,10 +3,13 @@ let Promise = require("./promise");
 let p1 = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve(11);
+    reject(22);
   }, 2000);
 });
 let promise2 = p1.then(
-  (res) => {},
+  (res) => {
+    console.log("测试-----" + res);
+  },
   (err) => {
     console.log(err);
   }

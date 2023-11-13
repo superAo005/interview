@@ -1,3 +1,7 @@
+/**
+ * promises-aplus-tests 测试脚本可以测试所编写的代码是否符合PromiseA+的规范
+ * promises-aplus-tests promise.js
+ */
 //定义三种状态常量
 const PROMISE_STATUS_PENDING = "pending";
 const PROMISE_STATUS_FULFILLED = "fulfilled";
@@ -10,7 +14,7 @@ const resolvePromise = (promise2, x, resolve, reject) => {
   }
   // 判断类型 typeof instanceof tostring constructor
   if ((typeof x === "object" && x !== null) || typeof x === "function") {
-    let called; // 内部测试的时候 会成功和失败都调用
+    let called = false; // 内部测试的时候 会成功和失败都调用
     try {
       let then = x.then; // 取then 有可能这个then属性是通过Object.defineProperty定义
       if (typeof then === "function") {
@@ -93,7 +97,7 @@ class Promise {
           };
     let promise2 = new Promise((resolve, reject) => {
       if (this.status === PROMISE_STATUS_FULFILLED) {
-        // 宏任务 为了保证res已经new完了
+        // 宏任务 为了保证promise2已经new完了
         setTimeout(() => {
           try {
             let x = onFulfilled(this.value);
@@ -149,38 +153,79 @@ class Promise {
       reject(reason);
     });
   }
-  static all(promises) {
+  static all(arr) {
     return new Promise((resolve, reject) => {
-      let results = [];
-      let i = 0;
-      function processData(index, data) {
-        results[index] = data; // let arr = []  arr[2] = 100
-        if (++i === promises.length) {
-          resolve(results);
+      if (arr.length === 0) {
+        return resolve([]);
+      } else {
+        let res = [],
+          count = 0;
+        for (let i = 0; i < arr.length; i++) {
+          // 同时也能处理arr数组中非Promise对象
+          if (!(arr[i] instanceof Promise)) {
+            res[i] = arr[i];
+            if (++count === arr.length) resolve(res);
+          } else {
+            arr[i].then(
+              (data) => {
+                res[i] = data;
+                if (++count === arr.length) resolve(res);
+              },
+              (err) => {
+                reject(err);
+              }
+            );
+          }
         }
-      }
-      for (let i = 0; i < promises.length; i++) {
-        let p = promises[i];
-        p.then((data) => {
-          // 成功后把结果和当前索引 关联起来
-          processData(i, data);
-        }, reject);
       }
     });
   }
-  static race(promises) {
+  static race(arr) {
     return new Promise((resolve, reject) => {
-      for (let i = 0; i < promises.length; i++) {
-        let p = promises[i];
-        p.then(resolve, reject);
+      for (let i = 0; i < arr.length; i++) {
+        // 同时也能处理arr数组中非Promise对象
+        if (!(arr[i] instanceof Promise)) {
+          Promise.resolve(arr[i]).then(resolve, reject);
+        } else {
+          arr[i].then(resolve, reject);
+        }
       }
     });
   }
   static catch(onRejected) {
     return this.then(null, onRejected);
   }
+  static allSettled(arr) {
+    return new Promise((resolve, reject) => {
+      let res = [];
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] instanceof Promise) {
+          arr[i].then(
+            (data) => {
+              res[i] = {
+                status: "fulfiled",
+                value: data,
+              };
+            },
+            (err) => {
+              res[i] = {
+                status: "rejected",
+                reason: err,
+              };
+            }
+          );
+        } else {
+          res[i] = {
+            status: "fulfiled",
+            value: arr[i],
+          };
+        }
+      }
+      resolve(res);
+    });
+  }
 }
-// 语法糖 简化问题 嵌套的问题 ，被废弃了
+// 语法糖 简化问题 嵌套的问题 ，被废弃了 延迟对象
 Promise.defer = Promise.deferred = function () {
   let dfd = {};
   dfd.promise = new Promise((resolve, reject) => {
