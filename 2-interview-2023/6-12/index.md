@@ -40,8 +40,12 @@ getDerivedStateFromProps; // 静态方法
 getSnapshotBeforeUpdate;
 
 /*
-		在16.8版本以后，react将diff运算改进为Fiber，这样的话当我们调用setState方法进行更新的时候，在reconciler 层中js运算会按照节点为单位拆分成一个个小的工作单元，在render前可能会中断或恢复，就有可能导致在render前这些生命周期在进行一次更新时存在多次执行的情况，此时如果我们在里面使用ref操作dom的话，就会造成页面频繁重绘，影响性能。
-		所以废弃了这几个will系列的勾子，增加了 getDerivedStateFromProps这个静态方法，这样的话我们就不能在其中使用this.refs以及this上的方法了；getSnapshotBeforeUpdate 这个方法已经到了commit阶段，只会执行一次，给想读取 dom 的用户一些空间。
+		在16.8版本以后，react将diff运算改进为Fiber，这样的话当我们调用setState方法进行更新的时候，
+    在reconciler 层中js运算会按照节点为单位拆分成一个个小的工作单元，
+    在render前可能会中断或恢复，就有可能导致在render前这些生命周期在进行一次更新时存在多次执行的情况，此时如果我们在里面使用ref操作dom的话，就会造成页面频繁重绘，影响性能。
+		所以废弃了这几个will系列的勾子，
+    增加了getDerivedStateFromProps这个静态方法，这样的话我们就不能在其中使用this.refs以及this上的方法了；
+    getSnapshotBeforeUpdate 这个方法已经到了commit阶段，只会执行一次，给想读取 dom 的用户一些空间。
 */
 /*
 		当我们需要修改store中值的时候，我们是通过 dispatch(action)将要修改的值传到reducer中的，这个过程是同步的，如果我们要进行异步操作的时候，就需要用到中间件；中间件其实是提供了一个分类处理action的机会，在 middleware 中，我们可以检阅每一个流过的action，并挑选出特定类型的 action进行相应操作，以此来改变 action；

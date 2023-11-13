@@ -7,7 +7,7 @@ const PROMISE_FULFILLED_STATE = "fulfilled";
 // 失败
 const PROMISE_REJECTED_STATE = "rejected";
 
-class MyPromise {
+class Promise {
   constructor(execute) {
     this.PromiseState = PROMISE_PENDING_STATE;
     this.PromiseResult = undefined;
@@ -101,6 +101,7 @@ class MyPromise {
       // 封装的公共方法
       const callback = (fn) => {
         try {
+          // result可能是promise 或者是普通值
           const result = fn(this.PromiseResult);
           if (result instanceof Promise) {
             result.then(
@@ -208,51 +209,5 @@ class MyPromise {
     });
   }
 }
-const p1 = new MyPromise((resolve, reject) => {
-  resolve("success");
-}).then(
-  (res) => {
-    console.log(res); // success
-    return "success----2";
-  },
-  () => {
-    // ....
-  }
-);
-const p2 = new MyPromise((resolve, reject) => {
-  reject("error");
-}).then(
-  () => {
-    // ....
-  },
-  (err) => {
-    console.log(err); // error
-    return "error---2";
-  }
-);
-const p3 = new MyPromise((resolve, reject) => {
-  setTimeout(() => {
-    resolve("success");
-  }, 2000);
-}).then(
-  (res) => {
-    console.log(res);
-    return "success----2";
-  },
-  () => {
-    // ...
-  }
-);
-const p4 = new MyPromise((resolve, reject) => {
-  reject("error");
-}).then(
-  () => {
-    // ....
-  },
-  (err) => {
-    console.log(err);
-    return "error---2";
-  }
-);
+export default Promise;
 
-console.dir(p3);

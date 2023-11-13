@@ -13,7 +13,7 @@ const state = ref(0);
 const person = reactive({
   count: 0,
 });
-const change2 = () => {
+const change1 = () => {
   state.value++;
   person.count++;
 };
@@ -51,7 +51,7 @@ watchEffect(
 const deer = reactive({
   foo: 0,
 });
-const change = () => {
+const change2 = () => {
   deer.foo++;
 };
 
@@ -69,8 +69,8 @@ watch(
 
 <template>
   <div class="app-container">
-    <button @click="change2">点击1</button>
-    <button @click="change">点击2</button>
+    <button @click="change1">点击1</button>
+    <button @click="change2">点击2</button>
     <h1 class="h1">{{ state }}</h1>
   </div>
 </template>

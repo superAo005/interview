@@ -33,6 +33,16 @@ class EventBus {
       ); // 过滤掉要取消的回调函数
     }
   }
+  once(eventName, callback) {
+    // 定义一个新的回调函数，它会在执行一次后被自动移除
+    const wrapper = (...args) => {
+      callback(...args);
+      // callback.apply(this, args);
+      this.unsubscribe(eventName, wrapper);
+    };
+    // 将新的回调函数添加到回调函数列表中，并且确保不会重复执行
+    this.subscribe(eventName, wrapper);
+  }
 }
 // 测试用例
 // 创建全局事件总线对象
