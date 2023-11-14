@@ -4,4 +4,5 @@
 访问监听数据变化前后状态
 ***需要以下需求的请使用 watchEffect***
 有多个依赖项时，因为当有多个依赖项时，watch 传入一个数组，增加了得手动维护这个依赖列表的负担。
-需要侦听一个嵌套数据结构中的其中几个属性时，watchEffect 会比添加 options.deep 的 watch 有效。因为 watchEffect 只跟踪回调中使用到的属性，而深度侦听的 watch 会递归跟踪所有的属性。
+需要侦听一个嵌套数据结构中的其中几个属性时，watchEffect 会比添加 options.deep 的 watch 有效。
+因为 watchEffect 只跟踪回调中使用到的属性，而深度侦听的 watch 会递归跟踪所有的属性。
