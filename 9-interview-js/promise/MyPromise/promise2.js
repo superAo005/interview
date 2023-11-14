@@ -48,11 +48,6 @@ class Promise {
     }
   }
 }
-
-console.log(1);
-setTimeout(() => {
-  console.log(2);
-});
 const p1 = new Promise((resolve) => {
   console.log(3);
   resolve(4);

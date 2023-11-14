@@ -66,6 +66,10 @@ class Promise {
     this.onRejectedCallbacks = [];
     //执行器
     let resolve = (value) => {
+      // value 是自己实现的 Promise，就调用 then，返回最终结果
+      if (value instanceof Promise) {
+        return value.then(reslove, reject);
+      }
       if (this.status === PROMISE_STATUS_PENDING) {
         this.status = PROMISE_STATUS_FULFILLED;
         this.value = value;

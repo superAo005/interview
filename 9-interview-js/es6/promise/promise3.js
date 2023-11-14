@@ -51,51 +51,6 @@ class Promise {
   // then 方法返回一个新的 Promise，该 Promise 的状态由回调函数决定。
   // 如果回调函数返回的是一个 Promise 对象，那么新 Promise 的状态将与该 Promise 对象的状态相同。
   // 如果回调函数抛出错误，那么新 Promise 的状态将为 rejected，需要通过 try catch 捕获错误。
-  //   then(onResolved, onRejected) {
-  //     return new Promise((resolve, reject) => {
-  //       // 成功
-  //       if (this.PromiseState === PROMISE_FULFILLED_STATE) {
-  //         try {
-  //           const result = onResolved(this.PromiseResult);
-  //           if (result instanceof Promise) {
-  //             result.then(
-  //               (res) => {
-  //                 resolve(res);
-  //               },
-  //               (err) => {
-  //                 reject(err);
-  //               }
-  //             );
-  //           } else {
-  //             resolve(result);
-  //           }
-  //         } catch (err) {
-  //           reject(err);
-  //         }
-  //       }
-
-  //       // 失败
-  //       if (this.PromiseState === PROMISE_REJECTED_STATE) {
-  //         try {
-  //           const result = onRejected(this.PromiseResult);
-  //           if (result instanceof Promise) {
-  //             result.then(
-  //               (res) => {
-  //                 resolve(res);
-  //               },
-  //               (err) => {
-  //                 reject(err);
-  //               }
-  //             );
-  //           } else {
-  //             resolve(result);
-  //           }
-  //         } catch (err) {
-  //           reject(err);
-  //         }
-  //       }
-  //     });
-  //   }
   then(onResolved, onRejected) {
     return new Promise((resolve, reject) => {
       // 封装的公共方法
