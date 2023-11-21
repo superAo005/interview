@@ -34,7 +34,7 @@ function resolveHome(envPath) {
 
 const config = (options) => {
   // 读取 node 执行的当前路径下的 .env 文件
-  let dotenvPath = path.resolve(process.cwd(), ".env");
+  let dotenvPath = path.resolve(process.cwd(), "7-interview-node/env/.env");
   // utf8
   let encoding = "utf8";
   // debug 模式，输出提示等信息
@@ -82,5 +82,7 @@ console.log(config());
 console.log(process.env);
 
 // 导出 config parse 函数
-module.exports.config = config;
-module.exports.parse = parse;
+module.exports = {
+  config,
+  parse,
+};

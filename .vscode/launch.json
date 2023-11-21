@@ -5,18 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-        "name": "Launch Chrome",
-        "request": "launch",
-        "type": "chrome",
-        "url": "http://localhost:3000",
-        "webRoot": "${workspaceFolder}/interview-webpack"
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/interview-webpack"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "启动程序",
+      "name": "node",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/index.js"
+      "program": "${workspaceFolder}/7-interview-node/env/index.js",
     }
   ]
 }
