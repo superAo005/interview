@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "baseUrl": ".",
-    "allowJs": true,
+    "allowJs": false,
     "paths": {
       "@/*": ["src/*"]
     },
@@ -22,7 +22,8 @@
 
     "jsx": "preserve",
     "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment"
+    "jsxFragmentFactory": "Fragment",
+    "strictNullChecks": false
   },
   "include": [
     "src/**/*.ts",
