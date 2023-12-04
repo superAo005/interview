@@ -104,7 +104,7 @@ const appendWatermark = (base64Url: string, markWidth: number) => {
 };
 
 /**
- * Get the width and height of the watermark. The default values are as follows
+ * 得到水印的宽度和高度
  * Image: [120, 64]; Content: It's calculated by content;
  */
 const getMarkSize = (ctx: CanvasRenderingContext2D) => {
@@ -195,7 +195,9 @@ const renderWatermark = () => {
 onMounted(() => {
   renderWatermark();
 });
-
+onBeforeUnmount(() => {
+  destroyWatermark();
+});
 watch(
   () => props,
   () => {
@@ -206,10 +208,6 @@ watch(
     flush: "post",
   }
 );
-
-onBeforeUnmount(() => {
-  destroyWatermark();
-});
 
 const onMutate = (mutations: MutationRecord[]) => {
   if (stopObservation.value) {
