@@ -10,6 +10,8 @@
 import { getPixelRatio, getStyleStr, reRendering, FontGap } from './utils'
 const rate = 350
 let lastClick = Date.now() - rate
+const logoW = 35
+const logoH = 25
 const BaseSize = 1
 export default {
   name: 'Watermark',
@@ -22,7 +24,7 @@ export default {
   },
   props: {
     zIndex: { type: Number, default: 9999 },
-    rotate: { type: Number, default: 0 }, // 水印的旋转角度
+    rotate: { type: Number, default: -25 }, // 水印的旋转角度
     width: { type: [String, Number], default: 120 },
     height: { type: [String, Number], default: 64 },
     image: { type: String, default: '' },
@@ -58,6 +60,7 @@ export default {
     }
   },
   methods: {
+    // 监听防篡改水印
     onMutate (records) {
       if (this.stopObservation) return
       records.forEach((mutation) => {
@@ -73,6 +76,7 @@ export default {
       observe.observe(target, options)
       return observe
     },
+    // 水印大小
     getMarkSize (ctx) {
       const props = this.$props
       const { fontSize, fontFamily } = props.font
@@ -86,19 +90,23 @@ export default {
         ctx.font = `${Number(fontSize)}px ${fontFamily}`
         const contents = Array.isArray(content) ? content : [content]
         const widths = contents.map((item) => ctx.measureText(item).width)
-        defaultWidth = Math.ceil(Math.max(...widths))
+        defaultWidth = Math.ceil(Math.max(...widths)) + logoW + 10
         defaultHeight =
           Number(fontSize.value) * contents.length +
           (contents.length - 1) * FontGap
       }
-      return [width ?? defaultWidth, height ?? defaultHeight]
+      // return [width ?? defaultWidth, height ?? defaultHeight]
+      return [defaultWidth ?? width, defaultHeight ?? height]
     },
+    // 旋转水印
     rotateWatermark (ctx, rotateX, rotateY, rotate) {
       const direction = this.$props.clockwise ? 1 : -1
+      const angle = (Math.PI / 180) * Number(rotate) * direction
       ctx.translate(rotateX, rotateY)
-      ctx.rotate((Math.PI / 180) * Number(rotate) * direction)
+      ctx.rotate(angle)
       ctx.translate(-rotateX, -rotateY)
     },
+    // 水印内容
     fillTexts (ctx, drawX, drawY, drawWidth, drawHeight) {
       const props = this.$props
       const { fontSize, fontFamily, fontStyle, fontWeight, color, textAlign, textBaseline } = props.font
@@ -109,7 +117,7 @@ export default {
       ctx.fillStyle = color
       ctx.textAlign = textAlign
       ctx.textBaseline = textBaseline
-      ctx.translate(drawWidth / 2, 0)
+      // ctx.translate(drawWidth / 2, 0)
       const contents = Array.isArray(content) ? content : [content]
       contents?.forEach((item, index) => {
         ctx.fillText(
@@ -136,6 +144,7 @@ export default {
         this.stopObservation = false
       })
     },
+    // 渲染水印
     renderWatermark () {
       const props = this.$props
       const [gapX, gapY] = props.gap
@@ -150,6 +159,7 @@ export default {
       }
       const ratio = getPixelRatio()
       const [markWidth, markHeight] = this.getMarkSize(ctx)
+      // 开始画水印
       const canvasWidth = (gapX + markWidth) * ratio
       const canvasHeight = (gapY + markHeight) * ratio
       canvas.setAttribute('width', `${canvasWidth * BaseSize}px`)
@@ -190,35 +200,26 @@ export default {
         if (logo) {
           const img = new Image()
           img.onload = () => {
-            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight)
-            /** 旋转后绘制交错图 */
-            ctx.restore()
-            this.rotateWatermark(ctx, alternateRotateX, alternateRotateY, rotate)
-            ctx.drawImage(
-              img,
-              alternateDrawX,
-              alternateDrawY,
-              drawWidth,
-              drawHeight
-            )
+            const w = img.width / 3 || logoW
+            const h = img.height / 3 || logoH
+            ctx.drawImage(img, drawX, drawY, w, h)
+            this.fillTexts(ctx, drawX + w + 10, drawY, drawWidth, drawHeight)
+            /** 旋转后填充交错的文本 */
+            // ctx.restore()
+            // this.rotateWatermark(ctx, alternateRotateX, alternateRotateY, rotate)
+            // this.fillTexts(
+            //   ctx,
+            //   alternateDrawX,
+            //   alternateDrawY,
+            //   drawWidth,
+            //   drawHeight
+            // )
             this.appendWatermark(canvas.toDataURL(), markWidth)
           }
           img.crossOrigin = 'anonymous'
           img.referrerPolicy = 'no-referrer'
           img.src = logo
         }
-        this.fillTexts(ctx, drawX, drawY, drawWidth, drawHeight)
-        /** 旋转后填充交错的文本 */
-        ctx.restore()
-        this.rotateWatermark(ctx, alternateRotateX, alternateRotateY, rotate)
-        this.fillTexts(
-          ctx,
-          alternateDrawX,
-          alternateDrawY,
-          drawWidth,
-          drawHeight
-        )
-        this.appendWatermark(canvas.toDataURL(), markWidth)
       }
     },
     destroyWatermark () {
@@ -267,14 +268,16 @@ export default {
   watch: {
     $props: {
       handler () {
-        if (Date.now() - lastClick >= rate && this.isShowKey('/adviser/tool/watermark')) {
-          this.stopObservation = true
-          this.renderWatermark()
-          // 延迟执行
-          setTimeout(() => {
-            this.stopObservation = false
-            lastClick = Date.now()
-          })
+        if (this.isShowKey('/adviser/tool/watermark')) {
+          if (Date.now() - lastClick >= rate) {
+            this.stopObservation = true
+            this.renderWatermark()
+            // 延迟执行
+            setTimeout(() => {
+              this.stopObservation = false
+              lastClick = Date.now()
+            })
+          }
         }
       },
       deep: true
