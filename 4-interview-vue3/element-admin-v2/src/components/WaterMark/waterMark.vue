@@ -1,6 +1,6 @@
 <template>
-  <div class="watermark-container">
-    <div class="watermark-content">
+  <div class="wm-container">
+    <div class="wm-content">
       <slot></slot>
     </div>
   </div>
@@ -10,7 +10,7 @@
 import { getPixelRatio, getStyleStr, reRendering, FontGap } from './utils'
 const rate = 350
 let lastClick = Date.now() - rate
-const BaseSize = 2
+const BaseSize = 1
 export default {
   name: 'Watermark',
   data () {
@@ -22,7 +22,7 @@ export default {
   },
   props: {
     zIndex: { type: Number, default: 9999 },
-    rotate: { type: Number, default: -25 }, // 水印的旋转角度
+    rotate: { type: Number, default: 0 }, // 水印的旋转角度
     width: { type: [String, Number], default: 120 },
     height: { type: [String, Number], default: 64 },
     image: { type: String, default: '' },
@@ -41,19 +41,21 @@ export default {
       })
     },
     clockwise: { type: Boolean, default: true },
-    opacity: { type: Number, default: 1 },
+    opacity: { type: Number, default: 0.75 },
     gap: { type: Array, default: () => [100, 100] }, // 水印之间的间距
     offset: { type: Array, default: () => [0, 0] } // 水印从容器左上角的偏移
   },
   mounted () {
-    this.renderWatermark()
-    this.$nextTick(() => {
-      this.observe = this.useMutationObserver(this.$el, this.onMutate, {
-        attributes: true,
-        childList: true,
-        subtree: true
+    if (this.isShowKey('/adviser/tool/watermark')) {
+      this.renderWatermark()
+      this.$nextTick(() => {
+        this.observe = this.useMutationObserver(this.$el, this.onMutate, {
+          attributes: true,
+          childList: true,
+          subtree: true
+        })
       })
-    })
+    }
   },
   methods: {
     onMutate (records) {
@@ -140,6 +142,7 @@ export default {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
       const image = props.image
+      const logo = props.logo
       const rotate = props.rotate
       if (!ctx) return false
       if (!this.watermarkRef) {
@@ -184,6 +187,26 @@ export default {
         img.referrerPolicy = 'no-referrer'
         img.src = image
       } else {
+        if (logo) {
+          const img = new Image()
+          img.onload = () => {
+            ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight)
+            /** 旋转后绘制交错图 */
+            ctx.restore()
+            this.rotateWatermark(ctx, alternateRotateX, alternateRotateY, rotate)
+            ctx.drawImage(
+              img,
+              alternateDrawX,
+              alternateDrawY,
+              drawWidth,
+              drawHeight
+            )
+            this.appendWatermark(canvas.toDataURL(), markWidth)
+          }
+          img.crossOrigin = 'anonymous'
+          img.referrerPolicy = 'no-referrer'
+          img.src = logo
+        }
         this.fillTexts(ctx, drawX, drawY, drawWidth, drawHeight)
         /** 旋转后填充交错的文本 */
         ctx.restore()
@@ -209,12 +232,10 @@ export default {
       const props = this.$props
       const [gapX, gapY] = props.gap
       const [offsetX, offsetY] = props.offset
-
       const gapXCenter = gapX / 2
       const gapYCenter = gapY / 2
       const offsetTop = offsetY || gapYCenter
       const offsetLeft = offsetX || gapXCenter
-
       const markStyle = {
         zIndex: this.zIndex,
         opacity: this.opacity,
@@ -226,7 +247,6 @@ export default {
         pointerEvents: 'none',
         backgroundRepeat: 'repeat'
       }
-
       let positionLeft = offsetLeft - gapXCenter
       let positionTop = offsetTop - gapYCenter
       if (positionLeft > 0) {
@@ -247,7 +267,7 @@ export default {
   watch: {
     $props: {
       handler () {
-        if (Date.now() - lastClick >= rate) {
+        if (Date.now() - lastClick >= rate && this.isShowKey('/adviser/tool/watermark')) {
           this.stopObservation = true
           this.renderWatermark()
           // 延迟执行
@@ -269,14 +289,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.watermark-container {
+.wm-container {
   position: relative;
   height: 100%;
   display: flex;
 }
-.watermark-content {
+.wm-content {
   position: relative;
-  z-index: 1;
   flex-grow: 1;
   height: 100%;
   overflow: hidden;
