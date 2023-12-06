@@ -19,7 +19,7 @@ export function getPixelRatio() {
   return window.devicePixelRatio || 1;
 }
 
-/** Whether to re-render the watermark */
+/** 是否重新渲染水印 */
 export const reRendering = (
   mutation: MutationRecord,
   watermarkElement?: HTMLElement
@@ -35,3 +35,14 @@ export const reRendering = (
   }
   return flag;
 };
+/** 以水印为中心点旋转*/
+export function rotateWatermark(
+  ctx: CanvasRenderingContext2D,
+  rotateX: number,
+  rotateY: number,
+  rotate: number
+) {
+  ctx.translate(rotateX, rotateY);
+  ctx.rotate((Math.PI / 180) * Number(rotate));
+  ctx.translate(-rotateX, -rotateY);
+}

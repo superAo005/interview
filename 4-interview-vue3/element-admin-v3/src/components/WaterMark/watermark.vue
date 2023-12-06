@@ -146,10 +146,8 @@ const renderWatermark = () => {
     if (!watermarkRef.value) {
       watermarkRef.value = document.createElement("div");
     }
-
     const ratio = getPixelRatio();
     const [markWidth, markHeight] = getMarkSize(ctx);
-
     const drawCanvas = (
       drawContent?: NonNullable<WatermarkProps["content"]> | HTMLImageElement
     ) => {
@@ -174,7 +172,6 @@ const renderWatermark = () => {
 
       appendWatermark(textClips, clipWidth);
     };
-
     if (image) {
       const img = new Image();
       img.onload = () => {
