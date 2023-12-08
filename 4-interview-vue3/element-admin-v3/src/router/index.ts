@@ -41,7 +41,6 @@ export const constantRoutes: RouteRecordRaw[] = [
           alwaysShow: false,
         },
       },
-
       {
         path: "401",
         component: () => import("@/views/error-page/401.vue"),
@@ -54,19 +53,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-  // 测试
-  {
-    path: "/test",
-    component: Layout,
-    redirect: "/test",
-    children: [
-      {
-        path: "/test",
-        component: () => import("@/views/demo/test.vue"),
-        meta: { title: "测试", icon: "link" },
-      },
-    ],
-  },
+
   // 外部链接
   // {
   //   path: "/external-link",

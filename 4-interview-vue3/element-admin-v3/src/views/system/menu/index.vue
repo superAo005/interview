@@ -24,7 +24,8 @@ const queryFormRef = ref(ElForm);
 const menuFormRef = ref(ElForm);
 
 const loading = ref(false);
-const dialog = reactive<DialogOption>({
+const dialog = reactive({
+  title: "",
   visible: false,
 });
 

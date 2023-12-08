@@ -1,19 +1,23 @@
 import vue from "@vitejs/plugin-vue";
-
 import { UserConfig, ConfigEnv, loadEnv, defineConfig } from "vite";
+
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
+
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+
 import { viteMockServe } from "vite-plugin-mock";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import UnoCSS from "unocss/vite";
-import path from "path";
 
-const pathSrc = path.resolve(__dirname, "src");
-// 参考Vite官方： https://cn.vitejs.dev/config
+import UnoCSS from "unocss/vite";
+import { resolve } from "path";
+
+const pathSrc = resolve(__dirname, "src");
+//  https://cn.vitejs.dev/config
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   return {
@@ -47,17 +51,13 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
          * http://localhost:3000/dev-api/users (F12可见请求路径) => http://localhost:8989/users (实际请求后端 API 路径)
          *
          * env.VITE_APP_BASE_API: /dev-api
-         * env.VITE_APP_TARGET_URL: http://localhost:8989
-         * env.VITE_APP_TARGET_BASE_API: ""
+         * env.VITE_APP_API_URL: http://localhost:8989
          */
         [env.VITE_APP_BASE_API]: {
           changeOrigin: true,
-          target: env.VITE_APP_TARGET_URL,
+          target: env.VITE_APP_API_URL,
           rewrite: (path) =>
-            path.replace(
-              new RegExp("^" + env.VITE_APP_BASE_API),
-              env.VITE_APP_TARGET_BASE_API
-            ),
+            path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""),
         },
       },
     },
@@ -81,7 +81,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         vueTemplate: true,
         // 配置文件生成位置(false:关闭自动生成)
         dts: false,
-        // dts: "src/types/auto-imports.d.ts",
+        // dts: "src/typings/auto-imports.d.ts",
       }),
 
       Components({
@@ -92,10 +92,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           IconsResolver({ enabledCollections: ["ep"] }),
         ],
         // 指定自定义组件位置(默认:src/components)
-        dirs: ["src/**/components"],
+        dirs: ["src/components", "src/**/components"],
         // 配置文件位置 (false:关闭自动生成)
         dts: false,
-        // dts: "src/types/components.d.ts",
+        // dts: "src/typings/components.d.ts",
       }),
 
       Icons({
@@ -103,7 +103,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       }),
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹
-        iconDirs: [path.resolve(pathSrc, "assets/icons")],
+        iconDirs: [resolve(pathSrc, "assets/icons")],
         // 指定symbolId格式
         symbolId: "icon-[dir]-[name]",
       }),
@@ -165,6 +165,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         "element-plus/es/components/rate/style/css",
         "element-plus/es/components/date-picker/style/css",
         "element-plus/es/components/notification/style/css",
+        "element-plus/es/components/image/style/css",
+        "element-plus/es/components/statistic/style/css",
+        "element-plus/es/components/watermark/style/css",
+        "element-plus/es/components/config-provider/style/css",
         "@vueuse/core",
         "sortablejs",
         "path-to-regexp",

@@ -29,7 +29,8 @@ const queryParams = reactive<DictTypeQuery>({
 
 const dictTypeList = ref<DictTypePageVO[]>();
 
-const dialog = reactive<DialogOption>({
+const dialog = reactive({
+  title: "",
   visible: false,
 });
 
@@ -148,7 +149,8 @@ function handleDelete(dictTypeId?: number) {
   });
 }
 
-const dictDataDialog = reactive<DialogOption>({
+const dictDataDialog = reactive({
+  title: "",
   visible: false,
 });
 

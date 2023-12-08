@@ -32,7 +32,8 @@ const queryParams = reactive<RoleQuery>({
 
 const roleList = ref<RolePageVO[]>();
 
-const dialog = reactive<DialogOption>({
+const dialog = reactive({
+  title: "",
   visible: false,
 });
 
