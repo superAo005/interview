@@ -1,7 +1,7 @@
 <template>
   <div class="wm-container">
     <div class="wm-content">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -15,13 +15,6 @@ const logoH = 25
 const BaseSize = 1
 export default {
   name: 'Watermark',
-  data () {
-    return {
-      watermarkRef: null,
-      stopObservation: false,
-      observe: null
-    }
-  },
   props: {
     zIndex: { type: Number, default: 9999 },
     rotate: { type: Number, default: -25 }, // 水印的旋转角度
@@ -47,7 +40,69 @@ export default {
     gap: { type: Array, default: () => [100, 100] }, // 水印之间的间距
     offset: { type: Array, default: () => [0, 0] } // 水印从容器左上角的偏移
   },
-  mounted () {
+  data() {
+    return {
+      watermarkRef: null,
+      stopObservation: false,
+      observe: null
+    }
+  },
+  computed: {
+    markStyle() {
+      const props = this.$props
+      const [gapX, gapY] = props.gap
+      const [offsetX, offsetY] = props.offset
+      const gapXCenter = gapX / 2
+      const gapYCenter = gapY / 2
+      const offsetTop = offsetY || gapYCenter
+      const offsetLeft = offsetX || gapXCenter
+      const markStyle = {
+        zIndex: this.zIndex,
+        opacity: this.opacity,
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
+        backgroundRepeat: 'repeat'
+      }
+      let positionLeft = offsetLeft - gapXCenter
+      let positionTop = offsetTop - gapYCenter
+      if (positionLeft > 0) {
+        markStyle.left = `${positionLeft}px`
+        markStyle.width = `calc(100% - ${positionLeft}px)`
+        positionLeft = 0
+      }
+      if (positionTop > 0) {
+        markStyle.top = `${positionTop}px`
+        markStyle.height = `calc(100% - ${positionTop}px)`
+        positionTop = 0
+      }
+      markStyle.backgroundPosition = `${positionLeft}px ${positionTop}px`
+
+      return markStyle
+    }
+  },
+  watch: {
+    $props: {
+      handler() {
+        if (this.isShowKey('/adviser/tool/watermark')) {
+          if (Date.now() - lastClick >= rate) {
+            this.stopObservation = true
+            this.renderWatermark()
+            // 延迟执行
+            setTimeout(() => {
+              this.stopObservation = false
+              lastClick = Date.now()
+            })
+          }
+        }
+      },
+      deep: true
+    }
+  },
+  mounted() {
     if (this.isShowKey('/adviser/tool/watermark')) {
       this.renderWatermark()
       this.$nextTick(() => {
@@ -59,9 +114,14 @@ export default {
       })
     }
   },
+  beforeDestroy() {
+    this.destroyWatermark()
+    this.observe.disconnect()
+    this.observe = null
+  },
   methods: {
     // 监听防篡改水印
-    onMutate (records) {
+    onMutate(records) {
       if (this.stopObservation) return
       records.forEach((mutation) => {
         if (!reRendering(mutation, this.watermarkRef)) return
@@ -69,7 +129,7 @@ export default {
         this.renderWatermark()
       })
     },
-    useMutationObserver (target, callback, options) {
+    useMutationObserver(target, callback, options) {
       const isSupported = typeof MutationObserver !== 'undefined'
       if (!isSupported) return false
       const observe = new MutationObserver(callback)
@@ -77,7 +137,7 @@ export default {
       return observe
     },
     // 水印大小
-    getMarkSize (ctx) {
+    getMarkSize(ctx) {
       const props = this.$props
       const { fontSize, fontFamily } = props.font
       let defaultWidth
@@ -99,7 +159,7 @@ export default {
       return [defaultWidth ?? width, defaultHeight ?? height]
     },
     // 旋转水印
-    rotateWatermark (ctx, rotateX, rotateY, rotate) {
+    rotateWatermark(ctx, rotateX, rotateY, rotate) {
       const direction = this.$props.clockwise ? 1 : -1
       const angle = (Math.PI / 180) * Number(rotate) * direction
       ctx.translate(rotateX, rotateY)
@@ -107,9 +167,17 @@ export default {
       ctx.translate(-rotateX, -rotateY)
     },
     // 水印内容
-    fillTexts (ctx, drawX, drawY, drawWidth, drawHeight) {
+    fillTexts(ctx, drawX, drawY, drawWidth, drawHeight) {
       const props = this.$props
-      const { fontSize, fontFamily, fontStyle, fontWeight, color, textAlign, textBaseline } = props.font
+      const {
+        fontSize,
+        fontFamily,
+        fontStyle,
+        fontWeight,
+        color,
+        textAlign,
+        textBaseline
+      } = props.font
       const ratio = getPixelRatio()
       const content = props.content
       const mergedFontSize = Number(fontSize) * ratio
@@ -127,7 +195,7 @@ export default {
         )
       })
     },
-    appendWatermark (base64Url, markWidth) {
+    appendWatermark(base64Url, markWidth) {
       if (!this.watermarkRef) return
       const props = this.$props
       const [gapX] = props.gap
@@ -145,7 +213,7 @@ export default {
       })
     },
     // 渲染水印
-    renderWatermark () {
+    renderWatermark() {
       const props = this.$props
       const [gapX, gapY] = props.gap
       const canvas = document.createElement('canvas')
@@ -199,94 +267,39 @@ export default {
       } else {
         if (logo) {
           const img = new Image()
+          img.crossOrigin = 'anonymous'
+          img.referrerPolicy = 'no-referrer'
+          img.src = logo
           img.onload = () => {
             const w = img.width / 3 || logoW
             const h = img.height / 3 || logoH
             ctx.drawImage(img, drawX, drawY, w, h)
             this.fillTexts(ctx, drawX + w + 10, drawY, drawWidth, drawHeight)
             /** 旋转后填充交错的文本 */
-            // ctx.restore()
-            // this.rotateWatermark(ctx, alternateRotateX, alternateRotateY, rotate)
-            // this.fillTexts(
-            //   ctx,
-            //   alternateDrawX,
-            //   alternateDrawY,
-            //   drawWidth,
-            //   drawHeight
-            // )
+            ctx.restore()
+            this.rotateWatermark(
+              ctx,
+              alternateRotateX,
+              alternateRotateY,
+              rotate
+            )
+            this.fillTexts(
+              ctx,
+              alternateDrawX + w + 10,
+              alternateDrawY,
+              drawWidth,
+              drawHeight
+            )
             this.appendWatermark(canvas.toDataURL(), markWidth)
           }
-          img.crossOrigin = 'anonymous'
-          img.referrerPolicy = 'no-referrer'
-          img.src = logo
         }
       }
     },
-    destroyWatermark () {
+    destroyWatermark() {
       if (!this.watermarkRef) return
       this.watermarkRef.remove()
       this.watermarkRef = undefined
     }
-  },
-  computed: {
-    markStyle () {
-      const props = this.$props
-      const [gapX, gapY] = props.gap
-      const [offsetX, offsetY] = props.offset
-      const gapXCenter = gapX / 2
-      const gapYCenter = gapY / 2
-      const offsetTop = offsetY || gapYCenter
-      const offsetLeft = offsetX || gapXCenter
-      const markStyle = {
-        zIndex: this.zIndex,
-        opacity: this.opacity,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        backgroundRepeat: 'repeat'
-      }
-      let positionLeft = offsetLeft - gapXCenter
-      let positionTop = offsetTop - gapYCenter
-      if (positionLeft > 0) {
-        markStyle.left = `${positionLeft}px`
-        markStyle.width = `calc(100% - ${positionLeft}px)`
-        positionLeft = 0
-      }
-      if (positionTop > 0) {
-        markStyle.top = `${positionTop}px`
-        markStyle.height = `calc(100% - ${positionTop}px)`
-        positionTop = 0
-      }
-      markStyle.backgroundPosition = `${positionLeft}px ${positionTop}px`
-
-      return markStyle
-    }
-  },
-  watch: {
-    $props: {
-      handler () {
-        if (this.isShowKey('/adviser/tool/watermark')) {
-          if (Date.now() - lastClick >= rate) {
-            this.stopObservation = true
-            this.renderWatermark()
-            // 延迟执行
-            setTimeout(() => {
-              this.stopObservation = false
-              lastClick = Date.now()
-            })
-          }
-        }
-      },
-      deep: true
-    }
-  },
-  beforeDestroy () {
-    this.destroyWatermark()
-    this.observe.disconnect()
-    this.observe = null
   }
 }
 </script>
