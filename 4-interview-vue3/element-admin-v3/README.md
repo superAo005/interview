@@ -1,3 +1,15 @@
+<p align="center">
+    <img src="https://img.shields.io/badge/Vue-3.3.4-brightgreen.svg"/>
+    <img src="https://img.shields.io/badge/Vite-4.4.11-green.svg"/>
+    <img src="https://img.shields.io/badge/Element Plus-2.3.14-blue.svg"/>
+    <img src="https://img.shields.io/badge/license-MIT-green.svg"/>
+    <a href="https://gitee.com/youlaiorg" target="_blank">
+        <img src="https://img.shields.io/badge/Author-有来开源组织-orange.svg"/>
+    </a>
+</p>
+<p align="center">
+ <a target="_blank" href="https://juejin.cn/post/7228990409909108793">vue3-element-admin官方文档</a> |  <a target="_blank" href="http://vue3.youlai.tech">在线预览</a> 
+</p>
 
 
 ## 项目介绍
@@ -151,4 +163,17 @@ server {
 ![](https://foruda.gitee.com/images/1687755823165218215/c1705416_716974.png)
 
 
+
+## 交流群🚀
+
+> 关注「有来技术」公众号，获取交流群二维码。
+>
+> 如果交流群的二维码过期，加我微信，备注「前端」、「后端」或「全栈」即可。
+>
+> 为了避免营销广告人群混入，此举无奈，望理解！
+
+
+| 公众号                                                       | 交流群                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="https://foruda.gitee.com/images/1687689212187063809/3c69eaee_716974.png" height="180px"/> | <img src="https://foruda.gitee.com/images/1687689212139273561/6a65ef69_716974.png" height="180px"/> |
 
