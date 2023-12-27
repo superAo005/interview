@@ -72,7 +72,12 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
         imports: ["vue", "@vueuse/core"],
         // 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
-        resolvers: [ElementPlusResolver(), IconsResolver({})],
+        resolvers: [
+          ElementPlusResolver({
+            importStyle: "sass",
+          }),
+          IconsResolver({}),
+        ],
         eslintrc: {
           enabled: false,
           filepath: "./.eslintrc-auto-import.json",
@@ -87,7 +92,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       Components({
         resolvers: [
           // 自动导入 Element Plus 组件
-          ElementPlusResolver(),
+          ElementPlusResolver({
+            importStyle: "sass",
+          }),
           // 自动注册图标组件
           IconsResolver({ enabledCollections: ["ep"] }),
         ],
