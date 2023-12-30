@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AppMain, HeaderNav, HeaderRight } from "./components"
+import { AppMain, HeaderNav, HeaderRight, TopBar } from "./components"
 </script>
 
 <template>
@@ -15,6 +15,8 @@ import { AppMain, HeaderNav, HeaderRight } from "./components"
         <HeaderRight />
       </div>
     </header>
+    <!-- 二级导航 -->
+    <TopBar />
     <!-- 页面主体内容 -->
     <AppMain class="app-main" />
   </div>
