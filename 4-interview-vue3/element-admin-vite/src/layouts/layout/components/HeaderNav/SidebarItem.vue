@@ -34,10 +34,7 @@ const theOnlyOneChild = computed(() => {
   }
 })
 const resolvePath = (routePath: string) => {
-  switch (true) {
-    default:
-      return path.resolve(props.basePath, routePath)
-  }
+  return path.resolve(props.basePath, routePath)
 }
 </script>
 
@@ -58,7 +55,7 @@ const resolvePath = (routePath: string) => {
         <SvgIcon v-if="props.item.meta?.svgIcon" :name="props.item.meta.svgIcon" teleported="false" />
         <span v-if="props.item.meta?.title">{{ props.item.meta.title }}</span>
       </template>
-      <template v-if="props.item.children">
+      <!-- <template v-if="props.item.children">
         <sidebar-item
           v-for="child in props.item.children"
           :key="child.path"
@@ -66,7 +63,7 @@ const resolvePath = (routePath: string) => {
           :is-first-level="false"
           :base-path="resolvePath(child.path)"
         />
-      </template>
+      </template> -->
     </el-sub-menu>
   </div>
 </template>
@@ -83,7 +80,6 @@ const resolvePath = (routePath: string) => {
   margin-right: 12px;
   font-size: 18px;
 }
-.first-level{
-  
+.first-level {
 }
 </style>

@@ -6,14 +6,12 @@ import { AppMain, HeaderNav, HeaderRight, TopBar } from "./components"
   <div class="app-wrapper">
     <!-- 页面头部 -->
     <header class="fixed-header layout-header">
-      <div class="content">
-        <h1 class="logo">
-          <SvgIcon name="logo" />
-        </h1>
-        <!-- 头部导航 -->
-        <HeaderNav class="header-nav" />
-        <HeaderRight />
-      </div>
+      <h1 class="logo">
+        <SvgIcon name="logo" />
+      </h1>
+      <!-- 头部导航 -->
+      <HeaderNav class="header-nav" />
+      <HeaderRight />
     </header>
     <!-- 二级导航 -->
     <TopBar />
@@ -44,14 +42,13 @@ $transition-time: 0.35s;
 .layout-header {
   height: var(--wise-header-height);
   // background: var(--wise-body-bg-color);
-  .content {
-    display: flex;
-    height: 100%;
-    .header-nav {
-      flex: 1;
-      background: transparent;
-    }
+  display: flex;
+  height: 100%;
+  .header-nav {
+    flex: 1;
+    background: transparent;
   }
+
   .logo {
     width: 240px;
     text-align: center;
