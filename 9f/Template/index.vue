@@ -3,10 +3,18 @@
 * @Date: 2024-01-04
 * @LastEditTime: 2024-01-04
 * @LastEditors: yzw
-* @Description:新建主题合集
+* @Description:
  -->
 <template>
-  <div></div>
+  <div class="app-contaier"></div>
 </template>
-<script setup lan></script>
-<style scoped lang="scss"></style>
+<script setup lang="ts">
+import { ref, Ref } from "vue";
+defineProps<{ msg: string }>();
+defineEmits(["update"]);
+const ref: Ref<HTMLElement | null> = ref(null);
+</script>
+<style scoped lang="scss">
+.app-contaier {
+}
+</style>
