@@ -5,7 +5,7 @@ import { getRoleList } from "@/api/system";
 import { ElMessageBox } from "element-plus";
 import { usePublicHooks } from "../../hooks";
 import { addDialog } from "@/components/ReDialog";
-import type { FormItemProps } from "../utils/types";
+import type { FormItemProps } from "./types";
 import type { PaginationProps } from "@pureadmin/table";
 import { reactive, ref, onMounted, h, toRaw } from "vue";
 
