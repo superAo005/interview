@@ -241,3 +241,4 @@
     },
   });
 </script>
+../config/componentPropsConfig

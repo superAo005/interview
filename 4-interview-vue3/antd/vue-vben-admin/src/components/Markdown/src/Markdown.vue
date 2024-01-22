@@ -157,3 +157,4 @@
   onBeforeUnmount(destroy);
   onDeactivated(destroy);
 </script>
+../../Modal/index.js./getTheme.js
