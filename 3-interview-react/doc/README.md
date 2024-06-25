@@ -34,7 +34,7 @@ dsl 是 domain specific language，领域特定语言的意思，html、css 都�
 vue 的 template compiler 是自己实现的，而 react 的 jsx 的编译器是 babel 实现的，是两个团队合作的结果
 编译成 render function 后再执行就是我们需要的 vdom
 接下来渲染器把它渲染出来就行了
-
+最近很火的低代码 就是拖转生成 dsl，然后 dsl 生成代码，潜入到模板里，然后部署
 ### 渲染 vdom
 
 渲染 vdom 也就是通过 dom api 增删改 dom
